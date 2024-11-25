@@ -5,10 +5,10 @@ $usuario = $_POST['usuario'];
 $senha = $_POST['senha'];
 $turma = $_POST['turma'];
 
-echo "Usuário cadastrado com suceso!!!<br>"."Nome: ".$nome."<br>"."Usuario: ". $usuario."<br>"."Turma: ".$turma."<br>";
+//echo "Usuário cadastrado com suceso!!!<br>"."Nome: ".$nome."<br>"."Usuario: ". $usuario."<br>"."Turma: ".$turma."<br>";
 
 $senhaC = base64_encode($senha);
-$querry="
+ $querry="
             insert into usuario (
                                 nomeUsuario,
                                 usuario,

@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <title>Listar Usuário</title>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.2/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        /* Estilos customizados */
+        :root {
+            --primaria: #002f6c;
+            --secundaria: #ff6600;
+            --fundo-claro: #f5f5f5;
+            --texto-escuro: #333;
+        }
+        
+        body {
+            background-color: var(--fundo-claro);
+            color: var(--texto-escuro);
+        }
+        
+        .navbar {
+            background-color: var(--primaria);
+            position: relative;
+        }
+
+        .navbar .navbar-brand img {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            height: 40px;
+        }
+        
+        .navbar .navbar-brand, .navbar .nav-link {
+            color: white !important;
+        }
+        
+        .navbar .nav-link:hover {
+            color: var(--secundaria) !important;
+        }
+        
+        h2 {
+            color: var(--primaria);
+            border-bottom: 2px solid var(--secundaria);
+            margin-bottom: 20px;
+        }
+        
+        .table {
+            background-color: white;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        
+        .table th {
+            background-color: var(--primaria);
+            color: white;
+        }
+        
+        .table td a {
+            color: var(--primaria);
+        }
+        
+        .table td a:hover {
+            color: var(--secundaria);
+        }
+    </style>

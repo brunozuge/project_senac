@@ -1,63 +1,40 @@
 <?php
-session_start();
-include('../modelo/conexao.php'); // Verifique se o caminho está correto para o arquivo de conexão
-include('../controle/funcoes.php'); // Verifique se o caminho está correto para as funções
+require_once '../modelo/conexao.php'; // Garante que o arquivo conexao.php será incluído
 
-// Verifica se os dados foram enviados via POST
-if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    // Recebe os dados do formulário e faz a sanitização
-    $usuario = trim($_POST['usuario']);
-    $senha = trim($_POST['senha']);
+session_start(); // Inicia a sessão
 
-    // Verifica se os campos não estão vazios
-    if (empty($usuario) || empty($senha)) {
-        echo "<script>alert('Por favor, preencha todos os campos.'); window.location.href='../visao/login.php';</script>";
-        exit();
+
+    $usuario = $_POST['usuario'];
+    $senha = $_POST['senha'];
+    $senhaC = base64_encode($senha);
+
+
+    // Verifica se a conexão está ativa
+    
+
+    // Prepara e executa a consulta
+    $query =  "SELECT count(*) as quantidade  FROM usuario WHERE usuario = '$usuario' and senhaUsuario='$senhaC'";
+    if (!$query) {
+        die("Erro na preparação da consulta: " . $conexao->error);
     }
 
-    // Consulta o banco de dados para verificar o usuário
-    $query = "SELECT * FROM usuario WHERE usuario = ?";  // Corrigido: estamos buscando pelo usuário, não pela senha
-    $stmt = $conexao->prepare($query);
+    $result = mysqli_query($conexao,$query)or die(false);
+    $dados =$result->fetch_assoc();
+   
 
-    // Verifica se a consulta foi preparada com sucesso
-    if ($stmt === false) {
-        die('Erro na preparação da consulta.');
-    }
+    // Verifica se o usuário foi encontrado
+    if ($dados['quantidade'] > 0) {
+       
 
-    $stmt->bind_param("s", $usuario);  // Apenas o nome de usuário é necessário aqui
-    $stmt->execute();
-    $result = $stmt->get_result();
-
-    // Verifica se o usuário existe
-    if ($result->num_rows > 0) {
-        $user = $result->fetch_assoc();
-        
-        // Decodifica a senha armazenada em Base64
-        $senhaCodificada = base64_decode($user['senhaUsuario']);
-        
-        // Compara a senha fornecida com a senha decodificada
-        if ($senha === $senhaCodificada) {
-            // Login bem-sucedido: armazena o usuário na sessão
-            $_SESSION['usuario'] = $usuario;
-            
-            // Exibe o alert de login bem-sucedido antes de redirecionar
-            echo "<script>alert('Login bem-sucedido!'); window.location.href='../visao/listar_usuario.php';</script>";
+        // Valida a senha
+       
+            $_SESSION['usuario_logado'] = $usuario;
+            header("Location: ../visao/listar_usuario.php");
             exit();
         } else {
-            // Senha incorreta
-            echo "<script>alert('Usuário ou senha inválidos.'); window.location.href='../visao/login.php';</script>";
+            header("Location: ../visao/login.php?erro=Senha ou Usuario incorreta!");
+            exit();
         }
-    } else {
-        // Usuário não encontrado
-        echo "<script>alert('Usuário ou senha inválidos.'); window.location.href='../visao/login.php';</script>";
-    }
+  
 
-    $stmt->close();
-} else {
-    // Se não for um POST, redireciona para a página de login
-    header("Location: ../visao/login.php");
-    exit();
-}
-
-$conexao->close();
 ?>
