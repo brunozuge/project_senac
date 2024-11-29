@@ -25,6 +25,7 @@ $sql = "SELECT * FROM usuario";
 $result = $conexao->query($sql);
 ?>
 
+
 <div class="container mt-5">
     <h2>Listagem de Usuários</h2>
 

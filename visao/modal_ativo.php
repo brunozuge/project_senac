@@ -39,7 +39,7 @@
             <label for="observacao" class="form-label">Observação</label>
             <input type="text" class="form-control" id="observacao" placeholder="Observações adicionais">
           </div>
-        </form>
+        
       </div>
       <div class="modal-footer">
         <button type="reset" class="btn btn-secondary">Limpar</button>

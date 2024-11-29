@@ -9,8 +9,10 @@
         </button>
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav ml-auto">
-            
+       
+    <li class="nav-item"><a class="nav-link" href="listar_usuario.php">Listar</a></li>
                 <li class="nav-item"><a class="nav-link" href="logout.php">Sair</a></li>
+
             </ul>
         </div>
     </div>

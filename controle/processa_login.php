@@ -13,7 +13,7 @@ session_start(); // Inicia a sessão
     
 
     // Prepara e executa a consulta
-    $query =  "SELECT count(*) as quantidade  FROM usuario WHERE usuario = '$usuario' and senhaUsuario='$senhaC'";
+    $query =  "SELECT count(*) as quantidade, idUsuario  FROM usuario WHERE usuario = '$usuario' and senhaUsuario='$senhaC'";
     if (!$query) {
         die("Erro na preparação da consulta: " . $conexao->error);
     }
@@ -27,14 +27,19 @@ session_start(); // Inicia a sessão
        
 
         // Valida a senha
-       
-            $_SESSION['usuario_logado'] = $usuario;
+            $_SESSION ['login_ok']=true;
+            $_SESSION ['controle_login']=true;
+            $_SESSION['usuario_logado'] = $dados['idUsuario'];
             header("Location: ../visao/listar_usuario.php");
             exit();
-        } else {
+        } else { 
+            $_SESSION ['login_ok']=false;
+            unset($_SESSION ['controle_login']);
             header("Location: ../visao/login.php?erro=Senha ou Usuario incorreta!");
             exit();
         }
+ 
+      
   
 
 ?>
