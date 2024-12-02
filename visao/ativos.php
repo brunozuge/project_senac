@@ -57,6 +57,7 @@ include_once('modal_ativo.php');
                 <th scope="col">Observações</th>
                 <th scope="col">Data de Cadastro</th>
                 <th scope="col">Usuário</th>
+                <th style="text-align:center;">Ações</th>
             </tr>
         </thead>
         <tbody>
@@ -67,10 +68,40 @@ include_once('modal_ativo.php');
                     <td><?php echo $row['nomeMarca']; ?></td>
                     <td><?php echo $row['descricaoTipo']; ?></td>
                     <td><?php echo $row['quantidadeAtivo']; ?></td>
-                    <td><?php echo ($row['statusAtivo'] == 'S') ? 'Ativo' : 'Inativo'; ?></td>
+                    <td><?php echo $row['statusAtivo'] ; ?></td>
                     <td><?php echo $row['observacaoAtivo']; ?></td>
                     <td><?php echo date("d/m/Y H:i:s", strtotime($row['dataCadastro'])); ?></td>
                     <td><?php echo $row['nomeUsuario']; ?></td>
+                    <td>
+                    <div class="acoes">
+                                <div class="muda_status">
+
+                                    <?php
+                                    if($row['statusAtivo'] == 'S') {
+                                    ?>
+
+                                    <div class="inativo">
+                                        <i class="bi bi-toggle-off"></i>
+                                    </div>
+
+                                    <?php
+                                    } else {
+                                    ?>
+
+                                    <div class="ativo">
+                                        <i class="bi bi-toggle-on"></i>
+                                    </div>
+
+                                    <?php
+                                    }
+                                    ?>
+
+                                </div>
+                                <div class="edit">
+                                <i class="bi bi-pencil-square"></i>
+                                </div>
+            <div class="edit">     </div>
+            </div>
                 </tr>
             <?php } ?>
         </tbody>
