@@ -32,6 +32,7 @@ $user = $_SESSION['usuario_logado'];
                                       '" . $user . "'
                                     )
                                       ";
+                                      //echo $querry; exit;
 
 $result = mysqli_query($conexao, $querry) or die(false);
 
