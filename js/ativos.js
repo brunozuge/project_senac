@@ -7,16 +7,27 @@ $(document).ready(function () {
         let tipo = $("#tipo").val();
         let quantidade = $("#quantidade").val();
         let observacao = $("#observacao").val();
+        let idAtivo = $("#idAtivo").val();
+
+
+        if(idAtivo == ""){
+            acao='inserir';
+        } else {
+            acao='update';
+        }
 
         $.ajax({
             type:'POST',
             url: "../controle/ativos_controller.php",
             data:{
+               
+                acao:acao,
                 ativo:descricao_ativo,
                 marca:marca,
                 tipo:tipo,
                 quantidade:quantidade,
-                observacao:observacao
+                observacao:observacao,
+               
             },
             
             success: function(result){
@@ -26,3 +37,21 @@ $(document).ready(function () {
 
     });
 });
+function muda_status(status,idAtivo){
+
+    $.ajax({
+        type:'POST',
+        url: "../controle/ativos_controller.php",
+        data:{
+            acao:'alterar_status',
+            status:status,
+            idAtivo:idAtivo
+        },
+        
+        success: function(result){
+            alert(result);
+            location.reload();
+        }
+    });
+
+}

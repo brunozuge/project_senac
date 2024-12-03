@@ -137,6 +137,7 @@ if (isset($_SESSION['erro'])) {
                     <label for="senha">Senha:</label>
                     <input type="password" id="senha" name="senha" class="form-control" placeholder="Digite sua senha" required>
                 </div>
+               
                 <button type="submit" class="btn btn-outline-primary">Entrar</button>
             </form>
             

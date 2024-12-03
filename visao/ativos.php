@@ -53,7 +53,7 @@ include_once('modal_ativo.php');
                 <th scope="col">Marca</th>
                 <th scope="col">Tipo</th>
                 <th scope="col">Quantidade</th>
-                <th scope="col">Status</th>
+               
                 <th scope="col">Observações</th>
                 <th scope="col">Data de Cadastro</th>
                 <th scope="col">Usuário</th>
@@ -68,28 +68,29 @@ include_once('modal_ativo.php');
                     <td><?php echo $row['nomeMarca']; ?></td>
                     <td><?php echo $row['descricaoTipo']; ?></td>
                     <td><?php echo $row['quantidadeAtivo']; ?></td>
-                    <td><?php echo $row['statusAtivo'] ; ?></td>
+                    
                     <td><?php echo $row['observacaoAtivo']; ?></td>
                     <td><?php echo date("d/m/Y H:i:s", strtotime($row['dataCadastro'])); ?></td>
                     <td><?php echo $row['nomeUsuario']; ?></td>
                     <td>
-                    <div class="acoes">
+                    <div class="acoes" style="display: flex;justify-content: space-between">
                                 <div class="muda_status">
 
                                     <?php
-                                    if($row['statusAtivo'] == 'S') {
+                                    if($row['statusAtivo'] == 'S') { 
+                                        
                                     ?>
 
-                                    <div class="inativo">
-                                        <i class="bi bi-toggle-off"></i>
+                                    <div class="inativo" onclick="muda_status('N','<?php echo $row ['idAtivo']; ?> ')">
+                                        <i class="bi bi-toggle-on"></i>
                                     </div>
 
                                     <?php
                                     } else {
                                     ?>
 
-                                    <div class="ativo">
-                                        <i class="bi bi-toggle-on"></i>
+                                    <div class="ativo" onclick="muda_status('S','<?php echo $row ['idAtivo']; ?> ')">
+                                        <i class="bi bi-toggle-off"></i>
                                     </div>
 
                                     <?php
@@ -100,10 +101,11 @@ include_once('modal_ativo.php');
                                 <div class="edit">
                                 <i class="bi bi-pencil-square"></i>
                                 </div>
-            <div class="edit">     </div>
+           
             </div>
-                </tr>
+                </td> </tr>
             <?php } ?>
         </tbody>
     </table>
+    <input type="hidden" id="idAtivo" value="">
 </div>
