@@ -75,27 +75,11 @@ function carregarAtivo(idAtivo) {
         .catch(error => console.error("Erro ao carregar ativo:", error));
 }
 
-function atualizarAtivo() {
-    const form = document.getElementById("formEditAtivo");
-    const formData = new FormData(form);
 
-    // Realiza uma requisição AJAX para atualizar o ativo
-    fetch("../controle/update_ativo.php", {
-        method: "POST",
-        body: formData,
-    })
-        .then(response => response.text())
-        .then(result => {
-            alert("Ativo atualizado com sucesso!");
-            location.reload();
-        })
-        .catch(error => console.error("Erro ao atualizar ativo:", error));
-}
 
-function editar(idAtivo) {
-
+function edita(idAtivo) {
+    $('#modal').click();
     $('#idAtivo').val(idAtivo);
-
     $.ajax({
         type: 'POST',
         url: "../controle/ativos_controle.php",
@@ -106,7 +90,7 @@ function editar(idAtivo) {
 
         success: function (result) {
           retorno=  JSON.parse(result)
-
+            
           $("#ativo").val(retorno);
            $("#marca").val(retorno);
           $("#tipo").val(retorno);
@@ -118,10 +102,12 @@ function editar(idAtivo) {
     });
 
 };
+
+
 function limpar_modal(){
     $("#descricao").val('');
         $("#quantidade").val('');
         $("#marca").val('');
         $("#tipo").val('');
         $("#observacao").val('');
-  }
+  };

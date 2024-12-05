@@ -33,7 +33,7 @@ $tipos = busca_info_bd($conexao, 'tipo');
     <h2 class="form-title">Cadastrar Ativos</h2>
 
     <div class="d-flex justify-content-center">
-        <button type="button" class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">Abrir Modal</button>
+        <button type="button" class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#exampleModal" id="modal">Abrir Modal</button>
     </div>
 </div>
 
@@ -99,7 +99,7 @@ include_once('modal_ativo.php');
 
                                 </div>
                                 <div class="edit">
-                                <i class="bi bi-pencil-square"></i>
+                                <i class="bi bi-pencil-square" onclick="edita(<?php echo $row ['idAtivo']; ?>)"></i>
                                 </div>
            
             </div>
