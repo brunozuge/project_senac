@@ -53,19 +53,59 @@ echo "Cadastro não realizado";
  
 
 
-if ($acao == 'alterar_status'){
+if($acao == 'alterar_status'){
+  $sql = "Update ativo set statusAtivo = '$statusAtivo' where idAtivo = $idAtivo";
+
+  $result = mysqli_query($conexao, $sql) or die(false);
+
+  if ($result) {
+    echo "Status alterado";
+  } else {
+    echo "Status não alterardo";
+  }
+
+}
+
+if($acao == 'get_info') {
   $sql = "
-      Update ativo set statusAtivo ='$statusAtivo' where idAtivo=$idAtivo
-  ";
+    Select          
+      descricaoAtivo,
+      quantidadeAtivo,
+      observacaoAtivo,
+      idMarca,
+      idTipo
+    from
+        ativo
+    where
+        idAtivo= $idAtivo  
+";
 
-$result = mysqli_query($conexao,$sql)or die(false);
+$result = mysqli_query($conexao, $sql) or die(false);
+$ativo = mysqli_fetch_all($result, MYSQLI_ASSOC);
 
-if ($result) {
-  echo 'Status Alterado!';
+echo json_encode($ativo);
 
-} else {
-  echo 'Status Não Alterado!';
+exit();
 }
-}
 
+if($acao == 'update'){
+  $sql = "Update ativo set
+    descricaoAtivo = '$ativos',
+    idMarca = '$marca',
+    idTipo = '$tipo',
+    quantidadeAtivo = '$quantidade',
+    observacaoAtivo = '$observacao'
+
+    where idAtivo = $idAtivo
+    ";
+
+  $result = mysqli_query($conexao, $sql) or die(false);
+
+  if ($result) {
+    echo "Informações alteradas";
+  } else {
+    echo "Informações não alteradas";
+
+  }
+}
 ?>
