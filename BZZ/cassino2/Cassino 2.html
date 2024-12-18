@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jogo de Apostas - Roleta de Números</title>
+    <link rel="stylesheet" href="cassino 2.css">
+</head>
+<body>
+    <h1>Roleta de Números</h1>
+    
+    <div class="game">
+        <p>Saldo: <span id="balance">1000</span> créditos</p>
+        
+        <label for="bet-amount">Valor da Aposta:</label>
+        <input type="number" id="bet-amount" min="1" max="1000" value="100">
+        
+        <label for="bet-number">Escolha um Número (1-10):</label>
+        <input type="number" id="bet-number" min="1" max="10" value="1">
+        
+        <button onclick="placeBet()">Apostar</button>
+        <p id="result-message"></p>
+        
+        <hr>
+
+        <label for="add-credits">Adicionar Créditos:</label>
+        <input type="number" id="add-credits" min="1" value="100">
+        <button onclick="addCredits()">Adicionar Créditos</button>
+    </div>
+
+    <script src="cassino 2.js"></script>
+</body>
+</html>

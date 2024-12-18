@@ -1,0 +1,89 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f5f5f5;
+    color: #333;
+    text-align: center;
+    margin: 0;
+    padding: 0;
+}
+
+h1 {
+    background-color: #34495e;
+    color: white;
+    padding: 20px;
+    margin: 0;
+    border-bottom: 5px solid #2c3e50;
+}
+
+h2 {
+    margin-top: 40px;
+    color: #2c3e50;
+    cursor: pointer;
+}
+
+table {
+    width: 80%;
+    margin: 0 auto;
+    border-collapse: collapse;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+}
+
+th, td {
+    padding: 15px;
+    text-align: center;
+    border-bottom: 1px solid #ddd;
+}
+
+th {
+    background-color: #2c3e50;
+    color: white;
+}
+
+td {
+    background-color: #ffffff;
+}
+
+tr:hover {
+    background-color: #f1f1f1;
+}
+
+.phase {
+    margin-bottom: 50px;
+}
+
+.phase table {
+    display: none; /* Tabelas ocultas por padrão */
+}
+
+.phase.active table {
+    display: table; /* Exibe tabela quando ativo */
+}
+/* CSS existente */
+
+.champion-images {
+    margin: 50px 0;
+    display: none; /* Oculta a galeria por padrão */
+}
+
+.phase.active .champion-images {
+    display: block; /* Mostra a galeria quando a aba "Final" é clicada */
+}
+
+.image-gallery {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    flex-wrap: wrap;
+}
+
+.image-gallery img {
+    width: 300px;
+    height: auto;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+    border-radius: 10px;
+}
+
+.image-gallery img:hover {
+    transform: scale(1.05);
+    transition: transform 0.3s;
+}

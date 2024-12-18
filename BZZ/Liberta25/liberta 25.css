@@ -1,0 +1,71 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f5f5f5;
+    color: #333;
+    text-align: center;
+    margin: 0;
+    padding: 0;
+}
+
+h1 {
+    background-color: #34495e;
+    color: white;
+    padding: 20px;
+    margin: 0;
+    border-bottom: 5px solid #2c3e50;
+}
+
+h2 {
+    margin-top: 40px;
+    color: #2c3e50;
+    cursor: pointer;
+}
+
+table {
+    width: 80%;
+    margin: 0 auto;
+    border-collapse: collapse;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    background-color: white;
+}
+
+table, th, td {
+    border: 1px solid #ddd;
+}
+
+th, td {
+    padding: 10px;
+    text-align: center;
+}
+
+th {
+    background-color: #f4f4f4;
+}
+
+.champion-images {
+    margin: 50px 0;
+    display: none; /* Oculta a galeria por padrão */
+}
+
+.phase.active .champion-images {
+    display: block; /* Mostra a galeria quando a aba "Final" é clicada */
+}
+
+.image-gallery {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    flex-wrap: wrap;
+}
+
+.image-gallery img {
+    width: 300px;
+    height: auto;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+    border-radius: 10px;
+}
+
+.image-gallery img:hover {
+    transform: scale(1.05);
+    transition: transform 0.3s;
+}

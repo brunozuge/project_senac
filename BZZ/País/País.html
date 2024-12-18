@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jogo das Capitais - Adivinhe o País</title>
+    <link rel="stylesheet" href="País.css">
+</head>
+<body>
+    <h1>Adivinhe o País pela Capital</h1>
+    
+    <div id="difficulty-selection">
+        <button class="difficulty-button" id="easy-button">Fácil</button>
+        <button class="difficulty-button" id="hard-button">Difícil</button>
+    </div>
+
+    <div id="game" style="display: none;">
+        <p>Capital: <span id="capital-name"></span></p>
+        <input type="text" id="answer-input" placeholder="Digite o país">
+        <button id="submit-answer">Enviar Resposta</button>
+        <p id="score">Pontuação: 0</p>
+        <p id="message"></p>
+    </div>
+
+    <div id="notification" class="hidden"></div>
+
+    <script src="País.js"></script>
+</body>
+</html>

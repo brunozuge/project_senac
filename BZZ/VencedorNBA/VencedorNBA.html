@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Maiores Vencedores da NBA</title>
+    <link rel="stylesheet" href="VencedorNBA.css">
+</head>
+<body>
+    <h1>Maiores Vencedores da NBA</h1>
+
+    <div class="container">
+        <table id="champions-table">
+            <thead>
+                <tr>
+                    <th>Time</th>
+                    <th>Quantidade de Títulos</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr onclick="showDetails('lakers')">
+                    <td>Los Angeles Lakers</td>
+                    <td>17</td>
+                </tr>
+                <tr onclick="showDetails('celtics')">
+                    <td>Boston Celtics</td>
+                    <td>17</td>
+                </tr>
+                <tr onclick="showDetails('warriors')">
+                    <td>Golden State Warriors</td>
+                    <td>7</td>
+                </tr>
+                <tr onclick="showDetails('bulls')">
+                    <td>Chicago Bulls</td>
+                    <td>6</td>
+                </tr>
+                <tr onclick="showDetails('spurs')">
+                    <td>San Antonio Spurs</td>
+                    <td>5</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <button onclick="highlightTopTeam()">Destacar Maior Vencedor</button>
+    </div>
+
+    <!-- Modal -->
+    <div id="modal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal()">&times;</span>
+            <h2 id="team-name"></h2>
+            <p id="championship-years"></p>
+            <p id="team-facts"></p>
+        </div>
+    </div>
+
+    <script src="VencedorNBA.js"></script>
+</body>
+</html>
