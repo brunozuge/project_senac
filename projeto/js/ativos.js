@@ -82,7 +82,7 @@ function edita(idAtivo) {
     $('#idAtivo').val(idAtivo);
     $.ajax({
         type: 'POST',
-        url: "../controle/ativos_controle.php",
+        url: "../controle/ativos_controller.php",
         data: {
             acao: 'get_info',
             idAtivo: idAtivo

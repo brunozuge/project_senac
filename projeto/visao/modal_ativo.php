@@ -1,5 +1,5 @@
 
-<?php include_once("modal_ativo.php")  ?>
+
 <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-lg">
     <div class="modal-content rounded-4 shadow-lg">
@@ -53,7 +53,7 @@
       <!-- Rodapé do Modal -->
       <div class="modal-footer">
         <button type="reset" class="btn btn-secondary" form="form-cadastrar-ativo">Limpar</button>
-        <button type="button" class="btn btn-primary" form="form-cadastrar-ativo" id="salvar_info">Salvar</button>
+        <button type="button" class="btn btn-primary " form="form-cadastrar-ativo" id="salvar_info">Salvar</button>
       </div>
     </div>
   </div>

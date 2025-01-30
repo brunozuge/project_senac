@@ -14,6 +14,9 @@ if (!isset($_SESSION['usuario_logado'])) {
 <?php 
 include_once ('navbar.php');
 include_once ('senac.html');
+$admin = $_SESSION['admin'];
+
+
 ?>
 <?php
 // Incluindo a conexão e funções
@@ -35,7 +38,9 @@ $result = $conexao->query($sql);
                 <th>ID</th>
                 <th>Nome</th>
                 <th>Turma</th>
-                <th>Ações</th> <!-- Coluna para as ações (Alterar, Excluir) -->
+                
+                <th>Ações</th> 
+                <!-- Coluna para as ações (Alterar, Excluir) -->
             </tr>
         </thead>
         <tbody>
@@ -44,12 +49,16 @@ $result = $conexao->query($sql);
                     <td><?php echo $usuario['idUsuario']; ?></td>
                     <td><?php echo $usuario['nomeUsuario']; ?></td>
                     <td><?php echo $usuario['turmaUsuario']; ?></td>
-                    <td>
-                        <!-- Botão de Alterar -->
+                    <td><?php if ($admin=="S"){?>
                         <a href="alterar_usuario.php?id_usuario=<?php echo $usuario['idUsuario']; ?>" class="btn btn-warning btn-sm">Alterar</a>
+                        <a href="excluir_usuario.php?id_usuario=<?php echo $usuario['idUsuario']; ?>" class="btn btn-danger btn-sm" onclick="return confirm('Tem certeza que deseja excluir este usuário?');">Excluir</a>
+                    <?php } ?>
+                   
+                        <!-- Botão de Alterar -->
+                      
                         
                         <!-- Botão de Excluir -->
-                        <a href="excluir_usuario.php?id_usuario=<?php echo $usuario['idUsuario']; ?>" class="btn btn-danger btn-sm" onclick="return confirm('Tem certeza que deseja excluir este usuário?');">Excluir</a>
+                        
                     </td>
                 </tr>
             <?php } ?>

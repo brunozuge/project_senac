@@ -1,6 +1,7 @@
 
     
-<?php include('navbar2.php'); 
+<?php 
+include_once ('navbar.php');
 include_once ('senac.html');?>
 
 

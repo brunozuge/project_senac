@@ -1,5 +1,5 @@
 <?php
-ini_set('display_errors', 0);
+ini_set('display_errors', 1);
 error_reporting(E_ERROR);
 include_once("../modelo/conexao.php");
 include_once("controle_session.php");
@@ -20,7 +20,7 @@ if ($acao== 'inserir') {
   insert into ativo (
                            descricaoAtivo ,
                            quantidadeAtivo ,
-                           
+                           statusAtivo,
                            observacaoAtivo,
                            idMarca,
                            idTipo  ,
