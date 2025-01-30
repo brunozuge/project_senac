@@ -1,0 +1,251 @@
+/* Resetando estilos padrão */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+  
+  /* Estilos do body */
+  body {
+    font-family: 'Arial', sans-serif;
+    background-color: #1c1c1c; /* Fundo escuro */
+    color: #fff; /* Texto branco */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    padding: 20px;
+    overflow: hidden;
+  }
+  
+  /* Container principal */
+  .container {
+    width: 100%;
+    max-width: 900px;
+    text-align: center;
+    background-color: #2c2c2c; /* Fundo cinza escuro para o conteúdo */
+    padding: 30px;
+    border-radius: 15px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+  }
+  
+  /* Título principal */
+  h1 {
+    font-size: 2.5rem;
+    color: #ff3333; /* Vermelho vibrante para o título */
+    margin-bottom: 30px;
+    text-transform: uppercase;
+  }
+  
+  /* Estilo das opções de mulheres */
+  .option {
+    display: inline-block;
+    width: 45%;
+    margin: 10px;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+    transition: transform 0.3s ease;
+    cursor: pointer;
+  }
+  
+  .option img {
+    width: 100%;
+    height: 300px; /* Altura fixa para todas as imagens */
+    object-fit: cover;
+    border-radius: 12px;
+    transition: transform 0.2s ease;
+  }
+  
+  /* Efeito de hover e clique */
+  .option:hover {
+    transform: scale(1.05);
+  }
+  
+  .option:active img {
+    transform: scale(0.98);
+  }
+  
+  /* Botão de Ranking */
+  #rankingButton {
+    margin-top: 20px;
+    background-color: #ff3333; /* Vermelho vibrante para o botão */
+    color: white;
+    padding: 12px 30px;
+    font-size: 1rem;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+  }
+  
+  #rankingButton:hover {
+    background-color: #e60000; /* Vermelho mais escuro no hover */
+  }
+  
+  /* Modal de Ranking */
+  #rankingModal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.8); /* Fundo preto com leve transparência */
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+  }
+  
+  #rankingModal .modal-content {
+    background-color: #333; /* Fundo escuro */
+    padding: 40px;
+    border-radius: 15px;
+    width: 80%;
+    max-width: 600px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+  }
+  
+  #rankingModal h2 {
+    margin-bottom: 20px;
+    color: #ff3333; /* Título em vermelho */
+    text-align: center;
+  }
+  
+  #rankingModal ul {
+    list-style-type: none;
+    padding: 0;
+    max-height: 300px; /* Limitar a altura da lista */
+    overflow-y: auto; /* Permitir rolagem */
+    margin: 10px 0;
+  }
+  
+  #rankingModal li {
+    font-size: 1.2rem;
+    color: #fff; /* Texto branco */
+    margin-bottom: 10px;
+    padding: 10px;
+    background-color: #444; /* Fundo escuro para os itens */
+    border-radius: 8px;
+  }
+  
+  /* Botão de Fechar o modal */
+  .close {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    font-size: 1.5rem;
+    color: #888;
+    cursor: pointer;
+  }
+  
+  .close:hover {
+    color: #ff3333; /* Vermelho no hover */
+  }
+  
+  /* Modal para as 35 fotos */
+  #photosModal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.8); /* Fundo preto com leve transparência */
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+  }
+  
+  #photosModal .photos-content {
+    background-color: #333; /* Fundo escuro */
+    padding: 20px;
+    border-radius: 15px;
+    max-width: 90%;
+    overflow-y: auto;
+    max-height: 80%;
+  }
+  
+  #photosModal h2 {
+    text-align: center;
+    margin-bottom: 20px;
+    color: #ff3333; /* Título em vermelho */
+  }
+  
+  #photosModal .photo-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+    gap: 15px;
+  }
+  
+  #photosModal .photo-grid img {
+    width: 100%;
+    height: 160px;
+    object-fit: cover;
+    border-radius: 8px;
+  }
+  
+  #photosModal .close {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    font-size: 1.5rem;
+    color: #888;
+    cursor: pointer;
+  }
+  
+  #photosModal .close:hover {
+    color: #ff3333; /* Vermelho no hover */
+  }
+  
+  /* Responsividade */
+  @media screen and (max-width: 768px) {
+    .container {
+      padding: 20px;
+    }
+  
+    .option {
+      width: 100%;
+      margin: 10px 0;
+    }
+  
+    h1 {
+      font-size: 2rem;
+    }
+  
+    #rankingButton {
+      width: 100%;
+    }
+  }
+  
+  /* Estilo comum para os botões */
+button {
+    padding: 10px 20px;
+    font-size: 16px;
+    color: white;
+    background-color: #007bff; /* Cor de fundo dos botões (azul) */
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+  }
+  
+  button:hover {
+    background-color: #0056b3; /* Cor de fundo ao passar o mouse (azul mais escuro) */
+  }
+  
+  /* Estilo específico para o botão de reset (vermelho) */
+  #resetVotesButton {
+    display: none; /* Inicialmente o botão estará escondido */
+    position: absolute;
+    bottom: 20px;  /* Distância do fundo do modal */
+    right: 20px;   /* Distância da direita do modal */
+    margin-top: 0; /* Remover qualquer margem superior */
+    background-color: #ff3333; /* Cor de fundo vermelha */
+  }
+  
+  #resetVotesButton:hover {
+    background-color: #ff3339; /* Cor de fundo vermelha mais escura ao passar o mouse */
+  }
+  
+  

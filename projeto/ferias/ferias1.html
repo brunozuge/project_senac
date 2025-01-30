@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ranking de Beleza</title>
+  <link rel="stylesheet" href="ferias1.css">
+  <style>
+    /* Estilos para a exibição da mensagem de feedback */
+    #feedbackMessage {
+      font-size: 16px;
+      font-weight: bold;
+      margin-top: 20px;
+      display: none; /* Inicialmente oculto */
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <h1>Escolha a Mulher Mais Bonita</h1>
+
+    <!-- Opções de mulheres -->
+    <div id="option1" class="option"></div>
+    <div id="option2" class="option"></div>
+
+    <!-- Botão para abrir o ranking -->
+    <button id="rankingButton">Ver Ranking</button>
+    
+    <!-- Botão para resetar os votos -->
+   
+
+    <!-- Espaço para exibir mensagens de feedback -->
+    <div id="feedbackMessage"></div>
+  </div>
+
+  <!-- Modal de Ranking -->
+  <div id="rankingModal" class="modal">
+    <div class="modal-content">
+      <span class="close">&times;</span>
+      <h2>Ranking</h2>
+      <button id="resetVotesButton" style="display:none;">Resetar Votos</button>
+      <ul id="rankingList"></ul>
+    </div>
+  </div>
+
+  <script src="ferias1.js"></script>
+
+</body>
+</html>
