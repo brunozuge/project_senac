@@ -15,7 +15,7 @@ $localOrigem = $_POST['localOrigem'];
 $localDestino = $_POST['localDestino'];
 $descricaoMovimentacao = $_POST['descricaoMovimentacao'];
 
-$user = $_SESSION['idUsuario'];
+$user = $_SESSION['usuario_logado'];
 
 // Corrigindo o nome da variável usada na query
 $sqlTotal = "

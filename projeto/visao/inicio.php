@@ -177,6 +177,15 @@ include_once("senac.html");
                 </div>
             </div>
 
+            <div class="col-md-4">
+                <div class="feature-item">
+                    <a href="relatorio.php">
+                        <i class="fas fa-cogs"></i>
+                        <h4>Gerenciar Relatórios</h4>
+                        <p>Monitore e cadastre os relatórios com facilidade.</p>
+                    </a>
+                </div>
+            </div>
 
 
         </div>
