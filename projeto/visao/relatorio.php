@@ -6,6 +6,7 @@ $title = "Relatórios";
 include_once('senac.html');
 include_once('navbar.php');
 
+
 $marcas = busca_info_bd($conexao, 'marca');
 $tipos = busca_info_bd($conexao, 'tipo');
 $ativos = busca_info_bd($conexao, 'ativo');
@@ -13,16 +14,17 @@ $usuarios = busca_info_bd($conexao, 'usuario');
 $movimentacoes = busca_info_bd($conexao, 'movimentacao');
 
 ?>
+<script src="../js/relatorio.js"></script>
 
 <body>
     <div class="container mt-5">
         <h1 class="mb-4 text-center" style="color: #003B5C;">Informe os filtros que deseja gerar o relatório</h1>
-        <form method="POST" action="relatorio.php" class="bg-light p-4 rounded shadow-sm">
+        <form method="POST" action="resultado_relatorios.php" class="bg-light p-4 rounded shadow-sm" target="_blank">
             <div class="row mb-3">
                 <div class="col-md-6">
                     <label for="ativo" class="form-label" style="color: #003B5C;">Ativo</label>
                     <select id="ativo" name="ativo" class="form-select shadow-sm border-light">
-                        <option value="todos">Todos Alvos</option>
+                        <option value="">Todos Alvos</option>
                         <?php
                         foreach ($ativos as $ativo) {
                             echo '<option value="' . $ativo['idAtivo'] . '">' . $ativo['descricaoAtivo'] . '</option>';
@@ -33,7 +35,7 @@ $movimentacoes = busca_info_bd($conexao, 'movimentacao');
                 <div class="col-md-6">
                     <label for="marca" class="form-label" style="color: #003B5C;">Marca</label>
                     <select id="marca" name="marca" class="form-select shadow-sm border-light">
-                        <option value="todas">Todas Marcas</option>
+                        <option value="">Todas Marcas</option>
                         <?php
                         foreach ($marcas as $marca) {
                             echo '<option value="' . $marca['idMarca'] . '">' . $marca['descricaoMarca'] . '</option>';
@@ -47,7 +49,7 @@ $movimentacoes = busca_info_bd($conexao, 'movimentacao');
                 <div class="col-md-6">
                     <label for="tipo" class="form-label" style="color: #003B5C;">Tipo</label>
                     <select id="tipo" name="tipo" class="form-select shadow-sm border-light">
-                        <option value="todos">Todos Tipos</option>
+                        <option value="">Todos Tipos</option>
                         <?php
                         foreach ($tipos as $tipo) {
                             echo '<option value="' . $tipo['idTipo'] . '">' . $tipo['descricaoTipo'] . '</option>';
