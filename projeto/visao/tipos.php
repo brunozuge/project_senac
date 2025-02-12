@@ -13,7 +13,7 @@ include ('navbar.php');
 <script src="../js/tipos.js"></script>
 <body>
 <div class="d-flex justify-content-center mt-4">
-    <button type="button" class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#exampleModal" id="modal">Abrir Modal</button>
+    <button type="button" class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#exampleModal" id="modal">Cadastrar Tipo</button>
 </div>
 <div class="container mt-5">
    

@@ -14,12 +14,8 @@ $ativos = busca_info_bd($conexao, 'ativo', 'statusAtivo', 'S');
 
 <script src="../js/movimentacoes.js"></script>
 
-<div class="container mt-5">
-    <div class="d-flex justify-content-center">
-        <button type="button" id="btn_modal" class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
-            Cadastrar Movimentações
-        </button>
-    </div>
+<div class="d-flex justify-content-center mt-4">
+    <button type="button" class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#exampleModal" id="modal">Cadastrar Movimentação</button>
 </div>
 
 <?php include_once('modal_movimentacoes.php'); ?>

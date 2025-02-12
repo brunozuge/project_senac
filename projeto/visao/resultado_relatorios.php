@@ -125,7 +125,18 @@ if (!$result) {
     $(document).ready(function () {
         $('#tabela-relatorios').DataTable({
             language: {
-                url: 'https://cdn.datatables.net/plug-ins/1.13.6/i18n/pt-BR.json' // Tradução para PT-BR
+                url: 'https://cdn.datatables.net/plug-ins/1.13.6/i18n/pt-BR.json', // Tradução para PT-BR
+                info: "Exibindo _END_ de _TOTAL_ registros", // Personaliza a mensagem de exibição
+                infoEmpty: "Nenhum registro disponível", // Mensagem quando não há dados
+                infoFiltered: "(filtrado de _MAX_ registros totais)", // Mensagem de filtro
+                lengthMenu: "Exibir _MENU_ registros por página", // Personaliza o seletor de registros por página
+                search: "Buscar:", // Altera o texto do campo de busca
+                paginate: {
+                    first: "Primeira", // Botão para a primeira página
+                    last: "Última", // Botão para a última página
+                    next: "Próxima", // Botão para a próxima página
+                    previous: "Anterior" // Botão para a página anterior
+                }
             },
             dom: 'Bfrtip', // Adiciona os botões
             buttons: [
@@ -134,7 +145,10 @@ if (!$result) {
                 'excel', // Exportar para Excel
                 'pdf',   // Exportar para PDF
                 'print'  // Imprimir
-            ]
+            ],
+            pageLength: 6, // Define o número de registros por página
+            lengthMenu: [6, 10, 25, 50, 100], // Opções de registros por página
+            order: [[0, 'asc']] // Ordenação inicial pela coluna ID (primeira coluna)
         });
     });
 </script>

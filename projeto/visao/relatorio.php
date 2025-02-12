@@ -6,16 +6,12 @@ $title = "Relatórios";
 include_once('senac.html');
 include_once('navbar.php');
 
-
 $marcas = busca_info_bd($conexao, 'marca');
 $tipos = busca_info_bd($conexao, 'tipo');
 $ativos = busca_info_bd($conexao, 'ativo');
 $usuarios = busca_info_bd($conexao, 'usuario');
-$movimentacoes = busca_info_bd($conexao, 'movimentacao');
-
 ?>
 <script src="../js/relatorio.js"></script>
-
 <body>
     <div class="container mt-5">
         <h1 class="mb-4 text-center" style="color: #003B5C;">Informe os filtros que deseja gerar o relatório</h1>
@@ -44,7 +40,6 @@ $movimentacoes = busca_info_bd($conexao, 'movimentacao');
                     </select>
                 </div>
             </div>
-
             <div class="row mb-3">
                 <div class="col-md-6">
                     <label for="tipo" class="form-label" style="color: #003B5C;">Tipo</label>
@@ -69,7 +64,6 @@ $movimentacoes = busca_info_bd($conexao, 'movimentacao');
                     </select>
                 </div>
             </div>
-
             <div class="row mb-3">
                 <div class="col-md-6">
                     <label for="data_inicial" class="form-label" style="color: #003B5C;">Data Inicial</label>
@@ -80,21 +74,17 @@ $movimentacoes = busca_info_bd($conexao, 'movimentacao');
                     <input type="date" id="data_final" name="data_final" class="form-control shadow-sm border-light">
                 </div>
             </div>
-
             <div class="row mb-3">
                 <div class="col-md-12">
                     <label for="tipo_movimentacao" class="form-label" style="color: #003B5C;">Tipo de Movimentação</label>
                     <select id="tipo_movimentacao" name="tipo_movimentacao" class="form-select shadow-sm border-light">
                         <option value="">Selecione</option>
-                        <?php
-                        foreach ($movimentacoes as $movimentacao) {
-                            echo '<option value="' . $movimentacao['idMovimentacao'] . '">' . $movimentacao['tipoMov'] . '</option>';
-                        }
-                        ?>
+                        <option value="adicionar">Adicionar</option>
+                        <option value="remover">Remover</option>
+                        <option value="realocar">Realocar</option>
                     </select>
                 </div>
             </div>
-
             <div class="d-flex justify-content-between">
                 <button type="submit" class="btn btn-primary" style="background-color: #003B5C; color: white;">Gerar Relatório</button>
                 <button type="reset" class="btn btn-secondary">Limpar Filtros</button>
