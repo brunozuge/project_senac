@@ -117,7 +117,7 @@ $queryInsert = "
 
 $resultInsert = mysqli_query($conexao, $queryInsert);
 if ($resultInsert) {
-  echo "sucesso";
+  echo "Movimentação realizada com sucesso";
 } else {
   echo "Erro ao registrar movimentação: " . mysqli_error($conexao);
 }

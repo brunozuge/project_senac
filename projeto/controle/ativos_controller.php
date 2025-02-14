@@ -32,34 +32,36 @@ $user = isset($_SESSION['usuario_logado']) ? intval($_SESSION['usuario_logado'])
 // Handle file upload securely
 $img = isset($_FILES['imgAtivo']) ? $_FILES['imgAtivo'] : null;
 $urlImg = ''; // Variable to store the uploaded image URL
+
 if ($img && $img['error'] === UPLOAD_ERR_OK) {
     // Define the base directory for uploads
     $pasta_base = $_SERVER['DOCUMENT_ROOT'] . "/projeto/imgAtivo/";
-    // Create the directory if it doesn't exist
     if (!is_dir($pasta_base)) {
-        mkdir($pasta_base, 0755, true); // Create directory with proper permissions
+        mkdir($pasta_base, 0755, true);
     }
-    // Generate a unique file name to avoid overwriting
+    // Generate a unique file name
     $fileName = uniqid() . '_' . basename($img['name']);
     $filePath = $pasta_base . $fileName;
-    // Move the uploaded file to the target directory
+
     if (move_uploaded_file($img['tmp_name'], $filePath)) {
-        $urlImg = 'projeto/imgAtivo/' . $fileName; // Save the relative URL of the image
+        $urlImg = 'projeto/imgAtivo/' . $fileName;
     } else {
         echo json_encode(['error' => 'Falha ao mover arquivo']);
         exit();
     }
 }
 
+// Array para resposta única
+$response = [];
+
 // Perform actions based on the value of $acao
 switch ($acao) {
     case 'inserir':
-        // Prepare the SQL query
         $query = "
             INSERT INTO ativo (
                 descricaoAtivo,
                 quantidadeAtivo,
-                  quantidadeMinAtivo,
+                quantidadeMinAtivo,
                 statusAtivo,
                 observacaoAtivo,
                 idMarca,
@@ -81,54 +83,74 @@ switch ($acao) {
             )
         ";
         $result = mysqli_query($conexao, $query);
-        echo $result ? "Cadastro realizado" : "Cadastro não realizado";
+        $response['message'] = $result ? "Cadastro realizado" : "Cadastro não realizado";
         break;
 
     case 'alterar_status':
-        $sql = "UPDATE ativo SET statusAtivo = '$statusAtivo' WHERE idAtivo = $idAtivo";
-        $result = mysqli_query($conexao, $sql);
-        echo $result ? "Status alterado" : "Status não alterado";
+        if ($idAtivo > 0) {
+            $sql = "UPDATE ativo SET statusAtivo = '$statusAtivo' WHERE idAtivo = $idAtivo";
+            $result = mysqli_query($conexao, $sql);
+            $response['message'] = $result ? "Status alterado" : "Status não alterado";
+        } else {
+            $response['error'] = "ID inválido";
+        }
         break;
 
     case 'get_info':
-        $sql = "
-            SELECT
-                descricaoAtivo,
-                quantidadeAtivo,
-                 quantidadeMinAtivo,
-                observacaoAtivo,
-                idMarca,
-                idTipo,
-                urlImg
-            FROM
-                ativo
-            WHERE
-                idAtivo = $idAtivo
-        ";
-        $result = mysqli_query($conexao, $sql);
-        $ativoData = mysqli_fetch_all($result, MYSQLI_ASSOC);
-        echo json_encode($ativoData);
-        exit();
+        if ($idAtivo > 0) {
+            $sql = "
+                SELECT
+                    descricaoAtivo,
+                    quantidadeAtivo,
+                    quantidadeMinAtivo,
+                    observacaoAtivo,
+                    idMarca,
+                    idTipo,
+                    urlImg
+                FROM ativo
+                WHERE idAtivo = $idAtivo
+            ";
+            $result = mysqli_query($conexao, $sql);
+            $ativoData = mysqli_fetch_all($result, MYSQLI_ASSOC);
+            echo json_encode($ativoData);
+            exit();
+        } else {
+            $response['error'] = "ID inválido";
+        }
+        break;
 
     case 'update':
-        // Prepare the SQL query
-        $sql = "
-            UPDATE ativo SET
-                descricaoAtivo = '$ativo',
-                idMarca = '$marca',
-                idTipo = '$tipo',
-                quantidadeAtivo = '$quantidade',
-                quantidadeMinAtivo = '$quantidadeMin',
-                observacaoAtivo = '$observacao',
-                urlImg = '" . ($urlImg ?: '') . "'
-            WHERE idAtivo = $idAtivo
-        ";
-        $result = mysqli_query($conexao, $sql);
-        echo $result ? "Informações alteradas" : "Informações não alteradas";
+        if ($idAtivo > 0) {
+            $sql = "
+                UPDATE ativo SET
+                    descricaoAtivo = '$ativo',
+                    idMarca = '$marca',
+                    idTipo = '$tipo',
+                    quantidadeAtivo = '$quantidade',
+                    quantidadeMinAtivo = '$quantidadeMin',
+                    observacaoAtivo = '$observacao'
+            ";
+
+            // Se uma nova imagem foi enviada, atualiza a URL
+            if ($urlImg) {
+                $sql .= ", urlImg = '$urlImg'";
+            }
+
+            $sql .= " WHERE idAtivo = $idAtivo";
+
+            $result = mysqli_query($conexao, $sql);
+            $response['message'] = $result ? "Informações alteradas" : "Informações não alteradas";
+        } else {
+            $response['error'] = "ID inválido";
+        }
         break;
 
     default:
-        echo json_encode(['error' => 'Ação inválida']);
+        $response['error'] = 'Ação inválida';
         break;
 }
+
+// Responde apenas uma vez no final
+echo json_encode($response);
+exit();
 ?>

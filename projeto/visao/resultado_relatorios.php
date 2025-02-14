@@ -1,4 +1,5 @@
-<?php  
+<?php 
+
 include_once('../controle/controle_session.php');
 include_once('../modelo/conexao.php');
 include_once('../controle/funcoes.php');
@@ -10,8 +11,9 @@ include_once('navbar.php');
 $ativo = $_POST['ativo'];
 $dataInicial = $_POST['data_inicial'];
 $dataFinal = $_POST['data_final'];
-$marca = $_POST['marca'];
-$tipo = $_POST['tipo'];
+$marca = isset($_POST['marca'])?$_POST['marca']:'';
+$tipo = isset($_POST['tipo'])?$_POST['tipo']:'';
+
 $user = $_POST['usuario'];
 $tipoMov = $_POST['tipo_movimentacao'];
 
@@ -33,33 +35,34 @@ $sql = "
         idAtivo is not null
 ";
 
-if ($ativo !== null && $ativo != '') {
-    $sql .= " AND m.idAtivo = :ativo"; // Adiciona condição para idAtivo
+if ($ativo != null && $ativo != '') {
+
+    $sql .= " AND m.idAtivo = $ativo"; // Adiciona condição para idAtivo
 } else {
     // Condição para idMarca (subconsulta)
     if ($marca !== null && $marca != '') {
-        $sql .= " AND m.idAtivo IN (SELECT idAtivo FROM ativo a WHERE a.idMarca = :marca)";
+        $sql .= " AND m.idAtivo IN (SELECT idAtivo FROM ativo a WHERE a.idMarca = $marca)";
     }
     // Condição para idTipo (subconsulta)
     if ($tipo !== null && $tipo != '') {
-        $sql .= " AND m.idAtivo IN (SELECT idAtivo FROM ativo a WHERE a.idTipo = :tipo)";
+        $sql .= " AND m.idAtivo IN (SELECT idAtivo FROM ativo a WHERE a.idTipo = $tipo)";
     }
 }
 // Condição para idUsuario
 if ($user !== null && $user != '') {
-    $sql .= " AND m.idUsuario = :user";
+    $sql .= " AND m.idUsuario = $user";
 }
 // Condição para tipoMovimentacao
 if ($tipoMov !== null && $tipoMov != '') {
-    $sql .= " AND m.tipoMovimentacao = :tipoMov";
+    $sql .= " AND m.tipoMovimentacao = $tipoMov";
 }
 // Condição para dataInicial
 if ($dataInicial !== null && $dataInicial != '') {
-    $sql .= " AND m.dataMovimentacao > :dataInicial";
+    $sql .= " AND m.dataMovimentacao > $dataInicial";
 }
 // Condição para dataFinal
 if ($dataFinal !== null && $dataFinal != '') {
-    $sql .= " AND m.dataMovimentacao < :dataFinal";
+    $sql .= " AND m.dataMovimentacao < $dataFinal";
 }
 
 // Executa a consulta

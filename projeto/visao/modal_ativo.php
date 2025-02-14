@@ -52,12 +52,12 @@
         </form>
         <div class="mb-3">
           <label for="formFile" class="form-label">Imagem Ativo</label>
-          <input class="form-control" accept="image/png, image/jpeg" type="file" id="imgAtivo">
+          <input class="form-control" accept="image/png, image/jpeg" type="file" id="imgAtivo" >
         </div>
       </div>
       <div class="mb-3 " id="divPreview">
-        <label for="formFile" class="form-label"></label>
-        <img id="imgPreview">
+        <label for="formFile" class="form-label" ></label>
+        <img id="imgPreview" style="width: 400px; height: 400px;" >
       </div>
 
 

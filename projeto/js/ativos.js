@@ -43,8 +43,11 @@ $(document).ready(function () {
             contentType: false,
 
             success: function (result) {
-                alert(result);
-                 location.reload();
+                retorno = JSON.parse (result);
+                mensagem = retorno ['message']
+                
+                alert(mensagem);
+                location.reload();
             }
         });
 
@@ -137,10 +140,62 @@ function edita(idAtivo) {
 
 
 function limpar_modal() {
-    $("#descricao").val('');
+    $("#ativo").val('');
     $("#quantidade").val('');
     $("#quantidadeMin").val('');
     $("#marca").val('');
+    $("#imgAtivo").val('');
+    $("#imgPreview").val('');
     $("#tipo").val('');
     $("#observacao").val('');
+
 };
+/*$(document).ready(function () {
+    $("#salvar_info").click(function () {
+        let descricao_ativo = $("#ativo").val();
+        let marca = $("#marca").val();
+        let tipo = $("#tipo").val();
+        let quantidade = $("#quantidade").val();
+        let quantidadeMin = $("#quantidadeMin").val();
+        let observacao = $("#observacao").val();
+        let idAtivo = $("#idAtivo").val();
+        let imgAtivo = $("#imgAtivo")[0].files[0]; // Obtém o arquivo, se houver
+        let imgAtual = $("#imgPreview").attr("src"); // Obtém a imagem existente
+
+        let acao = idAtivo === "" ? 'inserir' : 'update';
+
+        var formData = new FormData();
+        formData.append('acao', acao);
+        formData.append('marca', marca);
+        formData.append('tipo', tipo);
+        formData.append('quantidade', quantidade);
+        formData.append('quantidadeMin', quantidadeMin);
+        formData.append('observacao', observacao);
+        formData.append('idAtivo', idAtivo);
+        formData.append('ativo', descricao_ativo);
+
+        // Só adiciona a imagem nova se o usuário tiver selecionado uma
+        if (imgAtivo) {
+            formData.append('imgAtivo', imgAtivo);
+        } else {
+            formData.append('imgAtivo', imgAtual); // Mantém a imagem antiga
+        }
+
+        $.ajax({
+            type: 'POST',
+            url: "../controle/ativos_controller.php",
+            data: formData,
+            processData: false,
+            contentType: false,
+
+            success: function (result) {
+                retorno = JSON.parse (result);
+                mensagem = retorno ['message']
+                
+                alert(mensagem);
+                location.reload();
+            }
+        });
+    });
+});*/
+
