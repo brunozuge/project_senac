@@ -3,7 +3,8 @@
 <?php 
 include_once ('navbar.php');
 include_once ('senac.html');?>
-
+<!-- Inclua o script no final do <body> -->
+<script src="theme.js"></script>
 
 
     <div class="container mt-5">
@@ -28,5 +29,8 @@ include_once ('senac.html');?>
             <button type="submit" class="btn btn-primary">Cadastrar</button>
         </form>
     </div>
+    <!-- Inclua o script de tema -->
+<script src="../js/theme.js"></script>
+
 </body>
 </html>

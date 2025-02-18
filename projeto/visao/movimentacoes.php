@@ -25,7 +25,8 @@ $ativos = busca_info_bd($conexao, 'ativo', 'statusAtivo', 'S');
     <button type="button" class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#exampleModal" id="modal">Cadastrar Movimentação</button>
 </div>
 <?php include_once('modal_movimentacoes.php'); ?>
-
+<!-- Inclua o script no final do <body> -->
+<script src="theme.js"></script>
 <?php
 // Consulta para buscar todas as movimentações
 $query = "
@@ -120,3 +121,7 @@ if (!$result) {
         });
     });
 </script>
+<!-- Inclua o script de tema -->
+<script src="../js/theme.js"></script>
+</body>
+</html>

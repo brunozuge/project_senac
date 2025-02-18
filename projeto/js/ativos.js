@@ -64,9 +64,12 @@ function muda_status(status, idAtivo) {
             idAtivo: idAtivo
         },
 
-        success: function (result) {
-            alert(result);
-            location.reload();
+       
+            success: function (result) {
+                retorno = JSON.parse (result);
+                mensagem = retorno ['message']
+                alert(mensagem);
+           location.reload();
         }
     });
 

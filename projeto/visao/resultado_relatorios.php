@@ -1,5 +1,4 @@
 <?php 
-
 include_once('../controle/controle_session.php');
 include_once('../modelo/conexao.php');
 include_once('../controle/funcoes.php');
@@ -7,67 +6,68 @@ $title = "Relatório Gerado";
 include_once('senac.html');
 include_once('navbar.php');
 
-// Captura os parâmetros do formulário
-$ativo = $_POST['ativo'];
-$dataInicial = $_POST['data_inicial'];
-$dataFinal = $_POST['data_final'];
-$marca = isset($_POST['marca'])?$_POST['marca']:'';
-$tipo = isset($_POST['tipo'])?$_POST['tipo']:'';
-
-$user = $_POST['usuario'];
-$tipoMov = $_POST['tipo_movimentacao'];
+// Captura os parâmetros do formulário com verificações de segurança
+$ativo = isset($_POST['ativo']) ? $_POST['ativo'] : null;
+$dataInicial = isset($_POST['data_inicial']) ? $_POST['data_inicial'] : null;
+$dataFinal = isset($_POST['data_final']) ? $_POST['data_final'] : null;
+$marca = isset($_POST['marca']) ? $_POST['marca'] : null;
+$tipo = isset($_POST['tipo']) ? $_POST['tipo'] : null;
+$user = isset($_POST['usuario']) ? $_POST['usuario'] : null;
+$tipoMov = isset($_POST['tipo_movimentacao']) ? $_POST['tipo_movimentacao'] : null;
 
 // Construção da consulta SQL
 $sql = "
     SELECT
-            (SELECT descricaoAtivo from ativo a where a.idAtivo = m.idAtivo ) as ativo ,
-            (SELECT nomeUsuario from usuario u where u.idUsuario = m.idUsuario ) as usuario,
-             m.idMovimentacao,
-    localOrigem,
-    localDestino,
-    dataMovimentacao,
-    descricaoMovimentacao,
-    quantidadeUso,
-    tipoMov,
-    quantidadeMov
-        FROM movimentacao m
-        WHERE 
-        idAtivo is not null
+        (SELECT descricaoAtivo FROM ativo a WHERE a.idAtivo = m.idAtivo) AS ativo,
+        (SELECT nomeUsuario FROM usuario u WHERE u.idUsuario = m.idUsuario) AS usuario,
+        m.idMovimentacao,
+        localOrigem,
+        localDestino,
+        dataMovimentacao,
+        descricaoMovimentacao,
+        quantidadeUso,
+        tipoMov,
+        quantidadeMov
+    FROM movimentacao m
+    WHERE idAtivo IS NOT NULL
 ";
 
-if ($ativo != null && $ativo != '') {
-
-    $sql .= " AND m.idAtivo = $ativo"; // Adiciona condição para idAtivo
+// Condição para idAtivo
+if ($ativo !== null && $ativo !== '') {
+    $sql .= " AND m.idAtivo = $ativo";
 } else {
     // Condição para idMarca (subconsulta)
-    if ($marca !== null && $marca != '') {
+    if ($marca !== null && $marca !== '') {
         $sql .= " AND m.idAtivo IN (SELECT idAtivo FROM ativo a WHERE a.idMarca = $marca)";
     }
     // Condição para idTipo (subconsulta)
-    if ($tipo !== null && $tipo != '') {
+    if ($tipo !== null && $tipo !== '') {
         $sql .= " AND m.idAtivo IN (SELECT idAtivo FROM ativo a WHERE a.idTipo = $tipo)";
     }
 }
+
 // Condição para idUsuario
-if ($user !== null && $user != '') {
+if ($user !== null && $user !== '') {
     $sql .= " AND m.idUsuario = $user";
 }
+
 // Condição para tipoMovimentacao
-if ($tipoMov !== null && $tipoMov != '') {
-    $sql .= " AND m.tipoMovimentacao = $tipoMov";
+if ($tipoMov !== null && $tipoMov !== '') {
+    $sql .= " AND m.tipoMov = '$tipoMov'";
 }
+
 // Condição para dataInicial
-if ($dataInicial !== null && $dataInicial != '') {
-    $sql .= " AND m.dataMovimentacao > $dataInicial";
+if ($dataInicial !== null && $dataInicial !== '') {
+    $sql .= " AND m.dataMovimentacao >= '$dataInicial'";
 }
+
 // Condição para dataFinal
-if ($dataFinal !== null && $dataFinal != '') {
-    $sql .= " AND m.dataMovimentacao < $dataFinal";
+if ($dataFinal !== null && $dataFinal !== '') {
+    $sql .= " AND m.dataMovimentacao <= '$dataFinal'";
 }
 
 // Executa a consulta
 $result = mysqli_query($conexao, $sql);
-
 if (!$result) {
     die("Erro na consulta: " . mysqli_error($conexao));
 }
@@ -93,15 +93,15 @@ if (!$result) {
         <tbody>
             <?php while ($row = mysqli_fetch_assoc($result)) { ?>
                 <tr>
-                    <td><?php echo $row['idMovimentacao']; ?></td>
-                    <td><?php echo $row['ativo']; ?></td>
-                    <td><?php echo $row['localOrigem']; ?></td>
-                    <td><?php echo $row['localDestino']; ?></td>
+                    <td><?php echo htmlspecialchars($row['idMovimentacao']); ?></td>
+                    <td><?php echo htmlspecialchars($row['ativo']); ?></td>
+                    <td><?php echo htmlspecialchars($row['localOrigem']); ?></td>
+                    <td><?php echo htmlspecialchars($row['localDestino']); ?></td>
                     <td><?php echo date("d/m/Y H:i:s", strtotime($row['dataMovimentacao'])); ?></td>
-                    <td><?php echo $row['descricaoMovimentacao']; ?></td>
-                    <td><?php echo $row['tipoMov']; ?></td>
-                    <td><?php echo $row['quantidadeMov']; ?></td>
-                    <td><?php echo $row['usuario']; ?></td>
+                    <td><?php echo htmlspecialchars($row['descricaoMovimentacao']); ?></td>
+                    <td><?php echo htmlspecialchars($row['tipoMov']); ?></td>
+                    <td><?php echo htmlspecialchars($row['quantidadeMov']); ?></td>
+                    <td><?php echo htmlspecialchars($row['usuario']); ?></td>
                     <td style="text-align:center;">
                         <!-- Ações podem ser adicionadas aqui -->
                     </td>
@@ -110,7 +110,6 @@ if (!$result) {
         </tbody>
     </table>
 </div>
-
 <!-- Bibliotecas DataTables -->
 <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css">
 <link rel="stylesheet" href="https://cdn.datatables.net/buttons/2.4.2/css/buttons.dataTables.min.css">
@@ -122,7 +121,6 @@ if (!$result) {
 <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>
 <script src="https://cdn.datatables.net/buttons/2.4.2/js/buttons.html5.min.js"></script>
 <script src="https://cdn.datatables.net/buttons/2.4.2/js/buttons.print.min.js"></script>
-
 <!-- Script para inicializar o DataTables com botões -->
 <script>
     $(document).ready(function () {

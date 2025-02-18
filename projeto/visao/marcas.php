@@ -21,7 +21,8 @@ include('navbar.php');
 <script src="https://cdn.datatables.net/buttons/2.4.2/js/buttons.print.min.js"></script>
 
 <script src="../js/marcas.js"></script>
-
+<!-- Inclua o script no final do <body> -->
+<script src="theme.js"></script>
 <body>
 <div class="d-flex justify-content-center mt-4">
     <button type="button" class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#exampleModal" id="modal">Cadastrar Marca</button>
@@ -110,4 +111,7 @@ include('navbar.php');
         });
     });
 </script>
+<!-- Inclua o script de tema -->
+<script src="../js/theme.js"></script>
+
 </body>

@@ -39,6 +39,8 @@ $tipos = busca_info_bd($conexao, 'tipo');
 <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>
 <script src="https://cdn.datatables.net/buttons/2.4.2/js/buttons.html5.min.js"></script>
 <script src="https://cdn.datatables.net/buttons/2.4.2/js/buttons.print.min.js"></script>
+<script src="../js/ativos.js"></script>
+<!-- Inclua o script no final do <body> -->
 
 <div class="d-flex justify-content-center mt-4">
     <button type="button" class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#exampleModal" id="modal" onclick="limpar_modal()">Cadastrar Ativo</button>
@@ -153,3 +155,7 @@ $tipos = busca_info_bd($conexao, 'tipo');
         });
     });
 </script>
+<!-- Inclua o script de tema -->
+<script src="../js/theme.js"></script>
+</body>
+</html>

@@ -1,3 +1,5 @@
+<!-- Inclua o script no final do <body> -->
+<script src="theme.js"></script>
 <?php
 session_start();
 if (isset($_SESSION['erro'])) {
@@ -154,5 +156,8 @@ if (isset($_SESSION['erro'])) {
             <span class="text-muted">© 2024 SENAC. Todos os direitos reservados.</span>
         </div>
     </footer>
+    <!-- Inclua o script de tema -->
+<script src="../js/theme.js"></script>
+
 </body>
 </html>

@@ -1,4 +1,7 @@
+<!-- Inclua o script no final do <body> -->
+<script src="theme.js"></script>
 <?php
+
 session_start(); // Inicia a sessão
 
 // Verifica se o usuário não está logado
@@ -70,6 +73,8 @@ $result = $conexao->query($sql);
         </tbody>
     </table>
 </div>
+<!-- Inclua o script de tema -->
+<script src="../js/theme.js"></script>
 
 </body>
 </html>
