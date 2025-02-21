@@ -5,6 +5,7 @@ include_once('../controle/funcoes.php');
 $title = "Movimentações";
 include_once('navbar.php');
 include_once('senac.html');
+$admin = $_SESSION['admin'];
 $ativos = busca_info_bd($conexao, 'ativo', 'statusAtivo', 'S');
 ?>
 <script src="../js/movimentacoes.js"></script>
@@ -49,7 +50,7 @@ if (!$result) {
 }
 ?>
 
-<div class="container mt-5">
+<div class=" mt-5">
     <h2 class="mt-4">Lista de Movimentações</h2>
     <!-- Tabela com as movimentações -->
     <table class="table table-striped mt-4" id="tabelaMovimentacoes">
@@ -123,5 +124,148 @@ if (!$result) {
 </script>
 <!-- Inclua o script de tema -->
 <script src="../js/theme.js"></script>
-</body>
-</html>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+
+<div class="mt-5">
+    <h2 class="mt-4">Estatísticas de Movimentações</h2>
+    <div class="d-flex justify-content-center mb-3">
+        <button id="btnCarregarGraficos" class="btn btn-primary">Carregar Estatísticas</button>
+    </div>
+    <div id="containerGraficos" style="display: none;">
+        <div class="row">
+            <!-- Gráfico 1: Tipo de Movimentação -->
+            <div class="col-md-4">
+                <canvas id="graficoTipoMov" width="300" height="300"></canvas>
+                <p class="text-center mt-2">Distribuição por Tipo de Movimentação</p>
+            </div>
+
+            <!-- Gráfico 2: Usuários -->
+            <div class="col-md-4">
+                <canvas id="graficoUsuarios" width="300" height="300"></canvas>
+                <p class="text-center mt-2">Distribuição por Usuário</p>
+            </div>
+
+            <!-- Gráfico 3: Ativos -->
+            <div class="col-md-4">
+                <canvas id="graficoAtivos" width="300" height="300"></canvas>
+                <p class="text-center mt-2">Distribuição por Ativo</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const btnCarregarGraficos = document.getElementById('btnCarregarGraficos');
+        const containerGraficos = document.getElementById('containerGraficos');
+
+        // Função para criar os gráficos
+        function criarGraficos() {
+            // Selecionar a tabela e extrair os dados
+            const table = document.getElementById('tabelaMovimentacoes');
+            const rows = Array.from(table.querySelectorAll('tbody tr'));
+
+            // Estruturas para armazenar os dados
+            const tipoMovCount = {};
+            const usuarioCount = {};
+            const ativoCount = {};
+
+            // Iterar sobre as linhas da tabela
+            rows.forEach(row => {
+                const tipoMov = row.cells[6].innerText.trim(); // Coluna "Tipo"
+                const usuario = row.cells[8].innerText.trim(); // Coluna "Usuário"
+                const ativo = row.cells[1].innerText.trim();   // Coluna "Ativo"
+
+                // Contagem por tipo de movimentação
+                if (!tipoMovCount[tipoMov]) {
+                    tipoMovCount[tipoMov] = 0;
+                }
+                tipoMovCount[tipoMov]++;
+
+                // Contagem por usuário
+                if (!usuarioCount[usuario]) {
+                    usuarioCount[usuario] = 0;
+                }
+                usuarioCount[usuario]++;
+
+                // Contagem por ativo
+                if (!ativoCount[ativo]) {
+                    ativoCount[ativo] = 0;
+                }
+                ativoCount[ativo]++;
+            });
+
+            // Função auxiliar para criar gráficos de pizza
+            function criarGraficoPizza(canvasId, labels, data, titulo) {
+                const ctx = document.getElementById(canvasId).getContext('2d');
+                new Chart(ctx, {
+                    type: 'pie',
+                    data: {
+                        labels: labels,
+                        datasets: [{
+                            label: titulo,
+                            data: data,
+                            backgroundColor: [
+                                'rgba(255, 99, 132, 0.6)',
+                                'rgba(54, 162, 235, 0.6)',
+                                'rgba(255, 206, 86, 0.6)',
+                                'rgba(75, 192, 192, 0.6)',
+                                'rgba(153, 102, 255, 0.6)'
+                            ],
+                            borderColor: [
+                                'rgba(255, 99, 132, 1)',
+                                'rgba(54, 162, 235, 1)',
+                                'rgba(255, 206, 86, 1)',
+                                'rgba(75, 192, 192, 1)',
+                                'rgba(153, 102, 255, 1)'
+                            ],
+                            borderWidth: 1
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        plugins: {
+                            legend: {
+                                position: 'top',
+                            },
+                            title: {
+                                display: true,
+                                text: titulo
+                            }
+                        }
+                    }
+                });
+            }
+
+            // Preparar os dados para os gráficos
+            const labelsTipoMov = Object.keys(tipoMovCount);
+            const dataTipoMov = Object.values(tipoMovCount);
+
+            const labelsUsuarios = Object.keys(usuarioCount);
+            const dataUsuarios = Object.values(usuarioCount);
+
+            const labelsAtivos = Object.keys(ativoCount);
+            const dataAtivos = Object.values(ativoCount);
+
+            // Criar os gráficos
+            criarGraficoPizza('graficoTipoMov', labelsTipoMov, dataTipoMov, 'Tipo de Movimentação');
+            criarGraficoPizza('graficoUsuarios', labelsUsuarios, dataUsuarios, 'Usuários');
+            criarGraficoPizza('graficoAtivos', labelsAtivos, dataAtivos, 'Ativos');
+        }
+
+        // Evento de clique no botão
+        btnCarregarGraficos.addEventListener('click', function () {
+            // Exibir o container de gráficos
+            containerGraficos.style.display = 'block';
+
+            // Criar os gráficos
+            criarGraficos();
+
+            // Desabilitar o botão após o clique
+            btnCarregarGraficos.disabled = true;
+        });
+    });
+</script>

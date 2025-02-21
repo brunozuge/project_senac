@@ -53,8 +53,8 @@ $tipos = busca_info_bd($conexao, 'tipo');
 
 <?php include_once('modal_ativo.php'); ?>
 
-<div class="container mt-5">
-    <h2 class="mt-4">Lista de Ativos Cadastrados</h2>
+<div class=" mt-5">
+    <h2 class="mt-4">Lista de Ativos </h2>
     <!-- Tabela com os ativos -->
     <table class="table table-striped mt-4" id="tabelaAtivos">
         <thead>

@@ -122,4 +122,60 @@ if ($resultInsert) {
   echo "Erro ao registrar movimentação: " . mysqli_error($conexao);
 }
 
+
+
+
+
+
+function obter_estatisticas_movimentacoes($conexao) {
+  $estatisticas = [];
+
+  // Total de movimentações
+  $query_total = "SELECT COUNT(*) AS total FROM movimentacao WHERE statusMov = 'S'";
+  $result_total = mysqli_query($conexao, $query_total);
+  $estatisticas['total'] = mysqli_fetch_assoc($result_total)['total'];
+
+  // Distribuição por tipo de movimentação
+  $query_tipo = "
+      SELECT tipoMov, COUNT(*) AS quantidade
+      FROM movimentacao
+      WHERE statusMov = 'S'
+      GROUP BY tipoMov
+  ";
+  $result_tipo = mysqli_query($conexao, $query_tipo);
+  $estatisticas['tipoMov'] = [];
+  while ($row = mysqli_fetch_assoc($result_tipo)) {
+      $estatisticas['tipoMov'][$row['tipoMov']] = $row['quantidade'];
+  }
+
+  // Movimentações por usuário
+  $query_usuario = "
+      SELECT u.usuario, COUNT(*) AS quantidade
+      FROM movimentacao m
+      JOIN usuario u ON m.idUsuario = u.idUsuario
+      WHERE m.statusMov = 'S'
+      GROUP BY u.usuario
+  ";
+  $result_usuario = mysqli_query($conexao, $query_usuario);
+  $estatisticas['usuarios'] = [];
+  while ($row = mysqli_fetch_assoc($result_usuario)) {
+      $estatisticas['usuarios'][$row['usuario']] = $row['quantidade'];
+  }
+
+  // Movimentações por ativo
+  $query_ativo = "
+      SELECT a.descricaoAtivo, COUNT(*) AS quantidade
+      FROM movimentacao m
+      JOIN ativo a ON m.idAtivo = a.idAtivo
+      WHERE m.statusMov = 'S'
+      GROUP BY a.descricaoAtivo
+  ";
+  $result_ativo = mysqli_query($conexao, $query_ativo);
+  $estatisticas['ativos'] = [];
+  while ($row = mysqli_fetch_assoc($result_ativo)) {
+      $estatisticas['ativos'][$row['descricaoAtivo']] = $row['quantidade'];
+  }
+
+  return $estatisticas;
+}
 ?>

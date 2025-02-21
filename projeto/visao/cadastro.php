@@ -1,10 +1,12 @@
 
     
 <?php 
+
 include_once ('navbar.php');
 include_once ('senac.html');?>
 <!-- Inclua o script no final do <body> -->
 <script src="theme.js"></script>
+<script src="../js/usuario.js"></script>
 
 
     <div class="container mt-5">

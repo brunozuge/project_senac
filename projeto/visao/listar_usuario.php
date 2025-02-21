@@ -32,7 +32,7 @@ $result = $conexao->query($sql);
 ?>
 
 
-<div class="container mt-5">
+<div class=" mt-5">
     <h2>Listagem de Usuários</h2>
 
     <table class="table">

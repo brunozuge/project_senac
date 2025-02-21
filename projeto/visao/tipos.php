@@ -27,7 +27,7 @@ include('navbar.php');
     <button type="button" class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#exampleModal" id="modal">Cadastrar Tipo</button>
 </div>
 
-<div class="container mt-5">
+<div class=" mt-5">
     <h2 class="mt-4">Lista de Tipos</h2>
     <!-- Tabela com os tipos -->
     <table class="table table-striped mt-4" id="tabelaTipos">

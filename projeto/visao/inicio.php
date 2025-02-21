@@ -272,5 +272,10 @@ include_once("senac.html");
     <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
     <!-- Inclua o script de tema -->
     <script src="../js/theme.js"></script>
+    <div class="position-fixed end-0 m-3" style="top: -6px">
+    <a href="config.php" class="btn btn-primary btn-sm rounded-circle shadow">
+        <i class="bi bi-gear"></i>
+    </a>
+</div>
 </body>
 </html>
