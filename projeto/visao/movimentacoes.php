@@ -125,12 +125,17 @@ if (!$result) {
 <!-- Inclua o script de tema -->
 <script src="../js/theme.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<?php  include_once('tabelaOculta.php') ;
+
+    exit();
+?>
+
 
 
 <div class="mt-5">
     <h2 class="mt-4">Estatísticas de Movimentações</h2>
     <div class="d-flex justify-content-center mb-3">
-        <button id="btnCarregarGraficos" class="btn btn-primary">Carregar Estatísticas</button>
+        <button id="btnCarregarGraficos" class="btn btn-warning">Carregar Estatísticas</button>
     </div>
     <div id="containerGraficos" style="display: none;">
         <div class="row">

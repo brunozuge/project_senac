@@ -1,30 +1,27 @@
 $(document).ready(function () {
-    $(".salvar").click(function () {
-        let tipo = $("#descricaoTipo").val();
-        let idTipo = $("#idTipo").val();
+    $("#salvar").click(function () {
 
-        // Verifica se o campo 'tipo' está vazio
-        if (tipo.trim() === "") {
-            alert("O campo 'Tipo' é obrigatório.");
-            return false; // Interrompe a execução do código
+    
+       
+       let descricaTipo=$("#descricaoTipo").val();
+
+        if ( descricaTipo == "" ) {
+            alert("Campos obrigatórios não preenchidos!");
+            return false;
         }
-
-        let acao = idTipo == "" ? 'inserir' : 'update';
 
         $.ajax({
             type: 'POST',
-            url: "../controle/tipos_controller.php",
+            url: "../controle/marcas_controller.php",
             data: {
-                acao: acao,
-                tipo: tipo,
-                idTipo: idTipo,
+               descricaoMarca:descricaoMarca,
+               idMarca:idMarca
+
             },
+
             success: function (result) {
                 alert(result);
                 location.reload();
-            },
-            error: function () {
-                alert("Erro ao processar a solicitação.");
             }
         });
     });

@@ -1,0 +1,761 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistema de Controle de Atividades - Marista Rosário</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Roboto', Arial, sans-serif;
+        }
+        
+        body {
+            background-color: #f5f5f5;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        header {
+            background-color: #003d7d;
+            color: white;
+            padding: 20px 0;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+        
+        .logo-container {
+            display: flex;
+            align-items: center;
+            padding: 0 20px;
+        }
+        
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
+            margin-right: 10px;
+        }
+        
+        .subtitle {
+            font-size: 16px;
+            color: #ccc;
+        }
+        
+        nav {
+            background-color: #00529b;
+            padding: 10px 20px;
+        }
+        
+        nav ul {
+            list-style: none;
+            display: flex;
+        }
+        
+        nav ul li {
+            margin-right: 20px;
+        }
+        
+        nav ul li a {
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+        
+        nav ul li a:hover {
+            color: #ffcc00;
+        }
+        
+        .dashboard {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin-top: 30px;
+        }
+        
+        .card {
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            transition: transform 0.3s ease;
+        }
+        
+        .card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .card-header {
+            padding: 15px;
+            background-color: #00529b;
+            color: white;
+            font-weight: bold;
+        }
+        
+        .card-body {
+            padding: 20px;
+        }
+        
+        .status {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+            padding: 10px;
+            border-radius: 4px;
+        }
+        
+        .status.active {
+            background-color: #e8f5e9;
+        }
+        
+        .status.inactive {
+            background-color: #ffebee;
+        }
+        
+        .status-indicator {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            margin-right: 10px;
+        }
+        
+        .active .status-indicator {
+            background-color: #4caf50;
+        }
+        
+        .inactive .status-indicator {
+            background-color: #f44336;
+        }
+        
+        .status-text {
+            flex: 1;
+        }
+        
+        .status-time {
+            font-size: 12px;
+            color: #777;
+        }
+        
+        .activity-form {
+            margin-top: 20px;
+        }
+        
+        .form-group {
+            margin-bottom: 15px;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 500;
+        }
+        
+        .form-control {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+        
+        .btn {
+            padding: 10px 15px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: background-color 0.3s;
+        }
+        
+        .btn-primary {
+            background-color: #00529b;
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            background-color: #003d7d;
+        }
+        
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 100;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .modal-content {
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            width: 400px;
+            max-width: 90%;
+        }
+        
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+        
+        .close {
+            cursor: pointer;
+            font-size: 20px;
+        }
+        
+        .title-with-button {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        
+        .filter-container {
+            margin: 20px 0;
+            display: flex;
+            gap: 10px;
+        }
+        
+        .select-filter {
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+        
+        @media (max-width: 768px) {
+            .dashboard {
+                grid-template-columns: 1fr;
+            }
+            
+            nav ul {
+                flex-direction: column;
+            }
+            
+            nav ul li {
+                margin-bottom: 10px;
+            }
+            
+            .title-with-button {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 10px;
+            }
+            
+            .filter-container {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="logo-container">
+            <div class="logo">MARISTA ROSÁRIO</div>
+            <div class="subtitle">Sistema de Controle de Atividades</div>
+        </div>
+    </header>
+    
+    <nav>
+        <ul>
+            <li><a href="#" class="active" id="dashboardLink">Dashboard</a></li>
+            <li><a href="#" id="historyLink">Histórico</a></li>
+            <li><a href="#" id="settingsLink">Configurações</a></li>
+            <li><a href="#" id="logoutLink">Sair</a></li>
+        </ul>
+    </nav>
+    
+    <div class="container">
+        <div class="title-with-button">
+            <h1>Monitoramento de Atividades</h1>
+            <button class="btn btn-primary" id="addActivityBtn">Nova Atividade</button>
+        </div>
+        
+        <div class="filter-container">
+            <select class="select-filter" id="filterLocation">
+                <option value="all">Todos os Locais</option>
+                <option value="classrooms">Salas de Aula</option>
+                <option value="labs">Laboratórios</option>
+                <option value="sports">Áreas Esportivas</option>
+                <option value="common">Áreas Comuns</option>
+                <option value="admin">Administração</option>
+            </select>
+            
+            <select class="select-filter" id="filterStatus">
+                <option value="all">Todos os Status</option>
+                <option value="active">Em Andamento</option>
+                <option value="inactive">Inativo</option>
+            </select>
+        </div>
+        
+        <div class="dashboard" id="activitiesDashboard">
+            <!-- Área de Cards de Atividades (preenchido via JavaScript) -->
+        </div>
+    </div>
+    
+    <!-- Modal para Adicionar/Editar Atividade -->
+    <div class="modal" id="activityModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="modalTitle">Nova Atividade</h2>
+                <span class="close">&times;</span>
+            </div>
+            <form id="activityForm" class="activity-form">
+                <input type="hidden" id="activityId">
+                <div class="form-group">
+                    <label for="location">Local</label>
+                    <select id="location" class="form-control" required>
+                        <option value="">Selecione um local</option>
+                        <option value="Sala 101">Sala 101</option>
+                        <option value="Sala 102">Sala 102</option>
+                        <option value="Sala 103">Sala 103</option>
+                        <option value="Sala 104">Sala 104</option>
+                        <option value="Sala 105">Sala 105</option>
+                        <option value="Laboratório de Informática">Laboratório de Informática</option>
+                        <option value="Laboratório de Ciências">Laboratório de Ciências</option>
+                        <option value="Laboratório de Química">Laboratório de Química</option>
+                        <option value="Biblioteca">Biblioteca</option>
+                        <option value="Quadra Esportiva">Quadra Esportiva</option>
+                        <option value="Campo de Futebol">Campo de Futebol</option>
+                        <option value="Piscina">Piscina</option>
+                        <option value="Auditório">Auditório</option>
+                        <option value="Refeitório">Refeitório</option>
+                        <option value="Sala dos Professores">Sala dos Professores</option>
+                        <option value="Coordenação">Coordenação</option>
+                        <option value="Secretaria">Secretaria</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="activity">Atividade</label>
+                    <input type="text" id="activity" class="form-control" required>
+                </div>
+                <div class="form-group">
+                    <label for="responsible">Responsável</label>
+                    <input type="text" id="responsible" class="form-control" required>
+                </div>
+                <div class="form-group">
+                    <label for="group">Turma/Grupo</label>
+                    <input type="text" id="group" class="form-control">
+                </div>
+                <div class="form-group">
+                    <label for="startTime">Horário de Início</label>
+                    <input type="time" id="startTime" class="form-control" required>
+                </div>
+                <div class="form-group">
+                    <label for="endTime">Horário de Término</label>
+                    <input type="time" id="endTime" class="form-control" required>
+                </div>
+                <div class="form-group">
+                    <label for="status">Status</label>
+                    <select id="status" class="form-control" required>
+                        <option value="active">Em Andamento</option>
+                        <option value="inactive">Inativo</option>
+                    </select>
+                </div>
+                <button type="submit" class="btn btn-primary">Salvar</button>
+            </form>
+        </div>
+    </div>
+    
+    <script>
+        // Dados simulados (seria substituído por chamadas de API para o backend PHP)
+        let activities = [
+            {
+                id: 1,
+                location: "Sala 101",
+                activity: "Aula de Matemática",
+                responsible: "Prof. Carlos Silva",
+                group: "8º Ano A",
+                startTime: "08:00",
+                endTime: "09:30",
+                status: "active",
+                category: "classrooms",
+                lastUpdate: new Date().toISOString()
+            },
+            {
+                id: 2,
+                location: "Laboratório de Informática",
+                activity: "Aula de Programação",
+                responsible: "Prof. Ana Santos",
+                group: "9º Ano B",
+                startTime: "09:45",
+                endTime: "11:15",
+                status: "active",
+                category: "labs",
+                lastUpdate: new Date().toISOString()
+            },
+            {
+                id: 3,
+                location: "Quadra Esportiva",
+                activity: "Educação Física",
+                responsible: "Prof. Ricardo Oliveira",
+                group: "7º Ano C",
+                startTime: "10:00",
+                endTime: "11:30",
+                status: "active",
+                category: "sports",
+                lastUpdate: new Date().toISOString()
+            },
+            {
+                id: 4,
+                location: "Biblioteca",
+                activity: "Pesquisa Livre",
+                responsible: "Bibliotecária Maria Castro",
+                group: "Alunos Diversos",
+                startTime: "08:00",
+                endTime: "16:00",
+                status: "active",
+                category: "common",
+                lastUpdate: new Date().toISOString()
+            },
+            {
+                id: 5,
+                location: "Secretaria",
+                activity: "Atendimento aos Pais",
+                responsible: "Secretária Joana Lopes",
+                group: "Pais e Responsáveis",
+                startTime: "08:00",
+                endTime: "17:00",
+                status: "active",
+                category: "admin",
+                lastUpdate: new Date().toISOString()
+            },
+            {
+                id: 6,
+                location: "Sala 102",
+                activity: "Aula de História",
+                responsible: "Prof. Marcos Pereira",
+                group: "6º Ano A",
+                startTime: "08:00",
+                endTime: "09:30",
+                status: "inactive",
+                category: "classrooms",
+                lastUpdate: new Date(Date.now() - 3600000).toISOString() // 1 hora atrás
+            }
+        ];
+        
+        // Elementos DOM
+        const activitiesDashboard = document.getElementById('activitiesDashboard');
+        const activityModal = document.getElementById('activityModal');
+        const activityForm = document.getElementById('activityForm');
+        const modalTitle = document.getElementById('modalTitle');
+        const closeBtn = document.querySelector('.close');
+        const addActivityBtn = document.getElementById('addActivityBtn');
+        const filterLocation = document.getElementById('filterLocation');
+        const filterStatus = document.getElementById('filterStatus');
+        
+        // IDs de elementos de formulário
+        const activityIdInput = document.getElementById('activityId');
+        const locationInput = document.getElementById('location');
+        const activityInput = document.getElementById('activity');
+        const responsibleInput = document.getElementById('responsible');
+        const groupInput = document.getElementById('group');
+        const startTimeInput = document.getElementById('startTime');
+        const endTimeInput = document.getElementById('endTime');
+        const statusInput = document.getElementById('status');
+        
+        // Renderizar atividades
+        function renderActivities(activitiesToRender = activities) {
+            activitiesDashboard.innerHTML = '';
+            
+            if (activitiesToRender.length === 0) {
+                activitiesDashboard.innerHTML = '<p>Nenhuma atividade encontrada com os filtros selecionados.</p>';
+                return;
+            }
+            
+            activitiesToRender.forEach(activity => {
+                const card = document.createElement('div');
+                card.classList.add('card');
+                
+                const lastUpdateDate = new Date(activity.lastUpdate);
+                const formattedTime = lastUpdateDate.toLocaleTimeString('pt-BR', { 
+                    hour: '2-digit', 
+                    minute: '2-digit' 
+                });
+                
+                card.innerHTML = `
+                    <div class="card-header">${activity.location}</div>
+                    <div class="card-body">
+                        <div class="status ${activity.status}">
+                            <div class="status-indicator"></div>
+                            <div class="status-text">
+                                <strong>${activity.status === 'active' ? 'Em Andamento' : 'Inativo'}</strong>
+                                <div class="status-time">Atualizado às ${formattedTime}</div>
+                            </div>
+                        </div>
+                        <h3>${activity.activity}</h3>
+                        <p><strong>Responsável:</strong> ${activity.responsible}</p>
+                        <p><strong>Turma/Grupo:</strong> ${activity.group}</p>
+                        <p><strong>Horário:</strong> ${activity.startTime} - ${activity.endTime}</p>
+                        <button class="btn btn-primary edit-activity" data-id="${activity.id}">Editar</button>
+                    </div>
+                `;
+                
+                activitiesDashboard.appendChild(card);
+            });
+            
+            // Adicionar event listeners para botões de edição
+            document.querySelectorAll('.edit-activity').forEach(button => {
+                button.addEventListener('click', function() {
+                    const id = parseInt(this.getAttribute('data-id'));
+                    editActivity(id);
+                });
+            });
+        }
+        
+        // Filtrar atividades
+        function filterActivities() {
+            const locationFilter = filterLocation.value;
+            const statusFilter = filterStatus.value;
+            
+            let filteredActivities = activities;
+            
+            if (locationFilter !== 'all') {
+                filteredActivities = filteredActivities.filter(activity => activity.category === locationFilter);
+            }
+            
+            if (statusFilter !== 'all') {
+                filteredActivities = filteredActivities.filter(activity => activity.status === statusFilter);
+            }
+            
+            renderActivities(filteredActivities);
+        }
+        
+        // Abrir modal para editar atividade
+        function editActivity(id) {
+            const activity = activities.find(act => act.id === id);
+            if (!activity) return;
+            
+            modalTitle.textContent = 'Editar Atividade';
+            activityIdInput.value = activity.id;
+            locationInput.value = activity.location;
+            activityInput.value = activity.activity;
+            responsibleInput.value = activity.responsible;
+            groupInput.value = activity.group;
+            startTimeInput.value = activity.startTime;
+            endTimeInput.value = activity.endTime;
+            statusInput.value = activity.status;
+            
+            activityModal.style.display = 'flex';
+        }
+        
+        // Abrir modal para nova atividade
+        function addActivity() {
+            modalTitle.textContent = 'Nova Atividade';
+            activityForm.reset();
+            activityIdInput.value = '';
+            
+            activityModal.style.display = 'flex';
+        }
+        
+        // Salvar atividade (nova ou editada)
+        function saveActivity(event) {
+            event.preventDefault();
+            
+            const id = activityIdInput.value ? parseInt(activityIdInput.value) : activities.length + 1;
+            const location = locationInput.value;
+            const activity = activityInput.value;
+            const responsible = responsibleInput.value;
+            const group = groupInput.value;
+            const startTime = startTimeInput.value;
+            const endTime = endTimeInput.value;
+            const status = statusInput.value;
+            
+            // Determinar a categoria com base no local
+            let category = 'common';
+            if (location.includes('Sala')) {
+                category = 'classrooms';
+            } else if (location.includes('Laboratório')) {
+                category = 'labs';
+            } else if (location.includes('Quadra') || location.includes('Campo') || location.includes('Piscina')) {
+                category = 'sports';
+            } else if (location.includes('Secretaria') || location.includes('Coordenação') || location.includes('Direção')) {
+                category = 'admin';
+            }
+            
+            const newActivity = {
+                id,
+                location,
+                activity,
+                responsible,
+                group,
+                startTime,
+                endTime,
+                status,
+                category,
+                lastUpdate: new Date().toISOString()
+            };
+            
+            if (activityIdInput.value) {
+                // Edição de atividade existente
+                const index = activities.findIndex(act => act.id === parseInt(activityIdInput.value));
+                if (index !== -1) {
+                    activities[index] = newActivity;
+                }
+            } else {
+                // Nova atividade
+                activities.push(newActivity);
+            }
+            
+            activityModal.style.display = 'none';
+            renderActivities();
+            
+            // Aqui seria feita a chamada AJAX para salvar no backend PHP
+            // Por exemplo:
+            /*
+            fetch('api/save_activity.php', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(newActivity)
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log('Success:', data);
+            })
+            .catch((error) => {
+                console.error('Error:', error);
+            });
+            */
+        }
+        
+        // Event listeners
+        addActivityBtn.addEventListener('click', addActivity);
+        closeBtn.addEventListener('click', () => activityModal.style.display = 'none');
+        activityForm.addEventListener('submit', saveActivity);
+        filterLocation.addEventListener('change', filterActivities);
+        filterStatus.addEventListener('change', filterActivities);
+        
+        window.addEventListener('click', (event) => {
+            if (event.target === activityModal) {
+                activityModal.style.display = 'none';
+            }
+        });
+        
+        // Links de navegação
+        document.getElementById('dashboardLink').addEventListener('click', (e) => {
+            e.preventDefault();
+            // Aqui você pode implementar a navegação real
+        });
+        
+        document.getElementById('historyLink').addEventListener('click', (e) => {
+            e.preventDefault();
+            alert('Funcionalidade de Histórico será implementada em uma versão futura.');
+        });
+        
+        document.getElementById('settingsLink').addEventListener('click', (e) => {
+            e.preventDefault();
+            alert('Funcionalidade de Configurações será implementada em uma versão futura.');
+        });
+        
+        document.getElementById('logoutLink').addEventListener('click', (e) => {
+            e.preventDefault();
+            if (confirm('Deseja realmente sair do sistema?')) {
+                // Lógica de logout
+                alert('Logout realizado com sucesso.');
+            }
+        });
+        
+        // Inicializa a tela
+        renderActivities();
+        
+        // Atualização periódica
+        setInterval(() => {
+            // Aqui seria feita a requisição AJAX para obter dados atualizados
+            // Por enquanto, apenas atualizamos a hora do último update
+            activities.forEach(activity => {
+                if (activity.status === 'active') {
+                    activity.lastUpdate = new Date().toISOString();
+                }
+            });
+            renderActivities();
+        }, 60000); // Atualiza a cada 1 minuto
+
+        // Chave para armazenar os dados no localStorage
+const STORAGE_KEY = "marista_activities";
+
+// Função para carregar dados do localStorage
+function loadActivities() {
+    const savedActivities = localStorage.getItem(STORAGE_KEY);
+    if (savedActivities) {
+        activities = JSON.parse(savedActivities);
+    }
+}
+
+// Função para salvar atividades no localStorage
+function saveActivities() {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(activities));
+}
+
+// Modifique a função saveActivity para salvar no localStorage após alteração
+function saveActivity(event) {
+    event.preventDefault();
+
+    const id = activityIdInput.value ? parseInt(activityIdInput.value) : activities.length + 1;
+    const location = locationInput.value;
+    const activity = activityInput.value;
+    const responsible = responsibleInput.value;
+    const group = groupInput.value;
+    const startTime = startTimeInput.value;
+    const endTime = endTimeInput.value;
+    const status = statusInput.value;
+
+    // Determinar a categoria com base no local
+    let category = 'common';
+    if (location.includes('Sala')) {
+        category = 'classrooms';
+    } else if (location.includes('Laboratório')) {
+        category = 'labs';
+    } else if (location.includes('Quadra') || location.includes('Campo') || location.includes('Piscina')) {
+        category = 'sports';
+    } else if (location.includes('Secretaria') || location.includes('Coordenação') || location.includes('Direção')) {
+        category = 'admin';
+    }
+
+    const newActivity = {
+        id,
+        location,
+        activity,
+        responsible,
+        group,
+        startTime,
+        endTime,
+        status,
+        category,
+        lastUpdate: new Date().toISOString()
+    };
+
+    if (activityIdInput.value) {
+        // Edição de atividade existente
+        const index = activities.findIndex(act => act.id === parseInt(activityIdInput.value));
+        if (index !== -1) {
+            activities[index] = newActivity;
+        }
+    } else {
+        // Nova atividade
+        activities.push(newActivity);
+    }
+
+    // Salvar no localStorage e atualizar a interface
+    saveActivities();
+    activityModal.style.display = 'none';
+    renderActivities();
+}
+
+// Modificar a inicialização para carregar do localStorage
+loadActivities();
+renderActivities();
+
+    </script>
+</body>
+</html>

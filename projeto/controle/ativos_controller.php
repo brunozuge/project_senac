@@ -29,6 +29,9 @@ $idAtivo = isset($_POST['idAtivo']) ? intval($_POST['idAtivo']) : 0;
 $statusAtivo = isset($_POST['status']) ? sanitize_input($_POST['status'], $conexao) : '';
 $user = isset($_SESSION['usuario_logado']) ? intval($_SESSION['usuario_logado']) : 0;
 
+// Array para resposta única
+$response = [];
+
 // Handle file upload securely
 $img = isset($_FILES['imgAtivo']) ? $_FILES['imgAtivo'] : null;
 $urlImg = ''; // Variable to store the uploaded image URL
@@ -46,19 +49,18 @@ if ($img && $img['error'] === UPLOAD_ERR_OK) {
     if (move_uploaded_file($img['tmp_name'], $filePath)) {
         $urlImg = 'projeto/imgAtivo/' . $fileName;
     } else {
-        echo json_encode(['error' => 'Falha ao mover arquivo']);
+        $response['error'] = 'Falha ao mover arquivo';
+        echo json_encode($response);
         exit();
     }
 }
-
-// Array para resposta única
-$response = [];
 
 // Perform actions based on the value of $acao
 switch ($acao) {
     case 'inserir':
         $query = "
             INSERT INTO ativo (
+            idAtivo,
                 descricaoAtivo,
                 quantidadeAtivo,
                 quantidadeMinAtivo,
@@ -70,6 +72,7 @@ switch ($acao) {
                 idUsuario,
                 urlImg
             ) VALUES (
+             '$idAtivo',
                 '$ativo',
                 '$quantidade',
                 '$quantidadeMin',
@@ -83,6 +86,7 @@ switch ($acao) {
             )
         ";
         $result = mysqli_query($conexao, $query);
+        $response['success'] = $result ? true : false;
         $response['message'] = $result ? "Cadastro realizado" : "Cadastro não realizado";
         break;
 
@@ -90,8 +94,10 @@ switch ($acao) {
         if ($idAtivo > 0) {
             $sql = "UPDATE ativo SET statusAtivo = '$statusAtivo' WHERE idAtivo = $idAtivo";
             $result = mysqli_query($conexao, $sql);
+            $response['success'] = $result ? true : false;
             $response['message'] = $result ? "Status alterado" : "Status não alterado";
         } else {
+            $response['success'] = false;
             $response['error'] = "ID inválido";
         }
         break;
@@ -112,9 +118,10 @@ switch ($acao) {
             ";
             $result = mysqli_query($conexao, $sql);
             $ativoData = mysqli_fetch_all($result, MYSQLI_ASSOC);
-            echo json_encode($ativoData);
-            exit();
+            $response['success'] = true;
+            $response['data'] = $ativoData;
         } else {
+            $response['success'] = false;
             $response['error'] = "ID inválido";
         }
         break;
@@ -123,6 +130,7 @@ switch ($acao) {
         if ($idAtivo > 0) {
             $sql = "
                 UPDATE ativo SET
+                idAtivo='$idAtivo',
                     descricaoAtivo = '$ativo',
                     idMarca = '$marca',
                     idTipo = '$tipo',
@@ -139,13 +147,16 @@ switch ($acao) {
             $sql .= " WHERE idAtivo = $idAtivo";
 
             $result = mysqli_query($conexao, $sql);
+            $response['success'] = $result ? true : false;
             $response['message'] = $result ? "Informações alteradas" : "Informações não alteradas";
         } else {
+            $response['success'] = false;
             $response['error'] = "ID inválido";
         }
         break;
 
     default:
+        $response['success'] = false;
         $response['error'] = 'Ação inválida';
         break;
 }

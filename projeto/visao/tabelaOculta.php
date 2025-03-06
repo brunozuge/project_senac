@@ -1,20 +1,24 @@
 <?php
-session_start();
+
 include_once('../modelo/conexao.php');
 
 // Função para buscar estatísticas de movimentações por ativo
 function obter_estatisticas_movimentacoes($conexao) {
     $sqlGrafico = "
-        SELECT 
-            a.descricaoAtivo, 
-            SUM(m.quantidadeMov) as totalMovimentado
-        FROM movimentacao m
-        JOIN ativo a ON a.idAtivo = m.idAtivo
-        WHERE m.statusMov = 'S'
-        GROUP BY a.descricaoAtivo
-        ORDER BY totalMovimentado DESC
-        LIMIT 10;
-    ";
+    SELECT
+        (SELECT descricaoAtivo FROM ativo a WHERE a.idAtivo = m.idAtivo) AS ativo,
+        (SELECT nomeUsuario FROM usuario u WHERE u.idUsuario = m.idUsuario) AS usuario,
+        m.idMovimentacao,
+        localOrigem,
+        localDestino,
+        dataMovimentacao,
+        descricaoMovimentacao,
+        quantidadeUso,
+        tipoMov,
+        quantidadeMov
+    FROM movimentacao m
+    WHERE idAtivo IS NOT NULL
+";
     $result = mysqli_query($conexao, $sqlGrafico);
     if (!$result) {
         die("Erro ao buscar estatísticas: " . mysqli_error($conexao));
@@ -25,114 +29,186 @@ function obter_estatisticas_movimentacoes($conexao) {
         $estatisticas[] = $row;
     }
 
-    return json_encode($estatisticas); // Retorna os dados em formato JSON
+    return ($estatisticas); // Retorna os dados em formato JSON
 }
 
 // Verifica se foi solicitado para buscar estatísticas
-if (isset($_GET['action']) && $_GET['action'] === 'obter_estatisticas') {
-    echo obter_estatisticas_movimentacoes($conexao);
-    exit();
-}
-?><div class="mt-5">
-<h2 class="mt-4">Estatísticas de Movimentações</h2>
-<div class="d-flex justify-content-center mb-3">
-    <button id="btnCarregarGraficos" class="btn btn-primary">Carregar Estatísticas</button>
-</div>
-<div id="containerGraficos" style="display: none;">
-    <div class="row">
-        <!-- Gráfico 1: Ativos Mais Movimentados -->
-        <div class="col-md-12">
-            <canvas id="graficoAtivos" width="600" height="300"></canvas>
-            <p class="text-center mt-2">Distribuição por Ativo (Top 10)</p>
+ 
+    $dados = obter_estatisticas_movimentacoes($conexao);
+
+?>
+<table class="table table-striped mt-4" id="tabelaMovimentacoesOculta" style="display:none;">
+        <thead>
+            <tr>
+                <th scope="col">ID</th>
+                <th scope="col">Ativo</th>
+                <th scope="col">Origem</th>
+                <th scope="col">Destino</th>
+                <th scope="col">Data</th>
+                <th scope="col">Descrição</th>
+                <th scope="col">Tipo</th>
+                <th scope="col">Quantidade</th>
+                <th scope="col">Usuário</th>
+                <th style="text-align:center;">Ações</th>
+            </tr>
+        </thead>
+        <tbody>
+            <?php foreach ($dados as $row)  { ?>
+                <tr>
+                    <td><?php echo $row['idMovimentacao']; ?></td>
+                    <td><?php echo $row['ativo']; ?></td>
+                    <td><?php echo $row['localOrigem']; ?></td>
+                    <td><?php echo $row['localDestino']; ?></td>
+                    <td><?php echo date("d/m/Y H:i:s", strtotime($row['dataMovimentacao'])); ?></td>
+                    <td><?php echo $row['descricaoMovimentacao']; ?></td>
+                    <td><?php echo $row['tipoMov']; ?></td>
+                    <td><?php echo $row['quantidadeMov']; ?></td>
+                    <td><?php echo $row['usuario']; ?></td>
+                    <td>
+                        <!-- Ações podem ser adicionadas aqui -->
+                    </td>
+                </tr>
+            <?php } ?>
+        </tbody>
+    </table>
+<div class="mt-5">
+    <h2 class="mt-4">Estatísticas de Movimentações</h2>
+    <div class="d-flex justify-content-center mb-3">
+        <button id="btnCarregarGraficos" class="btn btn-warning">Carregar Estatísticas</button>
+    </div>
+    <div id="containerGraficos" style="display: none;">
+        <div class="row">
+            <!-- Gráfico 1: Tipo de Movimentação -->
+            <div class="col-md-4">
+                <canvas id="graficoTipoMov" width="300" height="300"></canvas>
+                <p class="text-center mt-2">Distribuição por Tipo de Movimentação</p>
+            </div>
+
+            <!-- Gráfico 2: Usuários -->
+            <div class="col-md-4">
+                <canvas id="graficoUsuarios" width="300" height="300"></canvas>
+                <p class="text-center mt-2">Distribuição por Usuário</p>
+            </div>
+
+            <!-- Gráfico 3: Ativos -->
+            <div class="col-md-4">
+                <canvas id="graficoAtivos" width="300" height="300"></canvas>
+                <p class="text-center mt-2">Distribuição por Ativo</p>
+            </div>
         </div>
     </div>
-</div>
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script>
-document.addEventListener("DOMContentLoaded", function () {
-    const btnCarregarGraficos = document.getElementById('btnCarregarGraficos');
-    const containerGraficos = document.getElementById('containerGraficos');
+    document.addEventListener("DOMContentLoaded", function () {
+        const btnCarregarGraficos = document.getElementById('btnCarregarGraficos');
+        const containerGraficos = document.getElementById('containerGraficos');
 
-    // Função para criar gráficos
-    function criarGraficos(dados) {
-        // Função auxiliar para criar gráficos de pizza
-        function criarGraficoPizza(canvasId, labels, data, titulo) {
-            const ctx = document.getElementById(canvasId).getContext('2d');
-            new Chart(ctx, {
-                type: 'pie',
-                data: {
-                    labels: labels,
-                    datasets: [{
-                        label: titulo,
-                        data: data,
-                        backgroundColor: [
-                            'rgba(255, 99, 132, 0.6)',
-                            'rgba(54, 162, 235, 0.6)',
-                            'rgba(255, 206, 86, 0.6)',
-                            'rgba(75, 192, 192, 0.6)',
-                            'rgba(153, 102, 255, 0.6)',
-                            'rgba(255, 159, 64, 0.6)',
-                            'rgba(199, 199, 199, 0.6)',
-                            'rgba(100, 100, 255, 0.6)',
-                            'rgba(255, 0, 0, 0.6)',
-                            'rgba(0, 255, 0, 0.6)'
-                        ],
-                        borderColor: [
-                            'rgba(255, 99, 132, 1)',
-                            'rgba(54, 162, 235, 1)',
-                            'rgba(255, 206, 86, 1)',
-                            'rgba(75, 192, 192, 1)',
-                            'rgba(153, 102, 255, 1)',
-                            'rgba(255, 159, 64, 1)',
-                            'rgba(199, 199, 199, 1)',
-                            'rgba(100, 100, 255, 1)',
-                            'rgba(255, 0, 0, 1)',
-                            'rgba(0, 255, 0, 1)'
-                        ],
-                        borderWidth: 1
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    plugins: {
-                        legend: {
-                            position: 'top',
-                        },
-                        title: {
-                            display: true,
-                            text: titulo
+        // Função para criar os gráficos
+        function criarGraficos() {
+            // Selecionar a tabela e extrair os dados
+            const table = document.getElementById('tabelaMovimentacoesOculta');
+            const rows = Array.from(table.querySelectorAll('tbody tr'));
+
+            // Estruturas para armazenar os dados
+            const tipoMovCount = {};
+            const usuarioCount = {};
+            const ativoCount = {};
+
+            // Iterar sobre as linhas da tabela
+            rows.forEach(row => {
+                const tipoMov = row.cells[6].innerText.trim(); // Coluna "Tipo"
+                const usuario = row.cells[8].innerText.trim(); // Coluna "Usuário"
+                const ativo = row.cells[1].innerText.trim();   // Coluna "Ativo"
+
+                // Contagem por tipo de movimentação
+                if (!tipoMovCount[tipoMov]) {
+                    tipoMovCount[tipoMov] = 0;
+                }
+                tipoMovCount[tipoMov]++;
+
+                // Contagem por usuário
+                if (!usuarioCount[usuario]) {
+                    usuarioCount[usuario] = 0;
+                }
+                usuarioCount[usuario]++;
+
+                // Contagem por ativo
+                if (!ativoCount[ativo]) {
+                    ativoCount[ativo] = 0;
+                }
+                ativoCount[ativo]++;
+            });
+
+            // Função auxiliar para criar gráficos de pizza
+            function criarGraficoPizza(canvasId, labels, data, titulo) {
+                const ctx = document.getElementById(canvasId).getContext('2d');
+                new Chart(ctx, {
+                    type: 'pie',
+                    data: {
+                        labels: labels,
+                        datasets: [{
+                            label: titulo,
+                            data: data,
+                            backgroundColor: [
+                                'rgba(255, 99, 132, 0.6)',
+                                'rgba(54, 162, 235, 0.6)',
+                                'rgba(255, 206, 86, 0.6)',
+                                'rgba(75, 192, 192, 0.6)',
+                                'rgba(153, 102, 255, 0.6)'
+                            ],
+                            borderColor: [
+                                'rgba(255, 99, 132, 1)',
+                                'rgba(54, 162, 235, 1)',
+                                'rgba(255, 206, 86, 1)',
+                                'rgba(75, 192, 192, 1)',
+                                'rgba(153, 102, 255, 1)'
+                            ],
+                            borderWidth: 1
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        plugins: {
+                            legend: {
+                                position: 'top',
+                            },
+                            title: {
+                                display: true,
+                                text: titulo
+                            }
                         }
                     }
-                }
-            });
+                });
+            }
+
+            // Preparar os dados para os gráficos
+            const labelsTipoMov = Object.keys(tipoMovCount);
+            const dataTipoMov = Object.values(tipoMovCount);
+
+            const labelsUsuarios = Object.keys(usuarioCount);
+            const dataUsuarios = Object.values(usuarioCount);
+
+            const labelsAtivos = Object.keys(ativoCount);
+            const dataAtivos = Object.values(ativoCount);
+
+            // Criar os gráficos
+            criarGraficoPizza('graficoTipoMov', labelsTipoMov, dataTipoMov, 'Tipo de Movimentação');
+            criarGraficoPizza('graficoUsuarios', labelsUsuarios, dataUsuarios, 'Usuários');
+            criarGraficoPizza('graficoAtivos', labelsAtivos, dataAtivos, 'Ativos');
         }
 
-        // Preparar os dados para os gráficos
-        const labelsAtivos = dados.map(item => item.descricaoAtivo);
-        const dataAtivos = dados.map(item => item.totalMovimentado);
+        // Evento de clique no botão
+        btnCarregarGraficos.addEventListener('click', function () {
+            // Exibir o container de gráficos
+            containerGraficos.style.display = 'block';
 
-        // Criar os gráficos
-        criarGraficoPizza('graficoAtivos', labelsAtivos, dataAtivos, 'Distribuição por Ativo (Top 10)');
-    }
+            // Criar os gráficos
+            criarGraficos();
 
-    // Evento de clique no botão
-    btnCarregarGraficos.addEventListener('click', function () {
-        fetch('../controle/controle_movimentacao.php?action=obter_estatisticas')
-            .then(response => response.json())
-            .then(data => {
-                // Exibir o container de gráficos
-                containerGraficos.style.display = 'block';
-                // Criar os gráficos com os dados recebidos
-                criarGraficos(data);
-                // Desabilitar o botão após o clique
-                btnCarregarGraficos.disabled = true;
-            })
-            .catch(error => {
-                console.error('Erro ao carregar estatísticas:', error);
-                alert('Ocorreu um erro ao carregar as estatísticas.');
-            });
+            // Desabilitar o botão após o clique
+            btnCarregarGraficos.disabled = true;
+        });
     });
-});
 </script>

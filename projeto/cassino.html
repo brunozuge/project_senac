@@ -1,0 +1,811 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Roleta de Prêmios - Design Moderno</title>
+    <style>
+        :root {
+            --primary: #6d28d9;
+            --primary-light: #8b5cf6;
+            --primary-dark: #5b21b6;
+            --secondary: #ec4899;
+            --accent: #f59e0b;
+            --dark: #111827;
+            --dark-light: #1f2937;
+            --light: #f3f4f6;
+            --success: #10b981;
+            --gold: #f59e0b;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Poppins', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: linear-gradient(135deg, var(--dark), var(--primary-dark));
+            color: var(--light);
+            text-align: center;
+            min-height: 100vh;
+            padding: 24px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .container {
+            max-width: 900px;
+            width: 100%;
+            background: rgba(31, 41, 55, 0.8);
+            backdrop-filter: blur(10px);
+            border-radius: 24px;
+            padding: 32px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            margin: 0 auto;
+        }
+        
+        h1 {
+            color: var(--light);
+            margin-bottom: 32px;
+            font-size: 2.5rem;
+            font-weight: 800;
+            background: linear-gradient(to right, var(--accent), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+        }
+        
+        .game-area {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 32px;
+        }
+        
+        @media (min-width: 768px) {
+            .game-area {
+                grid-template-columns: 1.2fr 0.8fr;
+                align-items: start;
+            }
+        }
+        
+        .wheel-section {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        
+        .dashboard {
+            background: rgba(31, 41, 55, 0.7);
+            border-radius: 16px;
+            padding: 24px;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        
+        .balance {
+            font-size: 1.8rem;
+            font-weight: 700;
+            background: linear-gradient(to right, var(--success), var(--primary-light));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            padding: 12px;
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            margin-bottom: 8px;
+        }
+        
+        .balance-amount {
+            font-size: 2.2rem;
+        }
+        
+        .wheel-container {
+            position: relative;
+            width: 340px;
+            height: 340px;
+            margin: 40px auto;
+        }
+        
+        @media (min-width: 768px) {
+            .wheel-container {
+                width: 400px;
+                height: 400px;
+            }
+        }
+        
+        .wheel {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            position: relative;
+            overflow: hidden;
+            transition: transform 8s cubic-bezier(0.17, 0.67, 0.17, 0.95);
+            box-shadow: 
+                0 0 20px rgba(0, 0, 0, 0.7),
+                0 0 60px rgba(109, 40, 217, 0.4);
+            border: 8px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .sector {
+            position: absolute;
+            width: 50%;
+            height: 50%;
+            transform-origin: bottom right;
+            top: 0;
+            right: 50%;
+            clip-path: polygon(100% 0, 100% 100%, 0 0);
+            box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.3);
+        }
+        
+        .prize-text {
+            position: absolute;
+            transform-origin: bottom right;
+            font-size: 14px;
+            font-weight: bold;
+            color: white;
+            text-shadow: 0 1px 3px rgba(0, 0, 0, 0.8);
+            width: 120px;
+            text-align: center;
+            top: 50px;
+            right: 50%;
+        }
+        
+        .marker-container {
+            position: absolute;
+            top: -20px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 10;
+            filter: drop-shadow(0 4px 6px rgba(0, 0, 0, 0.3));
+        }
+        
+        .marker {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(to bottom, var(--secondary), var(--primary));
+            clip-path: polygon(50% 0%, 0% 100%, 100% 100%);
+        }
+        
+        .wheel-center {
+            position: absolute;
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            border-radius: 50%;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 5;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.5);
+            border: 4px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        .wheel-center::after {
+            content: "";
+            position: absolute;
+            width: 24px;
+            height: 24px;
+            background: rgba(255, 255, 255, 0.8);
+            border-radius: 50%;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+        
+        .controls {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 12px;
+            margin: 12px 0;
+            padding: 16px;
+            background: rgba(31, 41, 55, 0.5);
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+        }
+        
+        label {
+            font-size: 1.1rem;
+            font-weight: 500;
+        }
+        
+        input {
+            padding: 12px 16px;
+            font-size: 1.1rem;
+            border-radius: 8px;
+            border: 2px solid var(--primary-light);
+            background: rgba(255, 255, 255, 0.05);
+            color: var(--light);
+            width: 100px;
+            text-align: center;
+            outline: none;
+            transition: all 0.3s ease;
+        }
+        
+        input:focus {
+            border-color: var(--secondary);
+            box-shadow: 0 0 0 3px rgba(236, 72, 153, 0.3);
+        }
+        
+        button {
+            background: linear-gradient(to right, var(--primary), var(--secondary));
+            color: white;
+            border: none;
+            padding: 14px 30px;
+            font-size: 1.1rem;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        button::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0));
+            clip-path: polygon(0 0, 100% 0, 100% 70%, 0 100%);
+        }
+        
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(0, 0, 0, 0.3);
+            background: linear-gradient(to right, var(--primary-light), var(--secondary));
+        }
+        
+        button:active {
+            transform: translateY(1px);
+        }
+        
+        button:disabled {
+            background: #475569;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+        
+        #spin-btn {
+            margin: 16px auto;
+            min-width: 200px;
+        }
+        
+        #add-coins {
+            background: linear-gradient(to right, var(--gold), var(--accent));
+        }
+        
+        #add-coins:hover {
+            background: linear-gradient(to right, var(--accent), var(--gold));
+        }
+        
+        .results {
+            margin: 24px 0;
+            font-size: 1.2rem;
+            font-weight: 500;
+            min-height: 30px;
+            padding: 16px;
+            border-radius: 12px;
+            background: rgba(31, 41, 55, 0.5);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            transition: all 0.3s ease;
+        }
+        
+        .spin-status {
+            margin: 8px 0;
+            font-size: 1rem;
+            color: var(--primary-light);
+            min-height: 20px;
+            font-weight: 500;
+        }
+        
+        .win .wheel {
+            box-shadow: 0 0 30px rgba(255, 215, 0, 0.8), 0 0 60px rgba(255, 215, 0, 0.5);
+            animation: pulse 1.5s infinite;
+        }
+        
+        @keyframes pulse {
+            0% { box-shadow: 0 0 30px rgba(245, 158, 11, 0.8), 0 0 60px rgba(245, 158, 11, 0.5); }
+            50% { box-shadow: 0 0 50px rgba(236, 72, 153, 0.9), 0 0 80px rgba(236, 72, 153, 0.6); }
+            100% { box-shadow: 0 0 30px rgba(245, 158, 11, 0.8), 0 0 60px rgba(245, 158, 11, 0.5); }
+        }
+        
+        .prize-info {
+            margin: 0 auto 24px;
+            background: rgba(31, 41, 55, 0.7);
+            padding: 20px;
+            border-radius: 16px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        
+        .prize-info h3 {
+            color: var(--accent);
+            margin-top: 0;
+            font-size: 1.4rem;
+            margin-bottom: 16px;
+            position: relative;
+            display: inline-block;
+        }
+        
+        .prize-info h3::after {
+            content: '';
+            position: absolute;
+            bottom: -8px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 3px;
+            background: linear-gradient(to right, var(--primary), var(--secondary));
+            border-radius: 2px;
+        }
+        
+        .prize-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+            gap: 12px;
+            margin-top: 20px;
+        }
+        
+        .prize-item {
+            display: flex;
+            align-items: center;
+            padding: 10px;
+            border-radius: 8px;
+            font-weight: 500;
+            background: rgba(31, 41, 55, 0.5);
+            transition: all 0.3s ease;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        
+        .prize-item:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+        
+        .prize-color {
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            margin-right: 12px;
+            display: inline-block;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+            border: 2px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        .action-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 16px;
+            margin-top: 16px;
+        }
+        
+        @media (max-width: 768px) {
+            .container {
+                padding: 20px;
+            }
+            
+            h1 {
+                font-size: 2rem;
+                margin-bottom: 24px;
+            }
+            
+            .balance {
+                font-size: 1.5rem;
+            }
+            
+            .prize-list {
+                grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            }
+        }
+        
+        /* Brilho de fundo animado */
+        .bg-glow {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            z-index: -1;
+        }
+        
+        .bg-glow span {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(60px);
+            opacity: 0.3;
+        }
+        
+        .bg-glow span:nth-child(1) {
+            top: 10%;
+            left: 20%;
+            width: 200px;
+            height: 200px;
+            background: var(--primary);
+            animation: float 15s infinite alternate;
+        }
+        
+        .bg-glow span:nth-child(2) {
+            bottom: 10%;
+            right: 15%;
+            width: 300px;
+            height: 300px;
+            background: var(--secondary);
+            animation: float 20s infinite alternate-reverse;
+        }
+        
+        .bg-glow span:nth-child(3) {
+            top: 60%;
+            left: 40%;
+            width: 150px;
+            height: 150px;
+            background: var(--accent);
+            animation: float 12s infinite alternate;
+        }
+        
+        @keyframes float {
+            0% {
+                transform: translate(0, 0);
+            }
+            100% {
+                transform: translate(40px, 40px);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="bg-glow">
+        <span></span>
+        <span></span>
+        <span></span>
+    </div>
+    
+    <div class="container">
+        <h1>🎡 Roleta de Prêmios Premium 🎡</h1>
+        
+        <div class="game-area">
+            <div class="wheel-section">
+                <div class="prize-info">
+                    <h3>Tabela de Premiações</h3>
+                    <div class="prize-list" id="prize-list">
+                        <!-- Preenchido via JavaScript -->
+                    </div>
+                </div>
+                
+                <div class="wheel-container" id="wheel-container">
+                    <div class="marker-container">
+                        <div class="marker"></div>
+                    </div>
+                    <div class="wheel" id="wheel"></div>
+                    <div class="wheel-center"></div>
+                </div>
+                
+                <div class="spin-status" id="spin-status"></div>
+                
+                <button id="spin-btn">GIRAR ROLETA</button>
+            </div>
+            
+            <div class="dashboard">
+                <div class="balance">
+                    Saldo: $<span id="balance" class="balance-amount">1000</span>
+                </div>
+                
+                <div class="controls">
+                    <label for="bet">Aposta: $</label>
+                    <input type="number" id="bet" min="10" max="500" step="10" value="50">
+                </div>
+                
+                <div class="results" id="results">
+                    Faça sua aposta e gire a roleta para tentar a sorte!
+                </div>
+                
+                <div class="action-buttons">
+                    <button id="add-coins">+ $500</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        // Configuração dos prêmios e multiplicadores
+        const prizes = [
+            { label: 'JACKPOT', value: 100, color: '#f72585', description: 'x100 da aposta' },
+            { label: '2x', value: 2, color: '#4cc9f0', description: 'x2 da aposta' },
+            { label: '5x', value: 5, color: '#4361ee', description: 'x5 da aposta' },
+            { label: '10x', value: 10, color: '#3a0ca3', description: 'x10 da aposta' },
+            { label: ' ', value: 0, color: '#7209b7', description: 'Sem prêmio' },
+            { label: '3x', value: 3, color: '#f72585', description: 'x3 da aposta' },
+            { label: '20x', value: 20, color: '#4cc9f0', description: 'x20 da aposta' },
+            { label: ' ', value: 0, color: '#4361ee', description: 'Sem prêmio' },
+            { label: '50x', value: 50, color: '#3a0ca3', description: 'x50 da aposta' },
+            { label: '1x', value: 1, color: '#7209b7', description: 'Devolve a aposta' },
+            { label: '5x', value: 5, color: '#f72585', description: 'x5 da aposta' },
+            { label: ' ', value: 0, color: '#4cc9f0', description: 'Sem prêmio' }
+        ];
+        
+        let balance = 1000;
+        let spinning = false;
+        let currentRotation = 0;
+        
+        const balanceElement = document.getElementById('balance');
+        const betInput = document.getElementById('bet');
+        const spinButton = document.getElementById('spin-btn');
+        const wheel = document.getElementById('wheel');
+        const wheelContainer = document.getElementById('wheel-container');
+        const resultsElement = document.getElementById('results');
+        const spinStatusElement = document.getElementById('spin-status');
+        const addCoinsButton = document.getElementById('add-coins');
+        const prizeListElement = document.getElementById('prize-list');
+        
+        // Criar a tabela de premiações
+        function createPrizeList() {
+            // Filtrar prêmios únicos para tabela de premiações
+            const uniquePrizes = [];
+            const seen = new Set();
+            
+            for (const prize of prizes) {
+                // Criar chave única baseada no valor e rótulo
+                const key = `${prize.value}-${prize.label}`;
+                if (!seen.has(key) && prize.label !== '') {
+                    seen.add(key);
+                    uniquePrizes.push(prize);
+                }
+            }
+            
+            // Ordenar por valor, do maior para o menor
+            uniquePrizes.sort((a, b) => b.value - a.value);
+            
+            // Criar elementos da tabela
+            uniquePrizes.forEach(prize => {
+                const prizeItem = document.createElement('div');
+                prizeItem.className = 'prize-item';
+                
+                // Criar indicador de cor
+                const colorIndicator = document.createElement('span');
+                colorIndicator.className = 'prize-color';
+                colorIndicator.style.backgroundColor = prize.color;
+                
+                // Texto do prêmio
+                const prizeInfo = document.createElement('span');
+                if (prize.value > 0) {
+                    prizeInfo.textContent = `${prize.label}: ${prize.description}`;
+                } else {
+                    prizeInfo.textContent = `${prize.label}`;
+                }
+                
+                prizeItem.appendChild(colorIndicator);
+                prizeItem.appendChild(prizeInfo);
+                prizeListElement.appendChild(prizeItem);
+            });
+        }
+        
+        // Criar setores da roleta
+       // Criar setores da roleta
+function createWheel() {
+    const numSectors = prizes.length;
+    const sectorAngle = 360 / numSectors;
+    
+    for (let i = 0; i < numSectors; i++) {
+        // Calcular ângulo do setor
+        const angle = i * sectorAngle;
+        
+        // Criar setor
+        const sector = document.createElement('div');
+        sector.className = 'sector';
+        sector.style.transform = `rotate(${angle}deg)`;
+        sector.style.backgroundColor = prizes[i].color;
+        wheel.appendChild(sector);
+        
+        // Adicionar texto do prêmio com valor mais explícito
+        const prizeText = document.createElement('div');
+        prizeText.className = 'prize-text';
+        
+        // Texto mais explícito para cada prêmio
+        let prizeDisplay = prizes[i].label;
+        if (prizes[i].value > 0 && prizes[i].label !== "JACKPOT") {
+            prizeDisplay = `${prizes[i].label}`;
+            if (prizes[i].label === "50x") {
+                prizeDisplay = "50x";
+            }
+        } else if (prizes[i].label === "JACKPOT") {
+            prizeDisplay = `JACKPOT`;
+        }
+        
+        prizeText.textContent = prizeDisplay;
+        
+        // Corrigindo o posicionamento do texto - ajustando para melhor posicionamento no setor
+        const textAngle = angle + (sectorAngle / 2); // Posicionar no meio do setor
+        const radius = 140; // Distância do centro
+        
+        // Calculando posição usando trigonometria para posicionar no meio do setor
+        const textX = Math.cos((textAngle - 90) * Math.PI / 180) * radius;
+        const textY = Math.sin((textAngle - 90) * Math.PI / 180) * radius;
+        
+        // Aplicando transformações para posicionar e rotacionar o texto corretamente
+        prizeText.style.transform = `translate(${textX}px, ${textY}px) rotate(${textAngle}deg)`;
+        prizeText.style.transformOrigin = 'center';
+        prizeText.style.position = 'absolute';
+        prizeText.style.top = '50%';
+        prizeText.style.left = '50%';
+        prizeText.style.margin = '-15px 0 0 -60px'; // Centralizando o texto
+        
+        wheel.appendChild(prizeText);
+    }
+}
+        
+        // Inicializar
+        createPrizeList();
+        createWheel();
+        updateBalance();
+        
+        // Lidar com click de giro
+        spinButton.addEventListener('click', startSpin);
+        
+        function startSpin() {
+            if (spinning) return;
+            
+            const bet = parseInt(betInput.value);
+            
+            if (bet > balance) {
+                resultsElement.textContent = '⚠️ Saldo insuficiente para esta aposta!';
+                resultsElement.style.color = '#ef4444';
+                return;
+            }
+            
+            // Remover destaque de vitória anterior
+            wheelContainer.classList.remove('win');
+            
+            // Deduzir aposta
+            balance -= bet;
+            updateBalance();
+            
+            // Iniciar giro
+            spinning = true;
+            spinButton.disabled = true;
+            resultsElement.textContent = '';
+            spinStatusElement.textContent = 'Girando...';
+            
+            // Efeito sonoro (opcional)
+            //playSpinSound();
+            
+            // Determinar resultado aleatório
+            const winIndex = Math.floor(Math.random() * prizes.length);
+            
+            // Calcular ângulos de rotação
+            const sectorAngle = 360 / prizes.length;
+            const numRotations = 5 + Math.floor(Math.random() * 5); // 5-10 rotações
+            
+            // Para que o prêmio ganho pare exatamente no marcador
+            // adicionar rotação necessária mais rotação anterior
+            const targetAngle = 360 - (winIndex * sectorAngle);
+            const totalRotation = currentRotation + (numRotations * 360) + targetAngle;
+            
+            // Animação de contagem de pontos
+            let dots = 0;
+            const statusInterval = setInterval(() => {
+                dots = (dots + 1) % 4;
+                spinStatusElement.textContent = 'Girando' + '.'.repeat(dots);
+            }, 500);
+            
+            // Aplicar animação de giro
+            wheel.style.transform = `rotate(${totalRotation}deg)`;
+            currentRotation = totalRotation % 360;
+            
+            // Verificar resultado após animação
+            setTimeout(() => {
+                clearInterval(statusInterval);
+                spinning = false;
+                spinButton.disabled = false;
+                
+                // Mostrar resultado
+                const prize = prizes[winIndex];
+                let winAmount = 0;
+                let message = '';
+                
+                if (prize.value > 0) {
+                    winAmount = bet * prize.value;
+                    
+                    if (prize.value >= 50) {
+                        message = `🎉🎉🎉 ${prize.label}! Você ganhou $${winAmount} (${prize.value}x sua aposta)!`;
+                        resultsElement.style.color = '#f59e0b';
+                    } else if (prize.value >= 10) {
+                        message = `🎉🎉 ${prize.label}! Você ganhou $${winAmount} (${prize.value}x sua aposta)!`;
+                        resultsElement.style.color = '#10b981';
+                    } else {
+                        message = `🎉 ${prize.label}! Você ganhou $${winAmount} (${prize.value}x sua aposta)!`;
+                        resultsElement.style.color = '#60a5fa';
+                    }
+                    
+                    // Adicionar destaque visual
+                    wheelContainer.classList.add('win');
+                    
+                    // Efeito sonoro (opcional)
+                    //playWinSound(prize.value);
+                } else {
+                    message = '😔 Tente novamente na próxima! Você perdeu $' + bet;
+                    resultsElement.style.color = '#ef4444';
+                    
+                    // Efeito sonoro (opcional)
+                    //playLoseSound();
+                }
+                
+                // Adicionar ganhos ao saldo
+                balance += winAmount;
+                updateBalance();
+                
+                // Exibir mensagem de resultado com animação
+                resultsElement.style.opacity = 0;
+                setTimeout(() => {
+                    resultsElement.textContent = message;
+                    resultsElement.style.opacity = 1;
+                }, 300);
+                
+                spinStatusElement.textContent = '';
+            }, 8000); // Tempo da animação
+        }
+        
+        addCoinsButton.addEventListener('click', () => {
+            balance += 500;
+            updateBalance();
+            
+            resultsElement.style.color = '#10b981';
+            resultsElement.style.opacity = 0;
+            setTimeout(() => {
+                resultsElement.textContent = '💰 $500 adicionados ao seu saldo!';
+                resultsElement.style.opacity = 1;
+            }, 300);
+            
+            // Efeito sonoro (opcional)
+            //playCoinSound();
+        });
+        
+        function updateBalance() {
+            // Animação do saldo
+            const oldBalance = parseInt(balanceElement.textContent);
+            animateBalance(oldBalance, balance);
+        }
+        
+        function animateBalance(from, to) {
+            const duration = 1000;
+            const start = performance.now();
+            
+            function updateValue(timestamp) {
+                const elapsed = timestamp - start;
+                const progress = Math.min(elapsed / duration, 1);
+                const value = Math.floor(from + (to - from) * progress);
+                
+                balanceElement.textContent = value;
+                
+                if (progress < 1) {
+                    requestAnimationFrame(updateValue);
+                } else {
+                    balanceElement.textContent = to;
+                }
+            }
+            
+            requestAnimationFrame(updateValue);
+        }
+        
+        // Função para validar a aposta (min/max)
+        betInput.addEventListener('change', () => {
+            const bet = parseInt(betInput.value);
+            if (bet < 10) betInput.value = 10;
+            if (bet > 500) betInput.value = 500;
+        });
+    </script>
+</body>
+</html>

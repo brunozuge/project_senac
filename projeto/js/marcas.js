@@ -2,10 +2,10 @@ $(document).ready(function () {
     $("#salvar").click(function () {
 
     
-       let idMarca=$("#idMarca").val();
+       
        let descricaoMarca=$("#descricaoMarca").val();
 
-        if (idMarca == "" || descricaoMarca == "" ) {
+        if ( descricaoMarca == "" ) {
             alert("Campos obrigatórios não preenchidos!");
             return false;
         }

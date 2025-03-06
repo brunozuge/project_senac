@@ -42,7 +42,7 @@
   // Função para simular o envio do formulário
   salvarButton.addEventListener('click', function () {
     // Aqui você pode adicionar a lógica para salvar os dados
-    alert('Formulário enviado!');
+  
     // Exemplo: fechar o modal após o envio
     const modal = bootstrap.Modal.getInstance(document.getElementById('exampleModal'));
     modal.hide();

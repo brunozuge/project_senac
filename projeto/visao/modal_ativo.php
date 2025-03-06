@@ -9,6 +9,11 @@
       <!-- Corpo do Modal -->
       <div class="modal-body">
         <form id="form-cadastrar-ativo">
+        <div class="mb-3">
+    <label for="idAtivo" class="form-label">ID Ativo</label>
+    <input class="form-control bg-dark text-white" type="text" id="idAtivo" readonly>
+</div>
+
           <div class="mb-3">
             <label for="ativo" class="form-label">Descrição do Ativo</label>
             <input type="text" class="form-control bg-dark text-white" id="ativo" placeholder="Digite a descrição do ativo" required>
@@ -52,6 +57,7 @@
           <label for="formFile" class="form-label">Imagem Ativo</label>
           <input class="form-control bg-dark text-white" accept="image/png, image/jpeg" type="file" id="imgAtivo">
         </div>
+        
       </div>
       <div class="mb-3" id="divPreview">
         <label for="formFile" class="form-label"></label>
@@ -83,7 +89,7 @@
   // Função para simular o envio do formulário
   salvarButton.addEventListener('click', function () {
     // Aqui você pode adicionar a lógica para salvar os dados
-    alert('Formulário enviado!');
+  
     // Exemplo: fechar o modal após o envio
     const modal = bootstrap.Modal.getInstance(document.getElementById('exampleModal'));
     modal.hide();

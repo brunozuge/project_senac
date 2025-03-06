@@ -1,5 +1,6 @@
 $(document).ready(function () {
     $("#salvar_info").click(function () {
+       
         let descricao_ativo = $("#ativo").val();
         let marca = $("#marca").val();
         let tipo = $("#tipo").val();
@@ -151,3 +152,6 @@ function limpar_modal() {
     $("#tipo").val('');
     $("#observacao").val('');
 }
+
+
+
