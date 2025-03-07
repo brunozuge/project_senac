@@ -28,6 +28,8 @@ $acao = isset($_POST['acao']) ? sanitize_input($_POST['acao'], $conexao) : '';
 $idAtivo = isset($_POST['idAtivo']) ? intval($_POST['idAtivo']) : 0;
 $statusAtivo = isset($_POST['status']) ? sanitize_input($_POST['status'], $conexao) : '';
 $user = isset($_SESSION['usuario_logado']) ? intval($_SESSION['usuario_logado']) : 0;
+// Capturando o motivo da alteração
+$motivo = isset($_POST['motivo']) ? sanitize_input($_POST['motivo'], $conexao) : '';
 
 // Array para resposta única
 $response = [];
@@ -60,7 +62,7 @@ switch ($acao) {
     case 'inserir':
         $query = "
             INSERT INTO ativo (
-            idAtivo,
+                idAtivo,
                 descricaoAtivo,
                 quantidadeAtivo,
                 quantidadeMinAtivo,
@@ -70,9 +72,10 @@ switch ($acao) {
                 idTipo,
                 dataCadastro,
                 idUsuario,
-                urlImg
+                urlImg,
+                obsQuantiAtivo
             ) VALUES (
-             '$idAtivo',
+                '$idAtivo',
                 '$ativo',
                 '$quantidade',
                 '$quantidadeMin',
@@ -82,7 +85,8 @@ switch ($acao) {
                 '$tipo',
                 NOW(),
                 '$user',
-                '" . ($urlImg ?: '') . "'
+                '" . ($urlImg ?: '') . "',
+                'Cadastro inicial'
             )
         ";
         $result = mysqli_query($conexao, $query);
@@ -92,7 +96,15 @@ switch ($acao) {
 
     case 'alterar_status':
         if ($idAtivo > 0) {
-            $sql = "UPDATE ativo SET statusAtivo = '$statusAtivo' WHERE idAtivo = $idAtivo";
+            // Verificar se o motivo foi fornecido
+            if (empty($motivo)) {
+                $response['success'] = false;
+                $response['message'] = "É necessário informar o motivo da alteração de status.";
+                echo json_encode($response);
+                exit();
+            }
+            
+            $sql = "UPDATE ativo SET statusAtivo = '$statusAtivo', obsQuantiAtivo = '$motivo' WHERE idAtivo = $idAtivo";
             $result = mysqli_query($conexao, $sql);
             $response['success'] = $result ? true : false;
             $response['message'] = $result ? "Status alterado" : "Status não alterado";
@@ -112,7 +124,8 @@ switch ($acao) {
                     observacaoAtivo,
                     idMarca,
                     idTipo,
-                    urlImg
+                    urlImg,
+                    obsQuantiAtivo
                 FROM ativo
                 WHERE idAtivo = $idAtivo
             ";
@@ -128,15 +141,24 @@ switch ($acao) {
 
     case 'update':
         if ($idAtivo > 0) {
+            // Verificar se o motivo foi fornecido para atualizações
+            if (empty($motivo)) {
+                $response['success'] = false;
+                $response['message'] = "É necessário informar o motivo da alteração.";
+                echo json_encode($response);
+                exit();
+            }
+            
             $sql = "
                 UPDATE ativo SET
-                idAtivo='$idAtivo',
+                    idAtivo='$idAtivo',
                     descricaoAtivo = '$ativo',
                     idMarca = '$marca',
                     idTipo = '$tipo',
                     quantidadeAtivo = '$quantidade',
                     quantidadeMinAtivo = '$quantidadeMin',
-                    observacaoAtivo = '$observacao'
+                    observacaoAtivo = '$observacao',
+                    obsQuantiAtivo = '$motivo'
             ";
 
             // Se uma nova imagem foi enviada, atualiza a URL

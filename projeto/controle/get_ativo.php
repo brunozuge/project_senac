@@ -3,6 +3,8 @@ include_once("../modelo/conexao.php");
 
 $id = $_GET['id'];
 $query = "SELECT * FROM ativo WHERE idAtivo = $id";
+$query="SELECT * FROM descricaoAtivo WHERE idAtivo = $ativo";
+
 $result = mysqli_query($conexao, $query);
 
 if ($result) {

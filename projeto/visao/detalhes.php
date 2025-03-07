@@ -14,6 +14,7 @@ SELECT
      a.quantidadeMinAtivo,
      a.statusAtivo,
      a.observacaoAtivo, 
+     a.obsQuantiAtivo,
      a.urlImg, -- Certifique-se de que essa coluna existe no banco de dados
      (SELECT descricaoMarca FROM marca m WHERE m.idMarca = a.idMarca) AS nomeMarca,
      (SELECT descricaoTipo FROM tipo t WHERE t.idTipo = a.idTipo) AS descricaoTipo,
@@ -87,6 +88,7 @@ $tipos = busca_info_bd($conexao, 'tipo');
                 <th scope="col">Imagem</th>
                 <th scope="col">Observações</th>
                 <th scope="col">Data de Cadastro</th>
+                <th scope="col">Obs Quantidade Ativo</th>
                 <th scope="col">Usuário</th>
                 <th style="text-align:center;">Ações</th>
             </tr>
@@ -118,6 +120,7 @@ $tipos = busca_info_bd($conexao, 'tipo');
                 </td>
                 <td><?php echo htmlspecialchars($row['observacaoAtivo']); ?></td>
                 <td><?php echo date("d/m/Y H:i:s", strtotime($row['dataCadastro'])); ?></td>
+                <td><?php echo htmlspecialchars($row['obsQuantiAtivo']); ?></td>
                 <td><?php echo htmlspecialchars($row['nomeUsuario']); ?></td>
                 <td>
                     <div class="acoes d-flex justify-content-between">

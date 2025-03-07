@@ -1,0 +1,1685 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Facebook 2013</title>
+    <style>
+        /* Reset CSS */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+        }
+        
+        body {
+            background-color: #e9eaed;
+            color: #141823;
+        }
+        
+        /* Barra de navegação superior */
+        #header {
+            background-color: #3b5998;
+            height: 42px;
+            width: 100%;
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: 999;
+            border-bottom: 1px solid #133783;
+            box-shadow: 0 2px 2px -2px rgba(0, 0, 0, 0.52);
+        }
+        
+        .header-container {
+            width: 980px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        
+        .logo {
+            margin-top: 8px;
+            font-size: 24px;
+            color: white;
+            font-weight: bold;
+            text-decoration: none;
+        }
+        
+        .search-container {
+            margin-top: 8px;
+            position: relative;
+        }
+        
+        .search-input {
+            width: 400px;
+            height: 25px;
+            padding: 0 5px;
+            border: 1px solid #3b5998;
+            border-radius: 2px;
+        }
+        
+        .search-results {
+            position: absolute;
+            top: 25px;
+            left: 0;
+            width: 400px;
+            background-color: white;
+            border: 1px solid #ddd;
+            border-top: none;
+            border-radius: 0 0 3px 3px;
+            max-height: 300px;
+            overflow-y: auto;
+            display: none;
+            z-index: 1000;
+        }
+        
+        .search-result-item {
+            padding: 8px;
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+        }
+        
+        .search-result-item:hover {
+            background-color: #f6f7f8;
+        }
+        
+        .search-result-pic {
+            width: 32px;
+            height: 32px;
+            background-color: #ddd;
+            border-radius: 2px;
+            margin-right: 10px;
+        }
+        
+        .header-right {
+            display: flex;
+            align-items: center;
+        }
+        
+        .header-nav {
+            display: flex;
+            list-style: none;
+        }
+        
+        .header-nav li {
+            margin-left: 10px;
+            position: relative;
+        }
+        
+        .header-nav a {
+            color: white;
+            text-decoration: none;
+            font-size: 12px;
+            padding: 0 5px;
+        }
+        
+        .header-nav a:hover {
+            text-decoration: underline;
+        }
+        
+        .notification-badge {
+            background-color: #dc3545;
+            color: white;
+            border-radius: 3px;
+            padding: 0 3px;
+            font-size: 11px;
+            position: relative;
+            top: -1px;
+        }
+        
+        .dropdown-menu {
+            position: absolute;
+            top: 30px;
+            right: 0;
+            background-color: white;
+            border: 1px solid #ddd;
+            border-radius: 3px;
+            width: 300px;
+            box-shadow: 0 3px 8px rgba(0, 0, 0, 0.3);
+            z-index: 1000;
+            display: none;
+        }
+        
+        .dropdown-menu-header {
+            padding: 10px;
+            font-weight: bold;
+            border-bottom: 1px solid #ddd;
+            color: #333;
+            font-size: 12px;
+        }
+        
+        .dropdown-menu-item {
+            padding: 8px 10px;
+            display: flex;
+            align-items: center;
+            border-bottom: 1px solid #eee;
+            cursor: pointer;
+        }
+        
+        .dropdown-menu-item:hover {
+            background-color: #f6f7f8;
+        }
+        
+        .dropdown-menu-icon {
+            width: 40px;
+            height: 40px;
+            background-color: #ddd;
+            border-radius: 2px;
+            margin-right: 10px;
+        }
+        
+        .dropdown-menu-content {
+            flex: 1;
+        }
+        
+        .dropdown-menu-title {
+            font-weight: bold;
+            font-size: 12px;
+            color: #333;
+        }
+        
+        .dropdown-menu-description {
+            font-size: 11px;
+            color: #90949c;
+            margin-top: 2px;
+        }
+        
+        /* Conteúdo principal */
+        #main-container {
+            width: 980px;
+            margin: 50px auto 0;
+            display: flex;
+        }
+        
+        /* Coluna lateral esquerda */
+        .left-sidebar {
+            width: 180px;
+            padding: 10px;
+        }
+        
+        .profile-shortcut {
+            display: flex;
+            align-items: center;
+            padding: 5px;
+            margin-bottom: 10px;
+        }
+        
+        .profile-pic {
+            width: 20px;
+            height: 20px;
+            background-color: #ddd;
+            border-radius: 2px;
+            margin-right: 5px;
+            background-size: cover;
+            background-position: center;
+        }
+        
+        .sidebar-menu {
+            list-style: none;
+        }
+        
+        .sidebar-menu li {
+            padding: 4px 0;
+        }
+        
+        .sidebar-menu a {
+            color: #333;
+            text-decoration: none;
+            font-size: 12px;
+            display: flex;
+            align-items: center;
+        }
+        
+        .sidebar-menu a:hover {
+            background-color: #f6f7f8;
+            text-decoration: none;
+        }
+        
+        .sidebar-menu-icon {
+            width: 16px;
+            height: 16px;
+            margin-right: 5px;
+            opacity: 0.6;
+        }
+        
+        .sidebar-title {
+            color: #9197a3;
+            font-weight: bold;
+            font-size: 11px;
+            padding: 5px 0;
+            margin-top: 10px;
+        }
+        
+        /* Feed central */
+        .news-feed {
+            width: 500px;
+            padding: 0 10px;
+        }
+        
+        .status-composer {
+            background-color: white;
+            border: 1px solid #dddfe2;
+            border-radius: 3px;
+            padding: 10px;
+            margin-bottom: 15px;
+        }
+        
+        .composer-tabs {
+            display: flex;
+            border-bottom: 1px solid #e9eaed;
+            padding-bottom: 10px;
+            margin-bottom: 10px;
+        }
+        
+        .composer-tab {
+            flex: 1;
+            text-align: center;
+            color: #365899;
+            font-size: 12px;
+            font-weight: bold;
+            cursor: pointer;
+            padding: 5px 0;
+        }
+        
+        .composer-tab:hover {
+            background-color: #f6f7f8;
+        }
+        
+        .composer-tab.active {
+            border-bottom: 2px solid #3b5998;
+        }
+        
+        .status-input {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #dddfe2;
+            border-radius: 3px;
+            resize: none;
+            font-size: 14px;
+            margin-bottom: 10px;
+            min-height: 60px;
+        }
+        
+        .composer-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .composer-attachments {
+            display: flex;
+        }
+        
+        .composer-attachment {
+            margin-right: 10px;
+            color: #7f7f7f;
+            font-size: 12px;
+            cursor: pointer;
+        }
+        
+        .composer-attachment:hover {
+            text-decoration: underline;
+        }
+        
+        .post-button {
+            background-color: #4267b2;
+            color: white;
+            border: 1px solid #29487d;
+            border-radius: 2px;
+            padding: 4px 12px;
+            font-size: 12px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        
+        .post-button:hover {
+            background-color: #365899;
+        }
+        
+        .post-button:disabled {
+            background-color: #9cb4d8;
+            border-color: #9cb4d8;
+            cursor: default;
+        }
+        
+        .post {
+            background-color: white;
+            border: 1px solid #dddfe2;
+            border-radius: 3px;
+            padding: 12px;
+            margin-bottom: 15px;
+            animation: fadeIn 0.5s ease-in-out;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .post-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+        
+        .post-avatar {
+            width: 40px;
+            height: 40px;
+            background-color: #ddd;
+            border-radius: 2px;
+            margin-right: 10px;
+            background-size: cover;
+            background-position: center;
+        }
+        
+        .post-user {
+            font-weight: bold;
+            color: #365899;
+            text-decoration: none;
+            font-size: 14px;
+        }
+        
+        .post-time {
+            color: #90949c;
+            font-size: 12px;
+            margin-top: 2px;
+        }
+        
+        .post-content {
+            font-size: 14px;
+            line-height: 1.38;
+            margin-bottom: 10px;
+            word-wrap: break-word;
+        }
+        
+        .post-image {
+            margin: 10px 0;
+            width: 100%;
+            max-height: 400px;
+            object-fit: contain;
+            border-radius: 3px;
+            cursor: pointer;
+        }
+        
+        .post-stats {
+            display: flex;
+            justify-content: space-between;
+            font-size: 12px;
+            color: #90949c;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #e9eaed;
+            margin-bottom: 10px;
+        }
+        
+        .post-likes {
+            display: flex;
+            align-items: center;
+        }
+        
+        .like-icon {
+            color: #4267b2;
+            margin-right: 5px;
+        }
+        
+        .post-comments-shares {
+            display: flex;
+        }
+        
+        .post-comments-count {
+            margin-right: 10px;
+            cursor: pointer;
+        }
+        
+        .post-comments-count:hover {
+            text-decoration: underline;
+        }
+        
+        .post-shares-count {
+            cursor: pointer;
+        }
+        
+        .post-shares-count:hover {
+            text-decoration: underline;
+        }
+        
+        .post-actions {
+            display: flex;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #e9eaed;
+            margin-bottom: 10px;
+        }
+        
+        .post-action {
+            flex: 1;
+            text-align: center;
+            color: #4b4f56;
+            font-size: 12px;
+            font-weight: bold;
+            cursor: pointer;
+            padding: 5px 0;
+        }
+        
+        .post-action:hover {
+            background-color: #f6f7f8;
+        }
+        
+        .post-action.active {
+            color: #4267b2;
+        }
+        
+        .post-comments {
+            margin-top: 10px;
+        }
+        
+        .post-comment {
+            display: flex;
+            margin-bottom: 8px;
+        }
+        
+        .comment-avatar {
+            width: 32px;
+            height: 32px;
+            background-color: #ddd;
+            border-radius: 2px;
+            margin-right: 8px;
+            flex-shrink: 0;
+            background-size: cover;
+            background-position: center;
+        }
+        
+        .comment-content {
+            background-color: #f6f7f8;
+            border-radius: 12px;
+            padding: 8px 12px;
+            font-size: 12px;
+            flex: 1;
+            position: relative;
+        }
+        
+        .comment-user {
+            font-weight: bold;
+            color: #365899;
+            text-decoration: none;
+        }
+        
+        .comment-text {
+            word-wrap: break-word;
+        }
+        
+        .comment-actions {
+            margin-top: 2px;
+            font-size: 11px;
+            color: #90949c;
+        }
+        
+        .comment-action {
+            cursor: pointer;
+            margin-right: 8px;
+        }
+        
+        .comment-action:hover {
+            text-decoration: underline;
+        }
+        
+        .comment-composer {
+            display: flex;
+            margin-top: 8px;
+        }
+        
+        .comment-input {
+            flex: 1;
+            border: 1px solid #dddfe2;
+            border-radius: 12px;
+            padding: 8px 12px;
+            font-size: 12px;
+            resize: none;
+            min-height: 20px;
+        }
+        
+        .comment-input:focus {
+            outline: none;
+            border-color: #4267b2;
+        }
+        
+        /* Coluna lateral direita */
+        .right-sidebar {
+            width: 300px;
+            padding: 10px;
+        }
+        
+        .sponsored {
+            background-color: white;
+            border: 1px solid #dddfe2;
+            border-radius: 3px;
+            padding: 12px;
+            margin-bottom: 15px;
+        }
+        
+        .sponsored-header {
+            font-size: 11px;
+            color: #9197a3;
+            margin-bottom: 10px;
+        }
+        
+        .sponsored-content {
+            display: flex;
+            margin-bottom: 10px;
+            cursor: pointer;
+        }
+        
+        .sponsored-content:hover .sponsored-title {
+            text-decoration: underline;
+        }
+        
+        .sponsored-image {
+            width: 100px;
+            height: 70px;
+            background-color: #ddd;
+            margin-right: 10px;
+            background-size: cover;
+            background-position: center;
+        }
+        
+        .sponsored-text {
+            font-size: 12px;
+            flex: 1;
+        }
+        
+        .sponsored-title {
+            color: #365899;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+        
+        .birthdays {
+            background-color: white;
+            border: 1px solid #dddfe2;
+            border-radius: 3px;
+            padding: 12px;
+            margin-bottom: 15px;
+        }
+        
+        .birthdays-header {
+            font-size: 12px;
+            color: #333;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+        
+        .birthdays-content {
+            font-size: 12px;
+            color: #333;
+        }
+        
+        .birthday-name {
+            color: #365899;
+            font-weight: bold;
+        }
+        
+        .chat-container {
+            background-color: white;
+            border: 1px solid #dddfe2;
+            border-radius: 3px;
+            margin-bottom: 15px;
+        }
+        
+        .chat-header {
+            padding: 8px 12px;
+            font-size: 12px;
+            color: #333;
+            font-weight: bold;
+            border-bottom: 1px solid #e9eaed;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            cursor: pointer;
+        }
+        
+        .chat-header:hover {
+            background-color: #f6f7f8;
+        }
+        
+        .chat-online-count {
+            color: #90949c;
+            font-weight: normal;
+        }
+        
+        .chat-friends {
+            max-height: 300px;
+            overflow-y: auto;
+        }
+        
+        .chat-friend {
+            padding: 8px 12px;
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+        }
+        
+        .chat-friend:hover {
+            background-color: #f6f7f8;
+        }
+        
+        .chat-friend-avatar {
+            width: 32px;
+            height: 32px;
+            background-color: #ddd;
+            border-radius: 2px;
+            margin-right: 8px;
+            background-size: cover;
+            background-position: center;
+        }
+        
+        .chat-friend-name {
+            font-size: 12px;
+            color: #333;
+        }
+        
+        .online-indicator {
+            width: 8px;
+            height: 8px;
+            background-color: #42b72a;
+            border-radius: 50%;
+            margin-left: auto;
+        }
+        
+        /* Chat popup */
+        .chat-popup {
+            position: fixed;
+            bottom: 0;
+            right: 70px;
+            width: 260px;
+            height: 300px;
+            background-color: white;
+            border-radius: 3px 3px 0 0;
+            box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
+            display: flex;
+            flex-direction: column;
+            z-index: 900;
+            display: none;
+        }
+        
+        .chat-popup-header {
+            background-color: #4267b2;
+            padding: 8px 10px;
+            color: white;
+            font-size: 12px;
+            font-weight: bold;
+            border-radius: 3px 3px 0 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .chat-popup-actions {
+            display: flex;
+        }
+        
+        .chat-popup-action {
+            margin-left: 10px;
+            cursor: pointer;
+        }
+        
+        .chat-popup-messages {
+            flex: 1;
+            padding: 10px;
+            overflow-y: auto;
+            background-color: #f5f5f5;
+        }
+        
+        .chat-message {
+            margin-bottom: 8px;
+            max-width: 80%;
+            clear: both;
+        }
+        
+        .chat-message-self {
+            float: right;
+        }
+        
+        .chat-message-other {
+            float: left;
+        }
+        
+        .chat-message-bubble {
+            padding: 6px 10px;
+            border-radius: 12px;
+            font-size: 12px;
+            display: inline-block;
+        }
+        
+        .chat-message-self .chat-message-bubble {
+            background-color: #4267b2;
+            color: white;
+        }
+        
+        .chat-message-other .chat-message-bubble {
+            background-color: #f1f0f0;
+            color: #333;
+        }
+        
+        .chat-message-time {
+            font-size: 9px;
+            color: #90949c;
+            margin-top: 2px;
+            text-align: right;
+        }
+        
+        .chat-popup-input {
+            padding: 10px;
+            border-top: 1px solid #e9eaed;
+        }
+        
+        .chat-input {
+            width: 100%;
+            padding: 6px 10px;
+            border: 1px solid #dddfe2;
+            border-radius: 12px;
+            font-size: 12px;
+            resize: none;
+        }
+        
+        .chat-input:focus {
+            outline: none;
+            border-color: #4267b2;
+        }
+        
+        /* Modal para exibição de imagens */
+        .modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.8);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1100;
+            display: none;
+        }
+        
+        .modal-content {
+            max-width: 90%;
+            max-height: 90%;
+        }
+        
+        .modal-image {
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain;
+        }
+        
+        .modal-close {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            color: white;
+            font-size: 30px;
+            cursor: pointer;
+        }
+        
+        /* Animações */
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+        
+        .pulse {
+            animation: pulse 0.5s ease-in-out;
+        }
+        
+        /* Notificação toast */
+        .toast {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background-color: #3b5998;
+            color: white;
+            padding: 10px 15px;
+            border-radius: 3px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+            z-index: 1200;
+            font-size: 14px;
+            animation: slideIn 0.3s, fadeOut 0.5s 2.5s forwards;
+            max-width: 300px;
+        }
+        
+        @keyframes slideIn {
+            from { transform: translateX(100%); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+        
+        @keyframes fadeOut {
+            from { opacity: 1; }
+            to { opacity: 0; visibility: hidden; }
+        }
+        
+        /* Footer */
+        #footer {
+            width: 980px;
+            margin: 0 auto 20px;
+            padding: 10px;
+            font-size: 11px;
+            color: #9197a3;
+        }
+        
+        .footer-links {
+            display: flex;
+            flex-wrap: wrap;
+            margin-bottom: 5px;
+        }
+        
+        .footer-link {
+            color: #365899;
+            text-decoration: none;
+            margin-right: 10px;
+        }
+        
+        .footer-copyright {
+            margin-top: 5px;
+        }
+    </style>
+</head>
+<body>
+    <!-- Cabeçalho -->
+    <div id="header">
+        <div class="header-container">
+            <a href="#" class="logo">facebook</a>
+            <div class="search-container">
+                <input type="text" class="search-input" placeholder="Pesquisar pessoas, lugares e coisas" id="search-input">
+                <div class="search-results" id="search-results">
+                    <!-- Resultados da pesquisa serão adicionados aqui -->
+                </div>
+            </div>
+            <div class="header-right">
+                <ul class="header-nav">
+                    <li><a href="#" id="profile-link">Nome do Usuário</a></li>
+                    <li><a href="#">Início</a></li>
+                    <li><a href="#">Encontrar amigos</a></li>
+                    <li>
+                        <a href="#" id="notifications-link"><span id="notification-count" class="notification-badge">0</span> Notificações</a>
+                        <div class="dropdown-menu" id="notifications-dropdown">
+                            <div class="dropdown-menu-header">Notificações</div>
+                            <div id="notifications-list">
+                                <!-- Notificações serão adicionadas aqui -->
+                            </div>
+                        </div>
+                    </li>
+                    <li>
+                        <a href="#" id="messages-link"><span id="messages-count" class="notification-badge">0</span> Mensagens</a>
+                        <div class="dropdown-menu" id="messages-dropdown">
+                            <div class="dropdown-menu-header">Mensagens</div>
+                            <div id="messages-list">
+                                <!-- Mensagens serão adicionadas aqui -->
+                            </div>
+                        </div>
+                    </li>
+                    <li>
+                        <a href="#" id="settings-link">Configurações</a>
+                        <div class="dropdown-menu" id="settings-dropdown">
+                            <div class="dropdown-menu-header">Configurações</div>
+                            <div class="dropdown-menu-item" id="change-profile-pic">
+                                <div class="dropdown-menu-icon"></div>
+                                <div class="dropdown-menu-content">
+                                    <div class="dropdown-menu-title">Alterar foto de perfil</div>
+                                    <div class="dropdown-menu-description">Escolha uma nova imagem para o seu perfil</div>
+                                </div>
+                            </div>
+                            <div class="dropdown-menu-item" id="change-cover-pic">
+                                <div class="dropdown-menu-icon"></div>
+                                <div class="dropdown-menu-content">
+                                    <div class="dropdown-menu-title">Alterar capa</div>
+                                    <div class="dropdown-menu-description">Atualize sua imagem de capa</div>
+                                </div>
+                            </div>
+                            <div class="dropdown-menu-item" id="change-theme">
+                                <div class="dropdown-menu-icon"></div>
+                                <div class="dropdown-menu-content">
+                                    <div class="dropdown-menu-title">Alterar tema</div>
+                                    <div class="dropdown-menu-description">Personalize as cores do seu Facebook</div>
+                                </div>
+                            </div>
+                            <div class="dropdown-menu-item" id="logout">
+                                <div class="dropdown-menu-icon"></div>
+                                <div class="dropdown-menu-content">
+                                    <div class="dropdown-menu-title">Sair</div>
+                                    <div class="dropdown-menu-description">Encerrar sua sessão atual</div>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Conteúdo principal -->
+    <div id="main-container">
+        <!-- Barra lateral esquerda -->
+        <div class="left-sidebar">
+            <div class="profile-shortcut">
+                <div class="profile-pic" id="sidebar-profile-pic"></div>
+                <a href="#" id="sidebar-profile-link">Nome do Usuário</a>
+            </div>
+            <ul class="sidebar-menu">
+                <li><a href="#"><span class="sidebar-menu-icon">📰</span> Feed de notícias</a></li>
+                <li><a href="#"><span class="sidebar-menu-icon">✉️</span> Mensagens</a></li>
+                <li><a href="#"><span class="sidebar-menu-icon">📅</span> Eventos</a></li>
+                <li><a href="#"><span class="sidebar-menu-icon">🖼️</span> Fotos</a></li>
+            </ul>
+            <div class="sidebar-title">FAVORITOS</div>
+            <ul class="sidebar-menu">
+                <li><a href="#"><span class="sidebar-menu-icon">📄</span> Páginas</a></li>
+                <li><a href="#"><span class="sidebar-menu-icon">👥</span> Grupos</a></li>
+                <li><a href="#"><span class="sidebar-menu-icon">🎮</span> Aplicativos</a></li>
+                <li><a href="#"><span class="sidebar-menu-icon">👫</span> Amigos</a></li>
+            </ul>
+            <div class="sidebar-title">CRIAR</div>
+            <ul class="sidebar-menu">
+                <li><a href="#"><span class="sidebar-menu-icon">📣</span> Anúncio</a></li>
+                <li><a href="#"><span class="sidebar-menu-icon">📝</span> Página</a></li>
+                <li><a href="#"><span class="sidebar-menu-icon">👪</span> Grupo</a></li>
+                <li><a href="#"><span class="sidebar-menu-icon">📋</span> Lista</a></li>
+            </ul>
+        </div>
+        
+        <!-- Feed de notícias -->
+        <div class="news-feed">
+            <!-- Compositor de status -->
+            <div class="status-composer">
+                <div class="composer-tabs">
+                    <div class="composer-tab active" data-tab="status">Status</div>
+                    <div class="composer-tab" data-tab="photo">Foto/Vídeo</div>
+                    <div class="composer-tab" data-tab="event">Evento</div>
+                </div>
+                <textarea class="status-input" placeholder="No que você está pensando?" id="status-input"></textarea>
+                <div id="photo-preview" style="display: none; margin-bottom: 10px;"></div>
+                <div class="composer-footer">
+                    <div class="composer-attachments">
+                        <div class="composer-attachment" id="attach-photo">📷 Foto</div>
+                        <div class="composer-attachment" id="attach-location">📍 Local</div>
+                        <div class="composer-attachment" id="attach-emoji">😊
+
+
+                            <!-- Adicione esta nova seção ao menu lateral esquerdo -->
+<li><a href="#" id="explore-photos-link"><span class="sidebar-menu-icon">🔍</span> Explorar Fotos</a></li>
+
+<!-- Adicione este novo elemento ao final do div "main-container" -->
+<div id="photo-explorer" class="photo-explorer" style="display: none;">
+    <div class="explorer-header">
+        <h2>Explorar Fotos</h2>
+        <div class="explorer-tabs">
+            <div class="explorer-tab active" data-tab="friends">Amigos</div>
+            <div class="explorer-tab" data-tab="trending">Em Alta</div>
+            <div class="explorer-tab" data-tab="countries">Países</div>
+        </div>
+        <div class="explorer-search">
+            <input type="text" placeholder="Buscar fotos..." id="photo-search">
+        </div>
+    </div>
+    
+    <div class="explorer-content">
+        <div class="explorer-tab-content active" id="friends-photos">
+            <div class="photo-grid">
+                <!-- Fotos dos amigos serão inseridas aqui via JavaScript -->
+            </div>
+        </div>
+        
+        <div class="explorer-tab-content" id="trending-photos">
+            <div class="photo-grid">
+                <!-- Fotos em alta serão inseridas aqui via JavaScript -->
+            </div>
+        </div>
+        
+        <div class="explorer-tab-content" id="countries-photos">
+            <div class="countries-list">
+                <div class="country-item" data-country="brasil">Brasil</div>
+                <div class="country-item" data-country="italia">Itália</div>
+                <div class="country-item" data-country="japao">Japão</div>
+                <div class="country-item" data-country="eua">Estados Unidos</div>
+                <div class="country-item" data-country="franca">França</div>
+                <div class="country-item" data-country="australia">Austrália</div>
+                <div class="country-item" data-country="egito">Egito</div>
+                <div class="country-item" data-country="india">Índia</div>
+                <!-- Mais países podem ser adicionados aqui -->
+            </div>
+            <div class="country-photos">
+                <h3>Selecione um país para ver fotos</h3>
+                <div class="photo-grid" id="country-photos-grid">
+                    <!-- Fotos do país selecionado serão inseridas aqui via JavaScript -->
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Adicione este estilo ao seu CSS -->
+<style>
+    .photo-explorer {
+        background-color: white;
+        border: 1px solid #dddfe2;
+        border-radius: 3px;
+        margin: 50px auto 20px;
+        padding: 15px;
+        width: 800px;
+        max-width: 100%;
+        box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+        position: fixed;
+        top: 0;
+        left: 50%;
+        transform: translateX(-50%);
+        height: 85vh;
+        overflow-y: auto;
+        z-index: 900;
+    }
+    
+    .explorer-header {
+        padding-bottom: 15px;
+        border-bottom: 1px solid #e9eaed;
+        margin-bottom: 15px;
+    }
+    
+    .explorer-header h2 {
+        font-size: 16px;
+        font-weight: bold;
+        color: #1d2129;
+        margin-bottom: 10px;
+    }
+    
+    .explorer-tabs {
+        display: flex;
+        margin-bottom: 15px;
+    }
+    
+    .explorer-tab {
+        padding: 8px 16px;
+        font-size: 13px;
+        color: #4b4f56;
+        cursor: pointer;
+        border-radius: 2px;
+        font-weight: bold;
+    }
+    
+    .explorer-tab:hover {
+        background-color: #f5f6f7;
+    }
+    
+    .explorer-tab.active {
+        color: #4267b2;
+        border-bottom: 2px solid #4267b2;
+    }
+    
+    .explorer-search input {
+        width: 100%;
+        padding: 8px 10px;
+        border: 1px solid #dddfe2;
+        border-radius: 2px;
+        font-size: 13px;
+    }
+    
+    .explorer-search input:focus {
+        border-color: #4267b2;
+        outline: none;
+    }
+    
+    .explorer-tab-content {
+        display: none;
+    }
+    
+    .explorer-tab-content.active {
+        display: block;
+    }
+    
+    .photo-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+        gap: 10px;
+        margin-top: 15px;
+    }
+    
+    .photo-item {
+        position: relative;
+        border-radius: 3px;
+        overflow: hidden;
+        cursor: pointer;
+        transition: transform 0.2s;
+    }
+    
+    .photo-item:hover {
+        transform: scale(1.02);
+    }
+    
+    .photo-item img {
+        width: 100%;
+        height: 150px;
+        object-fit: cover;
+    }
+    
+    .photo-info {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        background: linear-gradient(transparent, rgba(0, 0, 0, 0.7));
+        color: white;
+        padding: 8px;
+        font-size: 12px;
+    }
+    
+    .photo-user {
+        font-weight: bold;
+        margin-bottom: 2px;
+    }
+    
+    .photo-location {
+        font-size: 11px;
+        opacity: 0.9;
+    }
+    
+    .countries-list {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        margin-bottom: 20px;
+    }
+    
+    .country-item {
+        padding: 8px 12px;
+        background-color: #f5f6f7;
+        border-radius: 3px;
+        cursor: pointer;
+        font-size: 13px;
+        transition: background-color 0.2s;
+    }
+    
+    .country-item:hover {
+        background-color: #e9ebee;
+    }
+    
+    .country-item.active {
+        background-color: #4267b2;
+        color: white;
+    }
+    
+    .country-photos h3 {
+        font-size: 14px;
+        color: #1d2129;
+        margin-bottom: 15px;
+        font-weight: normal;
+    }
+    
+    /* Estilos para o modal de visualização de foto */
+    .photo-view-modal {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-color: rgba(0, 0, 0, 0.9);
+        z-index: 1000;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+    }
+    
+    .photo-view-container {
+        position: relative;
+        width: 90%;
+        max-width: 900px;
+        height: 80%;
+        display: flex;
+        flex-direction: column;
+    }
+    
+    .photo-view-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 10px;
+        color: white;
+    }
+    
+    .photo-view-user {
+        display: flex;
+        align-items: center;
+    }
+    
+    .photo-view-avatar {
+        width: 32px;
+        height: 32px;
+        border-radius: 50%;
+        background-color: #ddd;
+        margin-right: 10px;
+    }
+    
+    .photo-view-close {
+        font-size: 24px;
+        cursor: pointer;
+        color: white;
+        background: none;
+        border: none;
+    }
+    
+    .photo-view-image {
+        flex: 1;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        overflow: hidden;
+    }
+    
+    .photo-view-image img {
+        max-width: 100%;
+        max-height: 100%;
+        object-fit: contain;
+    }
+    
+    .photo-view-details {
+        padding: 15px;
+        color: white;
+    }
+    
+    .photo-view-actions {
+        display: flex;
+        margin-top: 10px;
+    }
+    
+    .photo-view-action {
+        margin-right: 15px;
+        cursor: pointer;
+    }
+    
+    .photo-view-likes, .photo-view-comments {
+        margin-top: 5px;
+        font-size: 12px;
+    }
+    
+    .close-explorer {
+        position: absolute;
+        top: 15px;
+        right: 15px;
+        font-size: 20px;
+        cursor: pointer;
+        color: #4b4f56;
+    }
+</style>
+
+<!-- Adicione este script JavaScript -->
+<script>
+    // Dados de exemplo para fotos
+    const photoData = {
+        friends: [
+            { id: 1, user: "Maria Silva", location: "Rio de Janeiro", url: "https://source.unsplash.com/random/400x300?brazil" },
+            { id: 2, user: "João Santos", location: "São Paulo", url: "https://source.unsplash.com/random/400x300?saopaulo" },
+            { id: 3, user: "Ana Costa", location: "Recife", url: "https://source.unsplash.com/random/400x300?beach" },
+            { id: 4, user: "Carlos Mello", location: "Brasília", url: "https://source.unsplash.com/random/400x300?city" },
+            { id: 5, user: "Luiza Alves", location: "Porto Alegre", url: "https://source.unsplash.com/random/400x300?sunset" },
+            { id: 6, user: "Pedro Mendes", location: "Salvador", url: "https://source.unsplash.com/random/400x300?bahia" }
+        ],
+        trending: [
+            { id: 7, user: "Festival de Verão", location: "Rio de Janeiro", url: "https://source.unsplash.com/random/400x300?festival" },
+            { id: 8, user: "Exposição de Arte", location: "São Paulo", url: "https://source.unsplash.com/random/400x300?art" },
+            { id: 9, user: "Parque Nacional", location: "Amazônia", url: "https://source.unsplash.com/random/400x300?amazon" },
+            { id: 10, user: "Cachoeira do Prata", location: "Minas Gerais", url: "https://source.unsplash.com/random/400x300?waterfall" },
+            { id: 11, user: "Festa Junina", location: "Nordeste", url: "https://source.unsplash.com/random/400x300?party" },
+            { id: 12, user: "Pôr do Sol", location: "Praia de Ipanema", url: "https://source.unsplash.com/random/400x300?ipanema" }
+        ],
+        countries: {
+            brasil: [
+                { id: 13, user: "Cristo Redentor", location: "Rio de Janeiro", url: "https://source.unsplash.com/random/400x300?christ" },
+                { id: 14, user: "Praia de Copacabana", location: "Rio de Janeiro", url: "https://source.unsplash.com/random/400x300?copacabana" },
+                { id: 15, user: "Cataratas do Iguaçu", location: "Paraná", url: "https://source.unsplash.com/random/400x300?iguazu" },
+                { id: 16, user: "Fernando de Noronha", location: "Pernambuco", url: "https://source.unsplash.com/random/400x300?noronha" }
+            ],
+            italia: [
+                { id: 17, user: "Coliseu", location: "Roma", url: "https://source.unsplash.com/random/400x300?colosseum" },
+                { id: 18, user: "Torre de Pisa", location: "Pisa", url: "https://source.unsplash.com/random/400x300?pisa" },
+                { id: 19, user: "Veneza", location: "Veneza", url: "https://source.unsplash.com/random/400x300?venice" },
+                { id: 20, user: "Fontana di Trevi", location: "Roma", url: "https://source.unsplash.com/random/400x300?trevi" }
+            ],
+            japao: [
+                { id: 21, user: "Monte Fuji", location: "Fujinomiya", url: "https://source.unsplash.com/random/400x300?fujisan" },
+                { id: 22, user: "Tóquio", location: "Tóquio", url: "https://source.unsplash.com/random/400x300?tokyo" },
+                { id: 23, user: "Quioto", location: "Quioto", url: "https://source.unsplash.com/random/400x300?kyoto" },
+                { id: 24, user: "Templo de Meiji", location: "Tóquio", url: "https://source.unsplash.com/random/400x300?temple" }
+            ],
+            eua: [
+                { id: 25, user: "Estátua da Liberdade", location: "Nova York", url: "https://source.unsplash.com/random/400x300?liberty" },
+                { id: 26, user: "Golden Gate", location: "São Francisco", url: "https://source.unsplash.com/random/400x300?goldengate" },
+                { id: 27, user: "Grand Canyon", location: "Arizona", url: "https://source.unsplash.com/random/400x300?grandcanyon" },
+                { id: 28, user: "Times Square", location: "Nova York", url: "https://source.unsplash.com/random/400x300?timessquare" }
+            ],
+            franca: [
+                { id: 29, user: "Torre Eiffel", location: "Paris", url: "https://source.unsplash.com/random/400x300?eiffel" },
+                { id: 30, user: "Museu do Louvre", location: "Paris", url: "https://source.unsplash.com/random/400x300?louvre" },
+                { id: 31, user: "Arco do Triunfo", location: "Paris", url: "https://source.unsplash.com/random/400x300?arc" },
+                { id: 32, user: "Mont Saint-Michel", location: "Normandia", url: "https://source.unsplash.com/random/400x300?saintmichel" }
+            ],
+            australia: [
+                { id: 33, user: "Opera House", location: "Sydney", url: "https://source.unsplash.com/random/400x300?sydneyopera" },
+                { id: 34, user: "Grande Barreira de Corais", location: "Queensland", url: "https://source.unsplash.com/random/400x300?reef" },
+                { id: 35, user: "Uluru", location: "Território do Norte", url: "https://source.unsplash.com/random/400x300?uluru" },
+                { id: 36, user: "Bondi Beach", location: "Sydney", url: "https://source.unsplash.com/random/400x300?bondibeach" }
+            ],
+            egito: [
+                { id: 37, user: "Pirâmides de Gizé", location: "Cairo", url: "https://source.unsplash.com/random/400x300?pyramids" },
+                { id: 38, user: "Esfinge", location: "Cairo", url: "https://source.unsplash.com/random/400x300?sphinx" },
+                { id: 39, user: "Rio Nilo", location: "Luxor", url: "https://source.unsplash.com/random/400x300?nile" },
+                { id: 40, user: "Abu Simbel", location: "Assuã", url: "https://source.unsplash.com/random/400x300?abusimbel" }
+            ],
+            india: [
+                { id: 41, user: "Taj Mahal", location: "Agra", url: "https://source.unsplash.com/random/400x300?tajmahal" },
+                { id: 42, user: "Varanasi", location: "Uttar Pradesh", url: "https://source.unsplash.com/random/400x300?varanasi" },
+                { id: 43, user: "Forte Amber", location: "Jaipur", url: "https://source.unsplash.com/random/400x300?amberfort" },
+                { id: 44, user: "Holi Festival", location: "Mumbai", url: "https://source.unsplash.com/random/400x300?holi" }
+            ]
+        }
+    };
+
+    // Função para criar um elemento de foto
+    function createPhotoElement(photo) {
+        const photoItem = document.createElement('div');
+        photoItem.className = 'photo-item';
+        photoItem.dataset.id = photo.id;
+        
+        photoItem.innerHTML = `
+            <img src="${photo.url}" alt="${photo.user}">
+            <div class="photo-info">
+                <div class="photo-user">${photo.user}</div>
+                <div class="photo-location">${photo.location}</div>
+            </div>
+        `;
+        
+        photoItem.addEventListener('click', () => openPhotoView(photo));
+        
+        return photoItem;
+    }
+    
+    // Função para preencher o grid de fotos
+    function populatePhotoGrid(container, photos) {
+        const grid = container.querySelector('.photo-grid');
+        grid.innerHTML = '';
+        
+        photos.forEach(photo => {
+            grid.appendChild(createPhotoElement(photo));
+        });
+    }
+    
+    // Função para abrir a visualização de foto
+    function openPhotoView(photo) {
+        const modal = document.createElement('div');
+        modal.className = 'photo-view-modal';
+        
+        modal.innerHTML = `
+            <div class="photo-view-container">
+                <div class="photo-view-header">
+                    <div class="photo-view-user">
+                        <div class="photo-view-avatar"></div>
+                        <div>
+                            <div class="photo-view-username">${photo.user}</div>
+                            <div class="photo-view-location">${photo.location}</div>
+                        </div>
+                    </div>
+                    <button class="photo-view-close">×</button>
+                </div>
+                <div class="photo-view-image">
+                    <img src="${photo.url}" alt="${photo.user}">
+                </div>
+                <div class="photo-view-details">
+                    <div class="photo-view-description">
+                        Compartilhado por <strong>${photo.user}</strong> em <strong>${photo.location}</strong>
+                    </div>
+                    <div class="photo-view-actions">
+                        <div class="photo-view-action">👍 Curtir</div>
+                        <div class="photo-view-action">💬 Comentar</div>
+                        <div class="photo-view-action">🔄 Compartilhar</div>
+                    </div>
+                    <div class="photo-view-likes">152 pessoas curtiram isso</div>
+                    <div class="photo-view-comments">Ver todos os 38 comentários</div>
+                </div>
+            </div>
+        `;
+        
+        document.body.appendChild(modal);
+        
+        modal.querySelector('.photo-view-close').addEventListener('click', () => {
+            document.body.removeChild(modal);
+        });
+    }
+    
+    // Função para inicializar o explorer de fotos
+    function initPhotoExplorer() {
+        const exploreLink = document.getElementById('explore-photos-link');
+        const photoExplorer = document.getElementById('photo-explorer');
+        
+        if (!photoExplorer) {
+            // Criar o explorador se ele não existir
+            const explorerDiv = document.createElement('div');
+            explorerDiv.id = 'photo-explorer';
+            explorerDiv.className = 'photo-explorer';
+            explorerDiv.style.display = 'none';
+            
+            // Adicionar conteúdo ao explorador
+            // ...
+            
+            document.body.appendChild(explorerDiv);
+            
+            // Referência atualizada
+            photoExplorer = explorerDiv;
+        }
+        
+        // Adicionar um botão para fechar o explorador
+        const closeButton = document.createElement('div');
+        closeButton.className = 'close-explorer';
+        closeButton.textContent = '×';
+        closeButton.addEventListener('click', () => {
+            photoExplorer.style.display = 'none';
+        });
+        photoExplorer.appendChild(closeButton);
+        
+        // Evento de clique para o link de exploração
+        exploreLink.addEventListener('click', (e) => {
+            e.preventDefault();
+            photoExplorer.style.display = 'block';
+            
+            // Carregar as fotos dos amigos por padrão
+            const friendsTabContent = document.getElementById('friends-photos');
+            populatePhotoGrid(friendsTabContent, photoData.friends);
+            
+            // Carregar fotos em alta
+            const trendingTabContent = document.getElementById('trending-photos');
+            populatePhotoGrid(trendingTabContent, photoData.trending);
+        });
+        
+        // Eventos para as abas
+        const tabs = document.querySelectorAll('.explorer-tab');
+        tabs.forEach(tab => {
+            tab.addEventListener('click', () => {
+                // Remover classe ativa de todas as abas
+                tabs.forEach(t => t.classList.remove('active'));
+                // Adicionar classe ativa à aba clicada
+                tab.classList.add('active');
+                
+                // Ocultar todos os conteúdos de abas
+                const tabContents = document.querySelectorAll('.explorer-tab-content');
+                tabContents.forEach(content => content.classList.remove('active'));
+                
+                // Mostrar o conteúdo da aba selecionada
+                const tabName = tab.dataset.tab;
+                document.getElementById(`${tabName}-photos`).classList.add('active');
+            });
+        });
+        
+        // Eventos para os itens de países
+        const countryItems = document.querySelectorAll('.country-item');
+        countryItems.forEach(item => {
+            item.addEventListener('click', () => {
+                // Remover classe ativa de todos os países
+                countryItems.forEach(i => i.classList.remove('active'));
+                // Adicionar classe ativa ao país clicado
+                item.classList.add('active');
+                
+                // Carregar fotos do país selecionado
+                const country = item.dataset.country;
+                const countryPhotos = photoData.countries[country] || [];
+                const countryGrid = document.getElementById('country-photos-grid');
+                
+                // Atualizar o título
+                const countryTitle = document.querySelector('.country-photos h3');
+                countryTitle.textContent = `Fotos de ${item.textContent}`;
+                
+                // Limpar e preencher o grid
+                countryGrid.innerHTML = '';
+                countryPhotos.forEach(photo => {
+                    countryGrid.appendChild(createPhotoElement(photo));
+                });
+            });
+        });
+        
+        // Busca de fotos
+        const searchInput = document.getElementById('photo-search');
+        searchInput.addEventListener('input', (e) => {
+            const searchTerm = e.target.value.toLowerCase();
+            
+            // Pegar todas as fotos de todas as fontes
+            const allPhotos = [
+                ...photoData.friends,
+                ...photoData.trending,
+                ...Object.values(photoData.countries).flat()
+            ];
+            
+            // Filtrar fotos com base no termo de busca
+            const filteredPhotos = allPhotos.filter(photo => {
+                return photo.user.toLowerCase().includes(searchTerm) || 
+                       photo.location.toLowerCase().includes(searchTerm);
+            });
+            
+            // Mostrar a aba de resultados da busca se não existir
+            let searchTab = document.querySelector('.explorer-tab[data-tab="search"]');
+            let searchContent = document.getElementById('search-photos');
+            
+            if (!searchTab && searchTerm) {
+                // Criar aba de pesquisa
+                searchTab = document.createElement('div');
+                searchTab.className = 'explorer-tab';
+                searchTab.dataset.tab = 'search';
+                searchTab.textContent = 'Resultados da Busca';
+                document.querySelector('.explorer-tabs').appendChild(searchTab);
+                
+                // Criar conteúdo de pesquisa
+                searchContent = document.createElement('div');
+                searchContent.className = 'explorer-tab-content';
+                searchContent.id = 'search-photos';
+                searchContent.innerHTML = '<div class="photo-grid"></div>';
+                document.querySelector('.explorer-content').appendChild(searchContent);
+                
+                // Adicionar evento à aba
+                searchTab.addEventListener('click', () => {
+                    tabs.forEach(t => t.classList.remove('active'));
+                    searchTab.classList.add('active');
+                    
+                    const tabContents = document.querySelectorAll('.explorer-tab-content');
+                    tabContents.forEach(content => content.classList.remove('active'));
+                    searchContent.classList.add('active');
+                });
+            }
+            
+            if (searchTerm) {
+                // Mostrar a aba de busca e torná-la ativa
+                if (searchTab) {
+                    tabs.forEach(t => t.classList.remove('active'));
+                    searchTab.classList.add('active');
+                    
+                    const tabContents = document.querySelectorAll('.explorer-tab-content');
+                    tabContents.forEach(content => content.classList.remove('active'));
+                    searchContent.classList.add('active');
+                    
+                    // Preencher com resultados da busca
+                    populatePhotoGrid(searchContent, filteredPhotos);
+                }
+            } else {
+                // Remover a aba de busca se o campo estiver vazio
+                if (searchTab) {
+                    searchTab.remove();
+                    searchContent.remove();
+                    
+                    // Ativar a primeira aba
+                    const firstTab = document.querySelector('.explorer-tab');
+                    if (firstTab) {
+                        firstTab.click();
+                    }
+                }
+            }
+        });
+    }
+    
+    // Inicializar tudo quando o DOM estiver carregado
+    document.addEventListener('DOMContentLoaded', () => {
+        // Adicionar o link de explorar fotos ao menu lateral
+        const sidebarMenu = document.querySelector('.sidebar-menu');
+        if (sidebarMenu) {
+            const exploreLink = document.createElement('li');
+            exploreLink.innerHTML = '<a href="#" id="explore-photos-link"><span class="sidebar-menu-icon">🔍</span> Explorar Fotos</a>';
+            sidebarMenu.appendChild(exploreLink);
+            
+            // Criar o elemento de explorador de fotos
+            const mainContainer = document.getElementById('main-container');
+            const photoExplorer = document.createElement('div');
+            photoExplorer.id = 'photo-explorer';
+            photoExplorer.className = 'photo-explorer';
+            photoExplorer.style.display = 'none';
+            
+            photoExplorer.innerHTML = `
+                <div class="explorer-header">
+                    <h2>Explorar Fotos</h2>
+                    <div class="explorer-tabs">
+                        <div class="explorer-tab active" data-tab="friends">Amigos</div>
+                        <div class="explorer-tab" data-tab="trending">Em Alta</div>
+                        <div class="explorer-tab" data-tab="countries">Países</div>
+                    </div>
+                    <div class="explorer-search">
+                        <input type="text" placeholder="Buscar fotos..." id="photo-search">
+                    </div>
+                </div>
+                
+                <div class="explorer-content">
+                    <div class="explorer-tab-content active" id="friends-photos">
+                        <div class="photo-grid"></div>
+                    </div>
+                    
+                    <div class="explorer-tab-content" id="trending-photos">
+                        <div class="photo-grid"></div>
+                    </div>
+                    
+                    <div class="explorer-tab-content" id="countries-photos">
+                        <div class="countries-list">
+                            <div class="country-item" data-country="brasil">Brasil</div>
+                            <div class="country-item" data-country="italia">Itália</div>
+                            <div class="country-item" data-country="japao">Japão</div>
+                            <div class="country-item" data-country="eua">Estados Unidos</div>
+                            <div class="country-item" data-country="franca">França</div>
+                            <div class="country-item" data-country="australia">Austrália</div>
+                            <div class="country-item" data-country="egito">Egito</div>
+                            <div class="country-item" data-country="india">Índia</div>
+                        </div>
+                        <div class="country-photos">
+                            <h3>Selecione um país para ver fotos</h3>
+                            <div class="photo-grid" id="country-photos-grid"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="close-explorer">×</div>
+            `;
+            
+            document.body.appendChild(photoExplorer);
+            
+            // Inicializar o explorador de fotos
+            initPhotoExplorer();
+        }
+    });
+</script>

@@ -34,19 +34,51 @@ $(document).ready(function () {
 
         let acao = idAtivo === "" ? 'inserir' : 'update';
 
-        var formData = new FormData();
-        formData.append('acao', acao);
-        formData.append('marca', marca);
-        formData.append('tipo', tipo);
-        formData.append('quantidade', quantidade);
-        formData.append('quantidadeMin', quantidadeMin);
-        formData.append('observacao', observacao);
-        formData.append('idAtivo', idAtivo);
-        formData.append('ativo', descricao_ativo);
-
-        // Só adiciona a imagem nova se o usuário tiver selecionado uma
-        if (imgAtivo) {
-            formData.append('imgAtivo', imgAtivo);
+        // Se for uma atualização, perguntar o motivo da alteração
+        if (acao === 'update') {
+            let motivo = prompt("Por favor, informe o motivo da alteração:");
+            
+            // Se o usuário cancelar o prompt ou não fornecer um motivo
+            if (motivo === null) {
+                return false; // Cancela a operação
+            }
+            
+            if (motivo.trim() === "") {
+                alert("É necessário informar um motivo para a alteração.");
+                return false;
+            }
+            
+            var formData = new FormData();
+            formData.append('acao', acao);
+            formData.append('marca', marca);
+            formData.append('tipo', tipo);
+            formData.append('quantidade', quantidade);
+            formData.append('quantidadeMin', quantidadeMin);
+            formData.append('observacao', observacao);
+            formData.append('idAtivo', idAtivo);
+            formData.append('ativo', descricao_ativo);
+            formData.append('motivo', motivo);
+            
+            // Só adiciona a imagem nova se o usuário tiver selecionado uma
+            if (imgAtivo) {
+                formData.append('imgAtivo', imgAtivo);
+            }
+        } else {
+            // Caso seja inserção, não precisa de motivo
+            var formData = new FormData();
+            formData.append('acao', acao);
+            formData.append('marca', marca);
+            formData.append('tipo', tipo);
+            formData.append('quantidade', quantidade);
+            formData.append('quantidadeMin', quantidadeMin);
+            formData.append('observacao', observacao);
+            formData.append('idAtivo', idAtivo);
+            formData.append('ativo', descricao_ativo);
+            
+            // Só adiciona a imagem nova se o usuário tiver selecionado uma
+            if (imgAtivo) {
+                formData.append('imgAtivo', imgAtivo);
+            }
         }
 
         $.ajax({
@@ -69,13 +101,27 @@ $(document).ready(function () {
 });
 
 function muda_status(status, idAtivo) {
+    // Perguntar o motivo da alteração de status
+    let motivo = prompt("Por favor, informe o motivo da alteração de status:");
+    
+    // Se o usuário cancelar o prompt ou não fornecer um motivo
+    if (motivo === null) {
+        return; // Cancela a operação
+    }
+    
+    if (motivo.trim() === "") {
+        alert("É necessário informar um motivo para a alteração de status.");
+        return;
+    }
+    
     $.ajax({
         type: 'POST',
         url: "../controle/ativos_controller.php",
         data: {
             acao: 'alterar_status',
             status: status,
-            idAtivo: idAtivo
+            idAtivo: idAtivo,
+            motivo: motivo
         },
         success: function (result) {
             let retorno = JSON.parse(result);
@@ -120,17 +166,17 @@ function edita(idAtivo) {
         success: function (result) {
             let retorno = JSON.parse(result);
 
-            $("#ativo").val(retorno[0]['descricaoAtivo']);
-            $("#marca").val(retorno[0]['idMarca']);
-            $("#tipo").val(retorno[0]['idTipo']);
-            $("#quantidade").val(retorno[0]['quantidadeAtivo']);
-            $("#quantidadeMin").val(retorno[0]['quantidadeMinAtivo']);
-            $("#observacao").val(retorno[0]['observacaoAtivo']);
+            $("#ativo").val(retorno['data'][0]['descricaoAtivo']);
+            $("#marca").val(retorno['data'][0]['idMarca']);
+            $("#tipo").val(retorno['data'][0]['idTipo']);
+            $("#quantidade").val(retorno['data'][0]['quantidadeAtivo']);
+            $("#quantidadeMin").val(retorno['data'][0]['quantidadeMinAtivo']);
+            $("#observacao").val(retorno['data'][0]['observacaoAtivo']);
 
-            if (retorno[0]['urlImg'] != "") {
+            if (retorno['data'][0]['urlImg'] != "") {
                 let imgPreview = $("#imgPreview");
                 let divPreview = $("#divPreview");
-                imgPreview.attr("src", window.location.protocol + "//" + window.location.host + '/' + retorno[0]['urlImg']);
+                imgPreview.attr("src", window.location.protocol + "//" + window.location.host + '/' + retorno['data'][0]['urlImg']);
                 divPreview.attr("style", "display:block");
             } else {
                 $("#imgPreview").attr("style", "display:none");
@@ -152,6 +198,3 @@ function limpar_modal() {
     $("#tipo").val('');
     $("#observacao").val('');
 }
-
-
-
