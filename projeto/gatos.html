@@ -1,0 +1,640 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GATINHOS MALUCOS!!! 🐱😜</title>
+    <style>
+        :root {
+            --primary: #ff4081;
+            --secondary: #00e676;
+            --third: #ffeb3b;
+            --fourth: #2979ff;
+            --background: #f8f3ff;
+            --text: #333;
+        }
+        
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        
+        @keyframes floating {
+            0% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-15px) rotate(3deg); }
+            100% { transform: translateY(0px) rotate(0deg); }
+        }
+        
+        @keyframes backgroundParty {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+        
+        @keyframes shake {
+            0% { transform: translate(1px, 1px) rotate(0deg); }
+            10% { transform: translate(-1px, -2px) rotate(-1deg); }
+            20% { transform: translate(-3px, 0px) rotate(1deg); }
+            30% { transform: translate(3px, 2px) rotate(0deg); }
+            40% { transform: translate(1px, -1px) rotate(1deg); }
+            50% { transform: translate(-1px, 2px) rotate(-1deg); }
+            60% { transform: translate(-3px, 1px) rotate(0deg); }
+            70% { transform: translate(3px, 1px) rotate(-1deg); }
+            80% { transform: translate(-1px, -1px) rotate(1deg); }
+            90% { transform: translate(1px, 2px) rotate(0deg); }
+            100% { transform: translate(1px, -2px) rotate(-1deg); }
+        }
+        
+        @keyframes bounceIn {
+            0% { transform: scale(0.1); opacity: 0; }
+            60% { transform: scale(1.2); opacity: 1; }
+            100% { transform: scale(1); }
+        }
+        
+        body {
+            font-family: 'Comic Sans MS', cursive, sans-serif;
+            background: linear-gradient(45deg, #ff9a9e, #fad0c4, #fad0c4, #a18cd1, #fbc2eb);
+            background-size: 500% 500%;
+            animation: backgroundParty 15s ease infinite;
+            color: var(--text);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 1rem;
+            text-align: center;
+        }
+        
+        header {
+            padding: 2rem 1rem;
+            text-align: center;
+            animation: bounceIn 1s;
+        }
+        
+        h1 {
+            font-size: 3.5rem;
+            margin-bottom: 0.5rem;
+            color: var(--primary);
+            text-shadow: 3px 3px 0px rgba(0,0,0,0.1);
+            animation: shake 2s infinite;
+            display: inline-block;
+        }
+        
+        h2 {
+            font-size: 1.8rem;
+            margin-bottom: 2rem;
+            color: var(--fourth);
+        }
+        
+        .cat-emoji {
+            font-size: 3rem;
+            display: inline-block;
+            margin: 0 5px;
+            animation: floating 3s ease-in-out infinite;
+        }
+        
+        .cat-emoji:nth-child(2) {
+            animation-delay: 0.5s;
+        }
+        
+        .cat-emoji:nth-child(3) {
+            animation-delay: 1s;
+        }
+        
+        .controls {
+            margin: 2rem 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 1rem;
+        }
+        
+        .cat-count {
+            background-color: white;
+            border: 4px solid var(--third);
+            border-radius: 15px;
+            padding: 1rem;
+            display: flex;
+            align-items: center;
+            max-width: 400px;
+            margin: 0 auto;
+        }
+        
+        label {
+            font-size: 1.5rem;
+            margin-right: 1rem;
+            font-weight: bold;
+            color: var(--fourth);
+        }
+        
+        select {
+            font-family: 'Comic Sans MS', cursive, sans-serif;
+            font-size: 1.2rem;
+            padding: 0.5rem;
+            border: 3px dashed var(--secondary);
+            border-radius: 10px;
+            background-color: white;
+            cursor: pointer;
+            outline: none;
+            transition: all 0.3s;
+        }
+        
+        select:hover {
+            transform: scale(1.05);
+            border-color: var(--primary);
+        }
+        
+        .action-buttons {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        
+        button {
+            font-family: 'Comic Sans MS', cursive, sans-serif;
+            font-size: 1.3rem;
+            font-weight: bold;
+            padding: 0.7rem 1.5rem;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
+        }
+        
+        button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(45deg, var(--primary), var(--secondary), var(--third), var(--fourth));
+            background-size: 400% 400%;
+            z-index: -1;
+            transition: all 0.5s ease;
+            animation: backgroundParty 3s ease infinite;
+        }
+        
+        button:hover {
+            transform: translateY(-5px) scale(1.05);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+        }
+        
+        button:active {
+            transform: translateY(0) scale(0.95);
+        }
+        
+        #cats-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+        
+        .cat-card {
+            background-color: white;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+            transition: all 0.3s ease;
+            transform: rotate(var(--random-rotate));
+            animation: bounceIn 0.6s;
+            position: relative;
+        }
+        
+        .cat-card:hover {
+            transform: scale(1.05) rotate(0deg);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.2);
+        }
+        
+        .cat-image {
+            width: 100%;
+            height: 250px;
+            object-fit: cover;
+            border-bottom: 5px dotted var(--fourth);
+        }
+        
+        .cat-caption {
+            padding: 1rem;
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: var(--primary);
+        }
+        
+        .cat-hat {
+            position: absolute;
+            top: -30px;
+            right: -20px;
+            font-size: 3rem;
+            transform: rotate(30deg);
+            z-index: 2;
+        }
+        
+        .cat-glasses {
+            position: absolute;
+            top: 100px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 3rem;
+            z-index: 2;
+        }
+        
+        .loading {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin: 3rem 0;
+            font-size: 2rem;
+            color: var(--fourth);
+        }
+        
+        .loading span {
+            display: inline-block;
+            margin-top: 1rem;
+            animation: floating 1s ease-in-out infinite;
+        }
+        
+        .error-message {
+            background-color: #ffebee;
+            border: 3px dashed #ff5252;
+            padding: 1rem;
+            border-radius: 10px;
+            margin: 1rem 0;
+            font-size: 1.2rem;
+            color: #c62828;
+            display: none;
+        }
+        
+        .funny-message {
+            margin: 2rem 0;
+            padding: 1rem;
+            background-color: rgba(255, 255, 255, 0.7);
+            border-radius: 15px;
+            font-size: 1.5rem;
+            color: var(--primary);
+            font-weight: bold;
+            animation: shake 5s infinite;
+            display: inline-block;
+        }
+        
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2.5rem;
+            }
+            
+            .cat-emoji {
+                font-size: 2rem;
+            }
+            
+            button {
+                font-size: 1.1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>GATINHOS MALUCOS!!!</h1>
+            <div>
+                <span class="cat-emoji">😺</span>
+                <span class="cat-emoji">🐱</span>
+                <span class="cat-emoji">😻</span>
+            </div>
+            <h2>O gerador mais DOIDO de gatos da internet!</h2>
+        </header>
+        
+        <div class="funny-message">
+            Por que os gatos são tão engraçados no computador?<br>
+            Porque eles sempre querem dar um MOUSE-trinho! 🐭
+        </div>
+        
+        <div class="controls">
+            <div class="cat-count">
+                <label for="image-count">Quantidade de gatos:</label>
+                <select id="image-count">
+                    <option value="4">4 Gatinhos</option>
+                    <option value="8" selected>8 Gatinhos</option>
+                    <option value="12">12 GATINHOS!!!</option>
+                    <option value="16">MUITOS GATINHOS!!!!</option>
+                </select>
+            </div>
+            
+            <div class="action-buttons">
+                <button id="load-cats">ME DÁ GATOS AGORA!!! 😻</button>
+                <button id="crazy-mode">MODO SUPER MALUCO!!! 🤪</button>
+            </div>
+        </div>
+        
+        <div id="error-message" class="error-message"></div>
+        
+        <div id="loading" class="loading" style="display: none;">
+            Procurando os gatinhos mais loucos...
+            <span>🕵️‍♀️🐱🕵️‍♂️</span>
+        </div>
+        
+        <div id="cats-container"></div>
+    </div>
+    
+    <script>
+        // Configuração da API
+        const API_KEY = 'SUBSTITUA_PELA_SUA_API_KEY'; // Substitua pela sua chave da API
+        const API_URL = 'https://api.thecatapi.com/v1';
+        
+        // Elementos do DOM
+        const loadCatsBtn = document.getElementById('load-cats');
+        const crazyModeBtn = document.getElementById('crazy-mode');
+        const imageCountSelect = document.getElementById('image-count');
+        const catsContainer = document.getElementById('cats-container');
+        const loadingElement = document.getElementById('loading');
+        const errorMessage = document.getElementById('error-message');
+        
+        // Estado da aplicação
+        let crazyMode = false;
+        
+        // Frases engraçadas para legendas de gatos
+        const funnyCaptions = [
+            "Eu não acordei com esse cabelo, eu TRABALHEI pra ficar assim!",
+            "Se eu coubesse na caixa, você não me acharia!",
+            "Minha dieta começa... NUNCA!",
+            "Sou uma mistura de ninja e preguiça",
+            "Me dê petiscos ou me dê... mais petiscos!",
+            "Acordo bonito assim todo dia, é uma maldição!",
+            "Não estou com cara de mal, esta é minha cara de 'cadê o jantar?'",
+            "Meu sonho é ser um leão, mas nasci decorativo",
+            "Esse pelo todo é meu, até o último fio do seu sofá!",
+            "Minha personalidade? Complexa. Meus desejos? Simples. COMIDA.",
+            "Eu não estou dormindo, estou planejando dominar o mundo!",
+            "Você não é meu dono, eu sou SEU dono!",
+            "Não sou preguiçoso, estou economizando energia!",
+            "Minha casa, minhas regras, meu sofá, seu problema!",
+            "Não me chame de gordinho, estou 'fofinho' pra te aquecer no inverno!",
+            "Eu vi o que você fez ali. Sim, AQUILO.",
+            "Só acordo cedo em caso de incêndio ou comida",
+            "Se eu pudesse falar, não falaria com você",
+            "Miau é Meow em português!",
+            "Estou testando quanto tempo posso ficar sem fazer nada"
+        ];
+        
+        // Acessórios de gato engraçados (com emojis)
+        const funnyAccessories = [
+            { hat: "🎩", glasses: "👓" },
+            { hat: "👑", glasses: "🕶️" },
+            { hat: "🧢", glasses: "🥽" },
+            { hat: "🎓", glasses: "" },
+            { hat: "⛑️", glasses: "🤿" },
+            { hat: "👒", glasses: "" },
+            { hat: "🪖", glasses: "🥸" },
+            { hat: "", glasses: "😎" },
+            { hat: "🤠", glasses: "" },
+            { hat: "👽", glasses: "" }
+        ];
+        
+        // Sons engraçados de gato
+        const catSounds = [
+            "Miau! 😺",
+            "Miaaaaau! 😸",
+            "Purrrr... 😻",
+            "Miau miau miau! 🙀",
+            "Hisssss! 😾",
+            "Mrrrow! 😹",
+            "Prrrrrr... 😽",
+            "MIAAAAUUUU! 🐱",
+            "Meow Mix Mix Mix! 🐈",
+            "Nyan nyan nyan! 🌈"
+        ];
+        
+        // Mensagens engraçadas para exibir enquanto carrega
+        const loadingMessages = [
+            "Reunindo os gatos mais engraçados...",
+            "Abrindo latas de atum para atrair gatos...",
+            "Tirando os gatos de cima do teclado...",
+            "Enrolando bolinhas de lã...",
+            "Limpando a caixa de areia...",
+            "Acordando gatos que estão tirando uma soneca...",
+            "Jogando caixas no chão para os gatos sentarem...",
+            "Balançando penas para chamar atenção dos gatos...",
+            "Ligando o aspirador para os gatos correrem...",
+            "Mexendo no armário de petiscos..."
+        ];
+        
+        // Função para fazer requisições à API
+        async function fetchFromAPI(endpoint, params = {}) {
+            const url = new URL(`${API_URL}${endpoint}`);
+            Object.keys(params).forEach(key => url.searchParams.append(key, params[key]));
+            
+            const headers = {
+                'x-api-key': API_KEY
+            };
+            
+            try {
+                const response = await fetch(url, { headers });
+                if (!response.ok) {
+                    throw new Error(`Erro na requisição: ${response.status}`);
+                }
+                return await response.json();
+            } catch (error) {
+                console.error('Erro ao acessar a API:', error);
+                throw error;
+            }
+        }
+        
+        // Função para gerar número aleatório dentro de um intervalo
+        function getRandomNumber(min, max) {
+            return Math.floor(Math.random() * (max - min + 1)) + min;
+        }
+        
+        // Função para obter item aleatório de um array
+        function getRandomItem(array) {
+            return array[Math.floor(Math.random() * array.length)];
+        }
+        
+        // Função para embaralhar um array
+        function shuffleArray(array) {
+            for (let i = array.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [array[i], array[j]] = [array[j], array[i]];
+            }
+            return array;
+        }
+        
+        // Função para atualizar a mensagem de carregamento
+        function updateLoadingMessage() {
+            const loadingText = getRandomItem(loadingMessages);
+            loadingElement.innerHTML = `${loadingText}<br><span>🕵️‍♀️🐱🕵️‍♂️</span>`;
+        }
+        
+        // Função para carregar gatos
+        async function loadCats() {
+            // Exibir loading
+            loadingElement.style.display = 'flex';
+            errorMessage.style.display = 'none';
+            updateLoadingMessage();
+            
+            // Limpar contêiner
+            catsContainer.innerHTML = '';
+            
+            try {
+                const limit = parseInt(imageCountSelect.value);
+                const cats = await fetchFromAPI('/images/search', { limit });
+                displayCats(cats);
+            } catch (error) {
+                errorMessage.textContent = `Ops! Os gatinhos estão ocupados lambendo as patas: ${error.message}`;
+                errorMessage.style.display = 'block';
+            } finally {
+                loadingElement.style.display = 'none';
+            }
+        }
+        
+        // Função para exibir os gatos
+        function displayCats(cats) {
+            catsContainer.innerHTML = '';
+            
+            // Embaralhar as legendas e acessórios
+            const shuffledCaptions = shuffleArray([...funnyCaptions]);
+            const shuffledAccessories = shuffleArray([...funnyAccessories]);
+            const shuffledSounds = shuffleArray([...catSounds]);
+            
+            cats.forEach((cat, index) => {
+                // Gerar rotação aleatória (entre -5 e 5 graus em modo normal, entre -15 e 15 em modo maluco)
+                const rotateAmount = crazyMode ? getRandomNumber(-15, 15) : getRandomNumber(-5, 5);
+                
+                const catCard = document.createElement('div');
+                catCard.className = 'cat-card';
+                catCard.style.setProperty('--random-rotate', `${rotateAmount}deg`);
+                
+                // Adicionar atraso para animação de entrada
+                catCard.style.animationDelay = `${index * 0.1}s`;
+                
+                // Selecionar acessórios aleatórios
+                const accessories = shuffledAccessories[index % shuffledAccessories.length];
+                const caption = shuffledCaptions[index % shuffledCaptions.length];
+                const sound = shuffledSounds[index % shuffledSounds.length];
+                
+                // Construir o HTML do card
+                catCard.innerHTML = `
+                    ${accessories.hat ? `<div class="cat-hat">${accessories.hat}</div>` : ''}
+                    ${crazyMode && accessories.glasses ? `<div class="cat-glasses">${accessories.glasses}</div>` : ''}
+                    <img src="${cat.url}" alt="Gato maluco" class="cat-image">
+                    <div class="cat-caption">
+                        ${caption}<br>${sound}
+                    </div>
+                `;
+                
+                // Adicionar evento de clique para som engraçado
+                catCard.addEventListener('click', () => {
+                    // Criar um balão de fala temporário
+                    const speechBubble = document.createElement('div');
+                    speechBubble.textContent = getRandomItem(catSounds);
+                    speechBubble.style.position = 'absolute';
+                    speechBubble.style.top = '-40px';
+                    speechBubble.style.left = '50%';
+                    speechBubble.style.transform = 'translateX(-50%)';
+                    speechBubble.style.background = 'white';
+                    speechBubble.style.padding = '10px';
+                    speechBubble.style.borderRadius = '20px';
+                    speechBubble.style.boxShadow = '0 3px 10px rgba(0,0,0,0.2)';
+                    speechBubble.style.zIndex = '10';
+                    speechBubble.style.animation = 'bounceIn 0.5s, floating 2s, fadeOut 0.5s 1.5s';
+                    
+                    catCard.style.position = 'relative';
+                    catCard.appendChild(speechBubble);
+                    
+                    // Remover após 2 segundos
+                    setTimeout(() => {
+                        speechBubble.remove();
+                    }, 2000);
+                });
+                
+                catsContainer.appendChild(catCard);
+            });
+            
+            // Adicionar mensagem engraçada aleatória após carregar os gatos
+            const funnyMessage = document.querySelector('.funny-message');
+            const jokes = [
+                "Por que os gatos são tão engraçados no computador?<br>Porque eles sempre querem dar um MOUSE-trinho! 🐭",
+                "O que o gato disse para o rato?<br>Vamos marcar um encontro, você vai ser o jantar! 🍽️",
+                "Por que o gato ficou nervoso no consultório do veterinário?<br>Porque tinha um CAT-SCAN! 📋",
+                "O que o gato faz quando está entediado?<br>Navega na MIAUnternet! 💻",
+                "Qual é o animal que mais gosta de ouvir elogios?<br>O GAT-ÚNICO! 😺",
+                "Por que o gato ganhou um prêmio de literatura?<br>Porque ele é MIAU-RAVILHOSO em contar histórias! 📚",
+                "Qual é o jogo favorito dos gatos?<br>Esconde-esconde, porque eles sempre acham uma caixa para se esconder! 📦"
+            ];
+            
+            funnyMessage.innerHTML = getRandomItem(jokes);
+        }
+        
+        // Função para ativar/desativar modo maluco
+        function toggleCrazyMode() {
+            crazyMode = !crazyMode;
+            
+            if (crazyMode) {
+                crazyModeBtn.textContent = "MODO NORMAL (que sem graça...) 😴";
+                document.body.style.animation = "backgroundParty 5s ease infinite";
+                // Chamar loadCats para atualizar os gatos com o novo modo
+                loadCats();
+                
+                // Adicionar mais diversão ao modo maluco
+                document.querySelectorAll('.cat-emoji').forEach(emoji => {
+                    emoji.style.fontSize = "4rem";
+                    emoji.style.animation = "floating 1s ease-in-out infinite, shake 2s infinite";
+                });
+                
+                // Texto piscando no título
+                const title = document.querySelector('h1');
+                title.style.animation = "shake 1s infinite, colorChange 2s infinite";
+                
+                // Mensagem especial
+                alert("🎉 MODO SUPER MALUCO ATIVADO! SEGURE-SE NOS BIGODES! 🐱");
+            } else {
+                crazyModeBtn.textContent = "MODO SUPER MALUCO!!! 🤪";
+                document.body.style.animation = "backgroundParty 15s ease infinite";
+                loadCats();
+                
+                // Restaurar animações normais
+                document.querySelectorAll('.cat-emoji').forEach(emoji => {
+                    emoji.style.fontSize = "3rem";
+                    emoji.style.animation = "floating 3s ease-in-out infinite";
+                });
+                
+                // Restaurar animação do título
+                const title = document.querySelector('h1');
+                title.style.animation = "shake 2s infinite";
+            }
+        }
+        
+        // Adicionar eventos aos botões
+        loadCatsBtn.addEventListener('click', loadCats);
+        crazyModeBtn.addEventListener('click', toggleCrazyMode);
+        
+        // Adicionar estilo de rotação CSS (adicionado em runtime)
+        const styleSheet = document.createElement("style");
+        styleSheet.textContent = `
+            @keyframes fadeOut {
+                to { opacity: 0; }
+            }
+            
+            @keyframes colorChange {
+                0% { color: var(--primary); }
+                25% { color: var(--secondary); }
+                50% { color: var(--third); }
+                75% { color: var(--fourth); }
+                100% { color: var(--primary); }
+            }
+        `;
+        document.head.appendChild(styleSheet);
+        
+        // Carregar gatos quando a página carregar
+        document.addEventListener('DOMContentLoaded', loadCats);
+    </script>
+</body>
+</html>
