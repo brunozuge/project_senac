@@ -17,6 +17,7 @@
                 <li class="nav-item"><a class="nav-link" href="ativos.php">Ativo</a></li>
                 <li class="nav-item"><a class="nav-link" href="movimentacoes.php">Movimentação</a></li>
                 <li class="nav-item"><a class="nav-link" href="tipos.php">Tipo</a></li>
+                <li class="nav-item"><a class="nav-link" href="opcao.php">Opção</a></li>
                 <li class="nav-item"><a class="nav-link" href="relatorio.php">Relatório</a></li>
                 <li class="nav-item"><a class="nav-link" href="busca_prod_ml.php">Reposição</a></li>
                 <!-- Dropdown organizado -->

@@ -189,7 +189,7 @@ include_once("senac.html");
     <!-- Seção Hero -->
     <div class="hero">
         <h1>Bem-vindo ao Sistema de Gestão SENAC</h1>
-        <p>Gerencie usuários, cadastros e movimentações de forma eficiente e segura.</p>
+        <p>Gerenciamento de ativos do SENAC de forma eficiente.</p>
     </div>
 
     <!-- Seção de Recursos -->
