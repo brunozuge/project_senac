@@ -4,6 +4,7 @@ $nome = $_POST['nome'];
 $usuario = $_POST['usuario'];
 $senha = $_POST['senha'];
 $turma = $_POST['turma'];
+$cargo ='1';
 
 //echo "Usuário cadastrado com suceso!!!<br>"."Nome: ".$nome."<br>"."Usuario: ". $usuario."<br>"."Turma: ".$turma."<br>";
 
@@ -16,12 +17,16 @@ $senhaC = base64_encode($senha);
                                 usuario,
                                 senhaUsuario,
                                 turmaUsuario,
-                                dataCadastro
+                                dataCadastro,
+                                idCargo
                                 )values ('".$nome."',
                                 '".$usuario. "',
                                 '".$senhaC. "',
                                 '".$turma. "',
-                                    NOW())";
+                               
+                                    NOW(),
+                                    '$cargo'
+                                    )";
 
 $result = mysqli_query($conexao,$querry)or die(false);
 if($result){

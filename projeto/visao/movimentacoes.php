@@ -51,9 +51,9 @@ if (!$result) {
 ?>
 
 <div class=" mt-5">
-    <h2 class="mt-4">Lista de Movimentações</h2>
-    <!-- Tabela com as movimentações -->
-    <table class="table table-striped mt-4" id="tabelaMovimentacoes">
+    <h2 class="container mt-4">Lista de Movimentações</h2>
+
+    <div class="container mt-4">    <table class="table table-striped mt-4" id="tabelaMovimentacoes">
         <thead>
             <tr>
                 <th scope="col">ID</th>
@@ -133,7 +133,7 @@ if (!$result) {
 
 
 <div class="mt-5">
-    <h2 class="mt-4">Estatísticas de Movimentações</h2>
+    <h2 class="container mt-4">Estatísticas de Movimentações</h2>
     <div class="d-flex justify-content-center mb-3">
         <button id="btnCarregarGraficos" class="btn btn-warning">Carregar Estatísticas</button>
     </div>

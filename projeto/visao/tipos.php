@@ -28,9 +28,9 @@ include('navbar.php');
 </div>
 
 <div class=" mt-5">
-    <h2 class="mt-4">Lista de Tipos</h2>
-    <!-- Tabela com os tipos -->
-    <table class="table table-striped mt-4" id="tabelaTipos">
+    <h2 class="container mt-4">Lista de Tipos</h2>
+
+    <div class="container mt-4">    <table class="table table-striped mt-4" id="tabelaTipos">
         <thead>
             <tr>
                 <th scope="col">ID</th>

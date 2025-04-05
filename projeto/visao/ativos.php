@@ -47,6 +47,7 @@ $tipos = busca_info_bd($conexao, 'tipo');
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>
     <script src="https://cdn.datatables.net/buttons/2.4.2/js/buttons.html5.min.js"></script>
     <script src="https://cdn.datatables.net/buttons/2.4.2/js/buttons.print.min.js"></script>
+    
     <script src="../js/ativos.js"></script>
     
     <style>
@@ -168,6 +169,15 @@ $tipos = busca_info_bd($conexao, 'tipo');
             background-color: #121212; /* Cor do fundo para o tema escuro */
             color: #fff; /* Cor do texto para o tema escuro */
         }
+
+        .oculta_mobile{
+            display: block;
+        }
+        @media  (max-width:991px){
+            .oculta_mobile{
+                 display: none!important;
+            }
+        }
     </style>
 </head>
 <body>
@@ -198,8 +208,10 @@ $tipos = busca_info_bd($conexao, 'tipo');
     </script>
     
     <div id="tabelaResumida">
-        <h2 class="mt-4">Lista de Ativos</h2>
-        <!-- Tabela Simples (Visível por padrão) -->
+        <h2 class="container mt-4">Lista de Ativos</h2>
+       
+    <div class="container mt-4">
+    <div style="overflow-x: auto;">
         <table class="table table-striped mt-4" id="tabelaAtivos">
             <thead>
                 <tr>

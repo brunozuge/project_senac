@@ -44,7 +44,6 @@
     // Aqui você pode adicionar a lógica para salvar os dados
   
     // Exemplo: fechar o modal após o envio
-    const modal = bootstrap.Modal.getInstance(document.getElementById('exampleModal'));
-    modal.hide();
+    
   });
 </script>

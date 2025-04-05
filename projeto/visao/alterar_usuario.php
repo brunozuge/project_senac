@@ -69,6 +69,7 @@
     </style>
 </head>
 <body>
+<script src="../js/theme.js"></script>
     <!-- Menu de Navegação -->
     <nav class="navbar navbar-expand-lg navbar-light">
         <div class="container">
@@ -97,9 +98,12 @@
             $usuario_altera = $_GET['id_usuario'];
             // Buscando os dados do usuário no banco
             $info_bd = busca_info_bd($conexao, 'usuario', 'idUsuario', $usuario_altera);
+            $cargos = busca_info_bd($conexao, 'cargo');
+
             foreach ($info_bd as $user) {
                 $nome = $user['nomeUsuario'];
                 $turma = $user['turmaUsuario'];
+                $id_cargo = $user['idCargo'];
             }
         } else {
             echo "<p>Erro: ID do usuário não encontrado.</p>";
@@ -120,10 +124,25 @@
                 <label for="turma">Turma:</label>
                 <input type="text" class="form-control" id="turma" name="turma" value="<?php echo $turma; ?>" required>
             </div>
+               <div class="form-group">
+                <label for="turma">Cargo:</label>
+                <select name="cargo" class="form-control">
+        <option select disabled value="">Selecione o cargo</option>      
+        <?php 
+        foreach ($cargos as $value){
+            if($value['idCargo']==$id_cargo){
+         echo '<option value="'.$value['idCargo'].'"selected>'.$value['descricaoCargo'].'</option>';   
+        }else{
+            echo '<option value="'.$value['idCargo'].'">'.$value['descricaoCargo'].'</option>';   
+        }}
+        ?>      
+            </div>
             <input type="hidden" name="id_usuario" value="<?php echo $usuario_altera; ?>">
-            <button type="submit" class="btn btn-primary">Salvar Alterações</button>
+            <button type="submit" class="btn btn-primary" style="margin-top: 15px;">Salvar Alterações</button>
+
         </form>
         
     </div>
+ 
 </body>
 </html>

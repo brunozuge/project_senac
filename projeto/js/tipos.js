@@ -14,8 +14,8 @@ $(document).ready(function () {
             type: 'POST',
             url: "../controle/marcas_controller.php",
             data: {
-               descricaoMarca:descricaoMarca,
-               idMarca:idMarca
+               descricaoTipo:descricaoTipo,
+               idTipo:idTipo
 
             },
 

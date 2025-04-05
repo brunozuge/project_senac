@@ -2,8 +2,8 @@
 session_start(); // Inicia a sessão
 
 // Verifica se o usuário está autenticado
-if (!isset($_SESSION['usuario']) || !isset($_SESSION['senha'])) {
-    header("Location: ../login.php"); // Redireciona para a página de login
+if (!isset($_SESSION['login_ok']) || !isset($_SESSION['controle_login'])) {
+    header("Location: ../visao/login.php"); // Redireciona para a página de login
     exit;
 }
 
@@ -11,10 +11,6 @@ if (!isset($_SESSION['usuario']) || !isset($_SESSION['senha'])) {
 $usuario_autorizado = "bz";
 $senha_autorizada = "123";
 
-if ($_SESSION['usuario'] !== $usuario_autorizado || $_SESSION['senha'] !== $senha_autorizada) {
-    echo "<p>Acesso negado. Apenas usuários autorizados podem alterar informações.</p>";
-    exit;
-}
 
 // Aqui entra o restante do código para processar a alteração do usuário
 include('../modelo/conexao.php');
@@ -24,14 +20,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $id_usuario = $_POST['id_usuario'];
     $nome = $_POST['nome'];
     $turma = $_POST['turma'];
+    $id = $_POST['id'];
+    $cargo = $_POST['cargo'];
 
     // Atualizar o banco de dados
-    $query = "UPDATE usuario SET nomeUsuario = ?, turmaUsuario = ? WHERE idUsuario = ?";
+    $query = "UPDATE usuario SET nomeUsuario = ?,idCargo = ?, turmaUsuario = ? WHERE idUsuario = ?";
     $stmt = $conexao->prepare($query);
-    $stmt->bind_param("ssi", $nome, $turma, $id_usuario);
+    $stmt->bind_param("sssi", $nome,$cargo, $turma, $id_usuario);
 
     if ($stmt->execute()) {
-        header("Location: ../listar_usuario.php?msg=alteracao_sucesso"); // Redireciona após sucesso
+        header("Location: ../visao/listar_usuario.php?msg=alteracao_sucesso"); // Redireciona após sucesso
     } else {
         echo "<p>Erro ao atualizar o usuário.</p>";
     }
