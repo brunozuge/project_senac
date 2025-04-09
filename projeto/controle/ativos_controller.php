@@ -186,4 +186,29 @@ switch ($acao) {
 // Responde apenas uma vez no final
 echo json_encode($response);
 exit();
+
+?>
+<?php
+// controller_ativos.php
+
+if ($_GET['action'] === 'visualizar' && isset($_GET['id'])) {
+  $id = intval($_GET['id']);
+
+  // Exemplo de conexão com PDO
+  include 'conexao.php';
+
+  $stmt = $pdo->prepare("SELECT a.idAtivo, a.descricaoAtivo, m.descricaoMarca AS marca, 
+                                t.descricaoTipo AS tipo, a.quantidade, a.quantidadeMin, 
+                                a.observacao, a.imagem
+                         FROM ativos a
+                         JOIN marcas m ON a.idMarca = m.idMarca
+                         JOIN tipos t ON a.idTipo = t.idTipo
+                         WHERE a.idAtivo = ?");
+  $stmt->execute([$id]);
+
+  $ativo = $stmt->fetch(PDO::FETCH_ASSOC);
+
+  echo json_encode($ativo);
+  exit;
+}
 ?>

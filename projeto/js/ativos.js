@@ -198,3 +198,42 @@ function limpar_modal() {
     $("#tipo").val('');
     $("#observacao").val('');
 }
+
+document.addEventListener('DOMContentLoaded', () => {
+  document.querySelectorAll('.visualizar-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const id = btn.getAttribute('data-id');
+
+      fetch(`controller_ativos.php?action=visualizar&id=${id}`)
+        .then(response => response.json())
+        .then(data => {
+          if (data) {
+            // Preenche os campos do modal com os dados retornados
+            document.getElementById('idAtivoView').value = data.idAtivo || '';
+            document.getElementById('ativoView').value = data.descricaoAtivo || '';
+            document.getElementById('marcaView').innerHTML = `<option selected>${data.marca}</option>`;
+            document.getElementById('tipoView').innerHTML = `<option selected>${data.tipo}</option>`;
+            document.getElementById('quantidadeView').value = data.quantidade || '';
+            document.getElementById('quantidadeMinView').value = data.quantidadeMin || '';
+            document.getElementById('observacaoView').value = data.observacao || '';
+
+            // Previsualiza a imagem (se houver)
+            if (data.imagem) {
+              document.getElementById('imgPreviewView').src = `uploads/${data.imagem}`;
+            } else {
+              document.getElementById('imgPreviewView').src = '';
+            }
+
+            // Abre o modal
+            const modal = new bootstrap.Modal(document.getElementById('modalVisualizarAtivo'));
+            modal.show();
+          } else {
+            alert('Erro ao carregar os dados do ativo.');
+          }
+        })
+        .catch(error => {
+          console.error('Erro ao buscar os dados:', error);
+        });
+    });
+  });
+});

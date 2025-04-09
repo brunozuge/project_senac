@@ -249,7 +249,16 @@ $tipos = busca_info_bd($conexao, 'tipo');
 
                     <td>
                         <div class="acoes d-flex justify-content-between">
+                            <!-- Botão para abrir o modal de ativos -->
+<div class="text-center mt-2">
+  <a href="responsiveAtivo.php" class="btn btn-primary">
+    Ver Lista de Ativos
+  </a>
+</div>
+
                             <div class="muda_status">
+                                
+                   
                                 <?php if ($row['statusAtivo'] == 'S') { ?>
                                     <div class="inativo" onclick="verificaEstoqueAntesDeMudar('N', '<?php echo $row['idAtivo']; ?>', <?php echo $row['quantidadeAtivo']; ?>, <?php echo $row['quantidadeMinAtivo']; ?>, '<?php echo htmlspecialchars($row['descricaoAtivo']); ?>')">
                                         <i class="bi bi-toggle-on"></i>
