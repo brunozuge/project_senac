@@ -71,33 +71,7 @@ function obter_estatisticas_movimentacoes($conexao) {
             <?php } ?>
         </tbody>
     </table>
-<div class="mt-5">
-    <h2 class="mt-4">Estatísticas de Movimentações</h2>
-    <div class="d-flex justify-content-center mb-3">
-        <button id="btnCarregarGraficos" class="btn btn-warning">Carregar Estatísticas</button>
-    </div>
-    <div id="containerGraficos" style="display: none;">
-        <div class="row">
-            <!-- Gráfico 1: Tipo de Movimentação -->
-            <div class="col-md-4">
-                <canvas id="graficoTipoMov" width="300" height="300"></canvas>
-                <p class="text-center mt-2">Distribuição por Tipo de Movimentação</p>
-            </div>
 
-            <!-- Gráfico 2: Usuários -->
-            <div class="col-md-4">
-                <canvas id="graficoUsuarios" width="300" height="300"></canvas>
-                <p class="text-center mt-2">Distribuição por Usuário</p>
-            </div>
-
-            <!-- Gráfico 3: Ativos -->
-            <div class="col-md-4">
-                <canvas id="graficoAtivos" width="300" height="300"></canvas>
-                <p class="text-center mt-2">Distribuição por Ativo</p>
-            </div>
-        </div>
-    </div>
-</div>
 
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script>

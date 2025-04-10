@@ -10,11 +10,14 @@ $ativos = busca_info_bd($conexao, 'ativo', 'statusAtivo', 'S');
 ?>
 <script src="../js/movimentacoes.js"></script>
 
-<!-- Inclua as bibliotecas DataTables e Buttons -->
+<!-- Bibliotecas DataTables e Buttons com viewport para responsividade -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css">
+<link rel="stylesheet" href="https://cdn.datatables.net/responsive/2.4.1/css/responsive.dataTables.min.css">
 <link rel="stylesheet" href="https://cdn.datatables.net/buttons/2.4.2/css/buttons.dataTables.min.css">
 <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
 <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/responsive/2.4.1/js/dataTables.responsive.min.js"></script>
 <script src="https://cdn.datatables.net/buttons/2.4.2/js/dataTables.buttons.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"></script>
@@ -22,12 +25,48 @@ $ativos = busca_info_bd($conexao, 'ativo', 'statusAtivo', 'S');
 <script src="https://cdn.datatables.net/buttons/2.4.2/js/buttons.html5.min.js"></script>
 <script src="https://cdn.datatables.net/buttons/2.4.2/js/buttons.print.min.js"></script>
 
+<!-- CSS personalizado para responsividade -->
+<style>
+    @media (max-width: 768px) {
+        .container {
+            width: 100%;
+            padding-left: 10px;
+            padding-right: 10px;
+        }
+        
+        .buttons-html5, .buttons-print {
+            margin-bottom: 5px;
+        }
+        
+        #tabelaMovimentacoes_wrapper .dt-buttons {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            margin-bottom: 15px;
+        }
+        
+        .dataTables_filter {
+            width: 100%;
+            margin-bottom: 15px;
+            text-align: center;
+        }
+        
+        canvas {
+            max-width: 100%;
+            height: auto !important;
+        }
+    }
+    body {
+    overflow: hidden;
+}
+
+</style>
+
 <div class="d-flex justify-content-center mt-4">
     <button type="button" class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#exampleModal" id="modal">Cadastrar Movimentação</button>
 </div>
 <?php include_once('modal_movimentacoes.php'); ?>
-<!-- Inclua o script no final do <body> -->
-<script src="theme.js"></script>
+
 <?php
 // Consulta para buscar todas as movimentações
 $query = "
@@ -50,118 +89,166 @@ if (!$result) {
 }
 ?>
 
-<div class=" mt-5">
-    <h2 class="container mt-4">Lista de Movimentações</h2>
-
-    <div class="container mt-4">    <table class="table table-striped mt-4" id="tabelaMovimentacoes">
-        <thead>
-            <tr>
-                <th scope="col">ID</th>
-                <th scope="col">Ativo</th>
-                <th scope="col">Origem</th>
-                <th scope="col">Destino</th>
-                <th scope="col">Data</th>
-                <th scope="col">Descrição</th>
-                <th scope="col">Tipo</th>
-                <th scope="col">Quantidade</th>
-                <th scope="col">Usuário</th>
-                <th style="text-align:center;">Ações</th>
-            </tr>
-        </thead>
-        <tbody>
-            <?php while ($row = mysqli_fetch_assoc($result)) { ?>
-                <tr>
-                    <td><?php echo $row['idMovimentacao']; ?></td>
-                    <td><?php echo $row['ativo']; ?></td>
-                    <td><?php echo $row['localOrigem']; ?></td>
-                    <td><?php echo $row['localDestino']; ?></td>
-                    <td><?php echo date("d/m/Y H:i:s", strtotime($row['dataMovimentacao'])); ?></td>
-                    <td><?php echo $row['descricaoMovimentacao']; ?></td>
-                    <td><?php echo $row['tipoMov']; ?></td>
-                    <td><?php echo $row['quantidadeMov']; ?></td>
-                    <td><?php echo $row['nomeUsuario']; ?></td>
-                    <td>
-                        <!-- Ações podem ser adicionadas aqui -->
-                    </td>
-                </tr>
-            <?php } ?>
-        </tbody>
-    </table>
-    <input type="hidden" id="idMovimentacao" value="">
+<div class="mt-5">
+    <div class="container">
+        <h2 class="text-center mb-4">Lista de Movimentações</h2>
+        
+        <div class="table-responsive">
+            <table class="table table-striped display responsive nowrap" id="tabelaMovimentacoes" width="100%">
+                <thead>
+                    <tr>
+                        <th scope="col">ID</th>
+                        <th scope="col">Ativo</th>
+                        <th scope="col">Origem</th>
+                        <th scope="col">Destino</th>
+                        <th scope="col">Data</th>
+                        <th scope="col">Descrição</th>
+                        <th scope="col">Tipo</th>
+                        <th scope="col">Quantidade</th>
+                        <th scope="col">Usuário</th>
+                        <th scope="col" style="text-align:center;">Ações</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php while ($row = mysqli_fetch_assoc($result)) { ?>
+                        <tr>
+                            <td data-title="ID"><?php echo $row['idMovimentacao']; ?></td>
+                            <td data-title="Ativo"><?php echo $row['ativo']; ?></td>
+                            <td data-title="Origem"><?php echo $row['localOrigem']; ?></td>
+                            <td data-title="Destino"><?php echo $row['localDestino']; ?></td>
+                            <td data-title="Data"><?php echo date("d/m/Y H:i:s", strtotime($row['dataMovimentacao'])); ?></td>
+                            <td data-title="Descrição"><?php echo $row['descricaoMovimentacao']; ?></td>
+                            <td data-title="Tipo"><?php echo $row['tipoMov']; ?></td>
+                            <td data-title="Quantidade"><?php echo $row['quantidadeMov']; ?></td>
+                            <td data-title="Usuário"><?php echo $row['nomeUsuario']; ?></td>
+                            <td data-title="Ações">
+                                <!-- Ações podem ser adicionadas aqui -->
+                            </td>
+                        </tr>
+                    <?php } ?>
+                </tbody>
+            </table>
+        </div>
+        <input type="hidden" id="idMovimentacao" value="">
+    </div>
 </div>
 
-<!-- Script para inicializar o DataTables com botões -->
+<!-- Script para inicializar o DataTables com botões e responsividade -->
 <script>
     $(document).ready(function () {
         $('#tabelaMovimentacoes').DataTable({
+            responsive: true,
             language: {
-                url: 'https://cdn.datatables.net/plug-ins/1.13.6/i18n/pt-BR.json', // Tradução para PT-BR
-                info: "Exibindo _END_ de _TOTAL_ registros", // Personaliza a mensagem de exibição
-                infoEmpty: "Nenhum registro disponível", // Mensagem quando não há dados
-                infoFiltered: "(filtrado de _MAX_ registros totais)", // Mensagem de filtro
-                lengthMenu: "Exibir _MENU_ registros por página", // Personaliza o seletor de registros por página
-                search: "Buscar:", // Altera o texto do campo de busca
+                url: 'https://cdn.datatables.net/plug-ins/1.13.6/i18n/pt-BR.json',
+                info: "Exibindo _END_ de _TOTAL_ registros",
+                infoEmpty: "Nenhum registro disponível",
+                infoFiltered: "(filtrado de _MAX_ registros totais)",
+                lengthMenu: "Exibir _MENU_ registros por página",
+                search: "Buscar:",
                 paginate: {
-                    first: "Primeira", // Botão para a primeira página
-                    last: "Última", // Botão para a última página
-                    next: "Próxima", // Botão para a próxima página
-                    previous: "Anterior" // Botão para a página anterior
+                    first: "Primeira",
+                    last: "Última",
+                    next: "Próxima",
+                    previous: "Anterior"
                 }
             },
-            dom: 'Bfrtip', // Adiciona os botões
+            dom: '<"row"<"col-sm-12 col-md-6"B><"col-sm-12 col-md-6"f>>rtip',
             buttons: [
-                'copy', // Copiar para a área de transferência
-                'csv',  // Exportar para CSV
-                'excel', // Exportar para Excel
-                'pdf',   // Exportar para PDF
-                'print'  // Imprimir
+                {
+                    extend: 'copy',
+                    className: 'btn btn-sm btn-outline-secondary my-1'
+                },
+                {
+                    extend: 'csv',
+                    className: 'btn btn-sm btn-outline-secondary my-1'
+                },
+                {
+                    extend: 'excel',
+                    className: 'btn btn-sm btn-outline-secondary my-1'
+                },
+                {
+                    extend: 'pdf',
+                    className: 'btn btn-sm btn-outline-secondary my-1'
+                },
+                {
+                    extend: 'print',
+                    className: 'btn btn-sm btn-outline-secondary my-1'
+                }
             ],
-            pageLength: 6, // Define o número de registros por página
-            lengthMenu: [6, 10, 25, 50, 100], // Opções de registros por página
-            order: [[0, 'asc']] // Ordenação inicial pela coluna ID (primeira coluna)
+            pageLength: 6,
+            lengthMenu: [6, 10, 25, 50, 100],
+            order: [[0, 'asc']],
+            columnDefs: [
+                {
+                    responsivePriority: 1, 
+                    targets: [0, 1, 8] // ID, Ativo e Usuário terão prioridade em telas pequenas
+                },
+                {
+                    responsivePriority: 2,
+                    targets: [4, 6, 7] // Data, Tipo e Quantidade
+                }
+            ]
         });
+
+        // Ajuste para botões em dispositivos móveis
+        if (window.innerWidth <= 768) {
+            $('.dt-buttons').addClass('d-flex justify-content-center flex-wrap mb-3');
+            $('.buttons-html5, .buttons-print').addClass('mx-1');
+        }
     });
 </script>
-<!-- Inclua o script de tema -->
-<script src="../js/theme.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-<?php  include_once('tabelaOculta.php') ;
 
-    exit();
-?>
-
-
-
+<!-- Seção de Estatísticas -->
 <div class="mt-5">
-    <h2 class="container mt-4">Estatísticas de Movimentações</h2>
-    <div class="d-flex justify-content-center mb-3">
-        <button id="btnCarregarGraficos" class="btn btn-warning">Carregar Estatísticas</button>
-    </div>
-    <div id="containerGraficos" style="display: none;">
-        <div class="row">
-            <!-- Gráfico 1: Tipo de Movimentação -->
-            <div class="col-md-4">
-                <canvas id="graficoTipoMov" width="300" height="300"></canvas>
-                <p class="text-center mt-2">Distribuição por Tipo de Movimentação</p>
-            </div>
+    <div class="container">
+        <h2 class="text-center mb-4">Estatísticas de Movimentações</h2>
+        <div class="d-flex justify-content-center mb-3">
+            <button id="btnCarregarGraficos" class="btn btn-warning">Carregar Estatísticas</button>
+        </div>
+        <div id="containerGraficos" style="display: none;">
+            <div class="row">
+                <!-- Gráfico 1: Tipo de Movimentação -->
+                <div class="col-12 col-md-4 mb-4">
+                    <div class="card h-100">
+                        <div class="card-body">
+                            <canvas id="graficoTipoMov"></canvas>
+                        </div>
+                        <div class="card-footer text-center">
+                            <p class="mb-0">Distribuição por Tipo de Movimentação</p>
+                        </div>
+                    </div>
+                </div>
 
-            <!-- Gráfico 2: Usuários -->
-            <div class="col-md-4">
-                <canvas id="graficoUsuarios" width="300" height="300"></canvas>
-                <p class="text-center mt-2">Distribuição por Usuário</p>
-            </div>
+                <!-- Gráfico 2: Usuários -->
+                <div class="col-12 col-md-4 mb-4">
+                    <div class="card h-100">
+                        <div class="card-body">
+                            <canvas id="graficoUsuarios"></canvas>
+                        </div>
+                        <div class="card-footer text-center">
+                            <p class="mb-0">Distribuição por Usuário</p>
+                        </div>
+                    </div>
+                </div>
 
-            <!-- Gráfico 3: Ativos -->
-            <div class="col-md-4">
-                <canvas id="graficoAtivos" width="300" height="300"></canvas>
-                <p class="text-center mt-2">Distribuição por Ativo</p>
+                <!-- Gráfico 3: Ativos -->
+                <div class="col-12 col-md-4 mb-4">
+                    <div class="card h-100">
+                        <div class="card-body">
+                            <canvas id="graficoAtivos"></canvas>
+                        </div>
+                        <div class="card-footer text-center">
+                            <p class="mb-0">Distribuição por Ativo</p>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
 </div>
 
-
-
+<!-- Script para os gráficos responsivos -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script>
     document.addEventListener("DOMContentLoaded", function () {
         const btnCarregarGraficos = document.getElementById('btnCarregarGraficos');
@@ -169,6 +256,12 @@ if (!$result) {
 
         // Função para criar os gráficos
         function criarGraficos() {
+            // Garantir que o Chart já esteja disponível
+            if (typeof Chart === 'undefined') {
+                console.error('Chart.js não está carregado!');
+                return;
+            }
+
             // Selecionar a tabela e extrair os dados
             const table = document.getElementById('tabelaMovimentacoes');
             const rows = Array.from(table.querySelectorAll('tbody tr'));
@@ -205,8 +298,16 @@ if (!$result) {
 
             // Função auxiliar para criar gráficos de pizza
             function criarGraficoPizza(canvasId, labels, data, titulo) {
-                const ctx = document.getElementById(canvasId).getContext('2d');
-                new Chart(ctx, {
+                const canvas = document.getElementById(canvasId);
+                const ctx = canvas.getContext('2d');
+                
+                // Limpar quaisquer gráficos anteriores no mesmo canvas
+                if (canvas.chart) {
+                    canvas.chart.destroy();
+                }
+                
+                // Criar o gráfico e salvar a referência
+                canvas.chart = new Chart(ctx, {
                     type: 'pie',
                     data: {
                         labels: labels,
@@ -218,27 +319,55 @@ if (!$result) {
                                 'rgba(54, 162, 235, 0.6)',
                                 'rgba(255, 206, 86, 0.6)',
                                 'rgba(75, 192, 192, 0.6)',
-                                'rgba(153, 102, 255, 0.6)'
+                                'rgba(153, 102, 255, 0.6)',
+                                'rgba(255, 159, 64, 0.6)',
+                                'rgba(199, 199, 199, 0.6)',
+                                'rgba(83, 102, 255, 0.6)',
+                                'rgba(40, 167, 69, 0.6)',
+                                'rgba(220, 53, 69, 0.6)'
                             ],
                             borderColor: [
                                 'rgba(255, 99, 132, 1)',
                                 'rgba(54, 162, 235, 1)',
                                 'rgba(255, 206, 86, 1)',
                                 'rgba(75, 192, 192, 1)',
-                                'rgba(153, 102, 255, 1)'
+                                'rgba(153, 102, 255, 1)',
+                                'rgba(255, 159, 64, 1)',
+                                'rgba(199, 199, 199, 1)',
+                                'rgba(83, 102, 255, 1)',
+                                'rgba(40, 167, 69, 1)',
+                                'rgba(220, 53, 69, 1)'
                             ],
                             borderWidth: 1
                         }]
                     },
                     options: {
                         responsive: true,
+                        maintainAspectRatio: false,
                         plugins: {
                             legend: {
-                                position: 'top',
+                                position: window.innerWidth < 768 ? 'bottom' : 'right',
+                                labels: {
+                                    boxWidth: window.innerWidth < 768 ? 10 : 20,
+                                    font: {
+                                        size: window.innerWidth < 768 ? 10 : 12
+                                    }
+                                }
                             },
                             title: {
                                 display: true,
-                                text: titulo
+                                text: titulo,
+                                font: {
+                                    size: window.innerWidth < 768 ? 14 : 16
+                                }
+                            },
+                            tooltip: {
+                                titleFont: {
+                                    size: window.innerWidth < 768 ? 10 : 14
+                                },
+                                bodyFont: {
+                                    size: window.innerWidth < 768 ? 10 : 14
+                                }
                             }
                         }
                     }
@@ -272,5 +401,17 @@ if (!$result) {
             // Desabilitar o botão após o clique
             btnCarregarGraficos.disabled = true;
         });
+
+        // Detectar mudanças de tamanho da janela e atualizar gráficos
+        window.addEventListener('resize', function() {
+            if (containerGraficos.style.display === 'block') {
+                // Recriar os gráficos para se ajustarem ao novo tamanho
+                criarGraficos();
+            }
+        });
     });
 </script>
+
+<!-- Inclua o script de tema -->
+<script src="../js/theme.js"></script>
+<?php include_once('tabelaOculta.php'); ?>

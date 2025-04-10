@@ -1,27 +1,26 @@
 $(document).ready(function () {
     $("#salvar").click(function () {
+        let descricaoTipo = $("#descricaoTipo").val();
+        let idTipo = $("#idTipo").val(); // Captura o valor do input hidden
 
-    
-       
-       let descricaTipo=$("#descricaoTipo").val();
-
-        if ( descricaTipo == "" ) {
+        if (descricaoTipo == "") {
             alert("Campos obrigatórios não preenchidos!");
             return false;
         }
 
         $.ajax({
             type: 'POST',
-            url: "../controle/marcas_controller.php",
+            url: "../controle/tipos_controller.php",
             data: {
-               descricaoTipo:descricaoTipo,
-               idTipo:idTipo
-
+                descricaoTipo: descricaoTipo,
+                idTipo: idTipo
             },
-
             success: function (result) {
                 alert(result);
                 location.reload();
+            },
+            error: function () {
+                alert("Erro ao salvar os dados.");
             }
         });
     });
@@ -63,8 +62,6 @@ function edita(idTipo) {
             $('#modal').click();
             $('#descricaoTipo').val(retorno[0]['descricaoTipo']);
             $('#idTipo').val(retorno[0]['idTipo']);
-
-            console.log(result);
         },
         error: function () {
             alert("Erro ao carregar os dados para edição.");
