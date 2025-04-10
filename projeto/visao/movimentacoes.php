@@ -57,7 +57,32 @@ $ativos = busca_info_bd($conexao, 'ativo', 'statusAtivo', 'S');
         }
     }
     body {
-    overflow: hidden;
+    /* Alterar de overflow: hidden; para overflow-x: auto; overflow-y: auto; ou simplesmente overflow-y: scroll; */
+    overflow-y: auto; /* ou scroll para forçar sempre mostrar a barra de rolagem */
+    overflow-x: hidden; /* evita rolagem horizontal, a menos que necessário */
+    height: 100%;
+}
+
+html {
+    height: 100%;
+}
+
+/* Opcional: Estilizar a barra de rolagem para navegadores WebKit (Chrome, Safari, Edge) */
+::-webkit-scrollbar {
+    width: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: #f1f1f1;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #888;
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #555;
 }
 
 </style>
@@ -93,7 +118,7 @@ if (!$result) {
     <div class="container">
         <h2 class="text-center mb-4">Lista de Movimentações</h2>
         
-        <div class="table-responsive">
+        <div class="">
             <table class="table table-striped display responsive nowrap" id="tabelaMovimentacoes" width="100%">
                 <thead>
                     <tr>

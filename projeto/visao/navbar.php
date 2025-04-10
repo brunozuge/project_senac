@@ -22,7 +22,7 @@
                 <li class="nav-item"><a class="nav-link" href="tipos.php">Tipo</a></li>
                 <li class="nav-item"><a class="nav-link" href="opcao.php">Opção</a></li>
                 <li class="nav-item"><a class="nav-link" href="relatorio.php">Relatório</a></li>
-                <li class="nav-item"><a class="nav-link" href="busca_prod_ml.php">Reposição</a></li>
+           
                 <!-- Dropdown organizado -->
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" id="ativosDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">

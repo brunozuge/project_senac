@@ -25,25 +25,3 @@
   </div>
 </div>
 
-<script>
-  // Captura o formulário e o botão de salvar
-  const form = document.getElementById('form-cadastrar-tipo');
-  const salvarButton = document.getElementById('salvar');
-
-  // Adiciona um ouvinte de evento para o formulário
-  form.addEventListener('keypress', function (event) {
-    // Verifica se a tecla pressionada foi Enter (keyCode 13)
-    if (event.key === 'Enter') {
-      event.preventDefault(); // Previne o comportamento padrão do Enter
-      salvarButton.click(); // Simula o clique no botão Salvar
-    }
-  });
-
-  // Função para simular o envio do formulário
-  salvarButton.addEventListener('click', function () {
-    // Aqui você pode adicionar a lógica para salvar os dados
-  
-    // Exemplo: fechar o modal após o envio
-    
-  });
-</script>
