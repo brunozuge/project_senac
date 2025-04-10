@@ -258,6 +258,24 @@ include_once("senac.html");
                     </a>
                 </div>
             </div>
+            <div class="col-md-4">
+                <div class="feature-item">
+                    <a href="opcao.php">
+                        <i class="fas fa-cogs"></i>
+                        <h4>Gerenciar Opções</h4>
+                        <p>Monitore e cadastre os opções com facilidade.</p>
+                    </a>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="feature-item">
+                    <a href="acessos.php">
+                        <i class="fas fa-cogs"></i>
+                        <h4>Gerenciar Acessos</h4>
+                        <p>Monitore e cadastre os tipos com acessos            .</p>
+                    </a>
+                </div>
+            </div>
         </div>
     </div>
 
